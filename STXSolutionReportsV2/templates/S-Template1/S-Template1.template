@@ -1,0 +1,12 @@
+{ "Reports":
+[
+ 	{
+  		"ReportName" : "STAFF REPORT 1",
+ 		"ReportImage": "Report-folder-blank.png",
+     	"ReportTemplatePackage": "S-Template1",
+        "ReportDescription":"Shows contractor price, by location, by system- description, Qty, unit pricing, Total Price. Price should include all labour and taxes, this report does not show a breakout for taxes!",
+        "visiblilityRule":"TOTAL_PRICE_CHECK",
+        "ReportType": "STAFF",
+        "ReportTypeImage": "Reports folder.png"
+	}
+]}

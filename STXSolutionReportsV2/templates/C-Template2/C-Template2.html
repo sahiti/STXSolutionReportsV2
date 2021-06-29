@@ -1,0 +1,936 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Cover Page</title>
+		<link type="text/css" href="#ApplicationDataPath#/jquery-ui.css" rel="stylesheet"/>
+		<link type="text/css" href="#ApplicationDataPath#/jquery.signature.css" rel="stylesheet"/>
+		<style type="text/css">
+			@page land { size:landscape; }
+			@page port { size:portrait; }
+			.landscapePage { page:land; }
+			.portraitPage {	page:port; }
+			
+			.pagebreak { page-break-before: always; }
+
+			.border1 {
+				border: thin solid #000;
+			}
+
+			.3cl {
+				height: 30px;
+			}
+
+			.hdr {
+				background-color: #C4BFBF;
+			}
+
+			.hdr3 {
+				background-color: #C4BFBF;
+			}
+
+			.hdr4 {
+				background-color: #838383;
+			}
+
+			.body1 .body1hd .h1 {
+				color: #dfdfdf;
+			}
+
+			.body1 {
+				height: auto;
+				width: 100%;
+				padding: 2px;
+			}
+
+			.body1 .body1hd {
+				background-color: #dfdfdf;
+			}
+
+			.hdr4 .p {
+				line-height: 100%;
+				color: #FFF;
+			}
+
+			.hdr2 {
+				height: 20px;
+				line-height: 0.2px;
+				font-weight: normal;
+				font-variant: normal;
+				color: #FFF;
+			}
+
+			.hdr4 .rt {
+				color: #FFF;
+			}
+
+			.body1 .h3 {
+				text-decoration: underline;
+				font-size: 12px;
+			}
+
+			.body1 .content .box1 {
+				border: thin dotted #F00;
+				height: 30px;
+				width: 200px;
+				clear: none;
+				margin-left: 10px;
+			}
+
+			.body {
+				height: 100%;
+				width: 100%;
+				solid #000;
+			}
+			.body .p {
+				padding-left: 5px;
+			}
+			.body .border {
+				background-color: #dfdfdf;
+				width: 99%;
+			}
+			.footer {
+				width: 100%;
+			}
+			.body .ta1 {
+				background-color: #dfdfdf;
+				width: 100%;
+				color: #FFF;
+			}
+			.body .chart .table2 {
+				float: none;
+			}
+			.body .chart {
+				width: 90%;
+				border: thin
+				solid #000;
+				border-radius: 30px;
+			}
+			.body .chart .table tr .row2 {
+				width: 400px;
+			}
+			.body .ta1 tr .table {
+				width: 200px;
+			}
+
+			.kbw-signature {
+				width: 400px; height: 200px; 
+			}
+			
+			.sigStyle {
+				min-width:330px;
+				position:absolute;
+				width:330px;
+				height:120px;
+				border-bottom:solid black;
+				border-width: 1px;
+				z-index: 3;
+				<!-- width: 400px;  -->
+				<!-- height: 120px; -->
+				<!-- z-index: 3; -->
+			}
+			.lineblock{
+				min-width:330px;
+				position:absolute;
+				width:330px;
+				height:120px;
+				border-bottom:solid black;
+				border-width: 1px;
+			}
+			
+			/* table, th, td, tr, td, img	 {
+			   border: 1px solid black;
+			} */
+			.rotate90 {
+                -webkit-transform: rotate(-90deg) scale(1.2);
+                -moz-transform: rotate(-90deg) scale(1.2);
+                -o-transform: rotate(-90deg) scale(1.2);
+                -ms-transform: rotate(-90deg) scale(1.2);
+                transform: rotate(-90deg) scale(1.2);
+                height:900px;
+            }
+            .rotate0 {
+                height:900px;
+            }
+            div.gallery:hover {
+                border: 1px solid #777;
+            }
+            div.galleryImage{
+                position:absolute;
+            }
+
+            div.gallery {
+                margin: 5px 11px 5px 11px;
+            }
+
+            div.gallerydesc {
+                text-align: center;
+                valign:middle;
+                align:center;
+                vertical-align:middle;
+            }
+            div.header1 {
+                width: 100%;
+                height: 141.4%;
+              position: relative;
+            }
+
+
+            @media print {
+                div.header1 {
+                    width: 100%;
+                    height: 100%;
+                  position: relative;
+                }
+                sigStyle {
+                    background-color:#ffffff;
+                }
+               
+                div.inner{
+                    background-color:#ffffff;
+                }
+                span.docusignTag{
+                    color:#ffffff;
+                }
+            }
+            div.centercenter {
+              position: absolute;
+              left: 0;
+              top: 50%;
+              width: 100%;
+              text-align: center;
+              font-size: 18px;
+            }
+            div.centerleft {
+              position: absolute;
+              top: 50%;
+              left:16px;
+              text-align: left;
+              font-size: 18px;
+            }
+            div.centerright {
+              position: absolute;
+              right: 16px;
+              top: 50%;
+              text-align: right;
+              font-size: 18px;
+            }
+            div.bottomleft {
+              position: absolute;
+              bottom: 8px;
+              left: 16px;
+              text-align: left;
+              font-size: 18px;
+            }
+            div.bottomcenter {
+              position: absolute;
+              bottom: 8px;
+              left: 0;
+              width: 100%;
+              text-align: center;
+              font-size: 18px;
+            }
+            .bottomright {
+              position: absolute;
+              bottom: 8px;
+              right: 16px;
+              text-align: right;
+              font-size: 18px;
+            }
+            div.topcenter {
+              position: absolute;
+              top: 8px;
+              left: 0;
+              width: 100%;
+              text-align: center;
+              font-size: 18px;
+            }
+            .topright {
+              position: absolute;
+              top: 8px;
+              right: 16px;
+              text-align: right;
+              font-size: 18px;
+            }
+            .topleft {
+              position: absolute;
+              top: 8px;
+              left: 16px;
+              text-align: left;
+              font-size: 18px;
+            }
+			.frame {
+			    height: 150px;      /* equals max image height */
+			    width: 40%;
+			    white-space: nowrap;
+			    float: left;
+			    text-align: center; margin: 1em 0;
+			}
+			
+			.helper {
+			    display: inline-block;
+			    height: 100%;
+			    vertical-align: middle;
+			}
+			
+			.imgv {
+			    vertical-align: middle;
+			    max-height: 150px;
+			}
+			.inner{
+				min-width:330px;
+				min-height:120px;
+				height: 100px;
+				width:330px;
+				position:absolute;
+				z-index: -2;
+				display:inline-block;
+				text-align:center;
+				vertical-align:middle;
+                background-color:#ffff00;
+			}
+			
+			.docusignTag{
+				display:block;
+				position:relative;
+                color: #e5e7e9 ;
+				vertical-align:bottom;
+				width:330px;
+				height:120px;
+				z-index: -1;
+				text-align:center;
+				vertical-align:middle;
+				<!-- top:50%; -->
+				transform: translateY(50%);
+			}
+        
+        
+			
+		</style>
+		<script type="text/javascript" src="#ApplicationDataPath#/excanvas.js"></script>
+		<script type="text/javascript" src="#ApplicationDataPath#/jquery.min.js"></script>
+		<script type="text/javascript" src="#ApplicationDataPath#/jquery-ui.min.js"></script>
+		<script type="text/javascript" src='#ApplicationDataPath#/jquery.signature.js'></script>
+		<script type="text/javascript" src='#ApplicationDataPath#/jquery.ui.touch-punch.min.js'></script>
+
+		<script type="text/javascript">
+		
+		var reportJson = #REPORT_JSON#;
+		 
+		$(function() {
+			var iwidth = 0;
+			var iheight = 0 ;
+			
+			var reportJsonDecoded = reportJson;
+			//var reportJsonObj = $.parseJSON(reportJsonDecoded);
+			var reportJsonObj = reportJsonDecoded;
+			
+			if(reportJsonObj.Report.PrintVersion == 1) {
+                $("#header1").css('background', 'none');
+                document.body.style.backgroundColor="#ffffff";
+                var elements = document.getElementsByClassName('printHeader2');
+            
+                for (var i = 0; i < elements.length; ++i) {
+                  var item = elements[i];
+                  item.style.backgroundColor = "#FFFFFF";
+                }
+
+            }
+            else{
+                document.body.style.backgroundColor="#FFFFFF";
+                var elements = document.getElementsByClassName('printHeader2');
+                for (var i = 0; i < elements.length; ++i) {
+                    var item = elements[i];
+                    item.style.backgroundColor = "#FFFFFF";
+                }
+            }
+			
+			if( reportJsonObj.Report.ShowFloorPlans == 1 ) {
+            var html = "";
+            
+            if(isArray(reportJsonObj.Report.FloorPlans.FloorPlan)){
+            for( var i = 0 ; reportJsonObj.Report.FloorPlans.FloorPlan.length > i ; ++i ) {
+            if(i==0){
+            html += '<div class="pagebreak" style="width:712px;margin: auto; height:950px; align:center; valign:middle;"><div style="width:100%; height:20px;"><h1 align="center" style="text-align: center;height:100%; valign:middle;">FLOOR PLANS</h1></div><div class="gallery" style="width:690px; height:920px;align:center; valign:middle;vertical-align:middle;margin:auto;">';
+            }
+            else{
+            html += '<div class="pagebreak " style="width:712px; height:950px;margin: auto;"><div style="width:100%; height:20px"></div><div class="gallery" style="width:690px; height:920px;align:center; valign:middle;vertical-align:middle;margin: auto;">';
+            }
+            
+            
+            if(reportJsonObj.Report.FloorPlans.FloorPlan[i].FloorPlanOrientation == "potrait"){
+            
+            html += "<div class='gallerydesc' style='width:100%; height:20px;'><h4>"+reportJsonObj.Report.FloorPlans.FloorPlan[i].FloorPlanName+"</h4></div>";
+            html += "<div class='galleryImage' style='height:900px;width:690px;vertical-align:middle;align:center;valign:middle;'>";
+            html += "<img src='" + reportJsonObj.Report.FloorPlans.FloorPlan[i].FloorPlanFilePath + "' name='img' class='rotate90' id='rotateImages' style='height:100%; width: 100%;object-fit: contain;vertical-align:middle;align:center;valign:middle;' /></div>";
+            }
+            else{
+            
+            html += "<div class='gallerydesc' style='width:100%; height:20px;'><h4>"+reportJsonObj.Report.FloorPlans.FloorPlan[i].FloorPlanName+'</h4></div>';
+            html += "<div class='galleryImage' style='height:900px;width:690px;vertical-align:middle;align:center;valign:middle;'>";
+            html += "<img src='" + reportJsonObj.Report.FloorPlans.FloorPlan[i].FloorPlanFilePath + "' name='img' class='rotate0' id='rotateImages' style='height:100%; width: 100%;object-fit: contain;vertical-align:middle;align:center;valign:middle;' /></div>";
+            }
+            html += "</div></div>";
+            }
+            }
+            else if(reportJsonObj.Report.FloorPlans.FloorPlan != undefined) {
+            html += '<div class="pagebreak" style="width:712px; height:950px; align:center; valign:middle;margin: auto;"><div style="width:100%; height:20px;"><h1 align="center" style="text-align: center;height:100%; valign:middle;">FLOOR PLANS</h1></div><div class="gallery" style="width:690px; height:920px;align:center; valign:middle;vertical-align:middle;margin: auto;">';
+
+            if(reportJsonObj.Report.FloorPlans.FloorPlan.FloorPlanOrientation == "potrait"){
+            
+            html += "<div class='gallerydesc' style='width:100%; height:20px;'><h4>"+reportJsonObj.Report.FloorPlans.FloorPlan.FloorPlanName+"</h4></div>";
+            html += "<div class='galleryImage' style='height:900px;width:690px;vertical-align:middle;align:center;valign:middle;'>";
+            html += "<img src='" + reportJsonObj.Report.FloorPlans.FloorPlan.FloorPlanFilePath + "' name='img' class='rotate90' id='rotateImages' style='height:100%; width: 100%;object-fit: contain;vertical-align:middle;align:center;valign:middle;' /></div>";
+            
+            }
+            else{
+            
+            html += "<div class='gallerydesc' style='width:100%; height:20px;'><h4>"+reportJsonObj.Report.FloorPlans.FloorPlan.FloorPlanName+'</h4></div>';
+            html += "<div class='galleryImage' style='height:900px;width:690px;vertical-align:middle;align:center;valign:middle;'>";
+            html += "<img src='" + reportJsonObj.Report.FloorPlans.FloorPlan.FloorPlanFilePath + "' name='img' class='rotate0' id='rotateImages' style='height:100%; width: 100%;object-fit: contain;vertical-align:middle;align:center;valign:middle;' /></div>";
+            }
+            html += "</div></div>";
+            
+            }
+            $("#floorPlans").html(html);
+            $("#floorPlans").show();
+            }
+            else {
+            $("#floorPlans").hide();
+            }
+            
+            //Camera Images
+            
+            if( reportJsonObj.Report.ShowImages == 1 ) {
+            var html = "";
+            
+            if(isArray(reportJsonObj.Report.CameraImages.CameraImage)){
+            for( var i = 0 ; reportJsonObj.Report.CameraImages.CameraImage.length > i ; ++i ) {
+            if(i==0){
+            html += '<div class="pagebreak" style="width:712px; height:950px; align:center; valign:middle;margin: auto;"><div style="width:100%; height:20px;"><h1 align="center" style="text-align: center;height:100%; valign:middle;">IMAGES</h1></div><div class="gallery" style="width:690px; height:920px;align:center; valign:middle;vertical-align:middle;margin: auto;">';
+            }
+            else{
+            html += '<div class="pagebreak " style="width:712px; height:950px;margin: auto;"><div style="width:100%; height:20px"></div><div class="gallery" style="width:690px; height:920px;align:center; valign:middle;vertical-align:middle;margin: auto;">';
+            }
+            
+            
+            if(reportJsonObj.Report.CameraImages.CameraImage[i].CameraImageOrientation == "potrait"){
+            
+            html += "<div class='gallerydesc' style='width:100%; height:20px;'><h4>"+reportJsonObj.Report.CameraImages.CameraImage[i].CameraImageFileName+"</h4></div>";
+            html += "<div class='galleryImage' style='height:900px;width:690px;vertical-align:middle;align:center;valign:middle;'>";
+            html += "<img src='" + reportJsonObj.Report.CameraImages.CameraImage[i].CameraImageFilePath + "' name='img' class='rotate90' id='rotateImages' style='height:100%; width: 100%;object-fit: contain;vertical-align:middle;align:center;valign:middle;' /></div>";
+            
+            }
+            else{
+            
+            html += "<div class='gallerydesc' style='width:100%; height:20px;'><h4>"+reportJsonObj.Report.CameraImages.CameraImage[i].CameraImageFileName+'</h4></div>';
+            html += "<div class='galleryImage' style='height:900px;width:690px;vertical-align:middle;align:center;valign:middle;'>";
+            html += "<img src='" + reportJsonObj.Report.CameraImages.CameraImage[i].CameraImageFilePath + "' name='img' class='rotate0' id='rotateImages' style='height:100%; width: 100%;object-fit: contain;vertical-align:middle;align:center;valign:middle;' /></div>";
+            }
+            html += "</div></div>";
+            }
+            }
+            else if(reportJsonObj.Report.CameraImages.CameraImage != undefined) {
+            html += '<div class="pagebreak" style="width:712px; height:950px; align:center; valign:middle;margin: auto;"><div style="width:100%; height:20px;"><h1 align="center" style="text-align: center;height:100%; valign:middle;">IMAGES</h1></div><div class="gallery" style="width:690px; height:920px;align:center; valign:middle;vertical-align:middle;margin: auto;">';
+            
+            if(reportJsonObj.Report.CameraImages.CameraImage.CameraImageOrientation == "potrait"){
+            
+            html += "<div class='gallerydesc' style='width:100%; height:20px;'><h4>"+reportJsonObj.Report.CameraImages.CameraImage.CameraImageFileName+"</h4></div>";
+            html += "<div class='galleryImage' style='height:900px;width:690px;vertical-align:middle;align:center;valign:middle;'>";
+            html += "<img src='" + reportJsonObj.Report.CameraImages.CameraImage.CameraImageFilePath + "' name='img' class='rotate90' id='rotateImages' style='height:100%; width: 100%;object-fit: contain;vertical-align:middle;align:center;valign:middle;' /></div>";
+            
+            }
+            else{
+            
+            html += "<div class='gallerydesc' style='width:100%; height:20px;'><h4>"+reportJsonObj.Report.CameraImages.CameraImage.CameraImageFileName+'</h4></div>';
+            html += "<div class='galleryImage' style='height:900px;width:690px;vertical-align:middle;align:center;valign:middle;'>";
+            html += "<img src='" + reportJsonObj.Report.CameraImages.CameraImage.CameraImageFilePath + "' name='img' class='rotate0' id='rotateImages' style='height:100%; width: 100%;object-fit: contain;vertical-align:middle;align:center;valign:middle;' /></div>";
+            }
+            html += "</div></div>";
+            }
+            
+            $("#cameraImages").html(html);
+            $("#cameraImages").show();
+            }
+            else {
+            $("#cameraImages").hide();
+            }
+          //Cover page image and text layout
+            <!-- var element = document.getElementById('header1'); -->
+             <!-- element.style.color = reportJsonObj.Report.ReportsCoverFontColor; -->
+             <!-- var headernStr = ''; -->
+             <!-- headernStr += '<img id="reportCover" src="' +reportJsonObj.Report.ReportsCover+ '" alt="Cinque Terre"  style = "width:100%;height:100%;">'; -->
+             <!-- headernStr += '<div id="clientLabel" style="white-space: pre-wrap;" class="'+reportJsonObj.Report.ClientLabelPos+'" >'+reportJsonObj.Report.ReportTitle +'&#10;'+ reportJsonObj.Report.ClientName +'&#10;'+ reportJsonObj.Report.ClientCompanyName +'&#10;'+ reportJsonObj.Report.ClientAddress1Street +'&#10;'+ reportJsonObj.Report.ClientAddress1City +'&nbsp;'+ reportJsonObj.Report.ClientAddress1State +'&nbsp;'+ reportJsonObj.Report.ClientAddress1Zip +'</div>'; -->
+             
+             <!-- headernStr += '<div style="white-space: pre-wrap;" class="'+reportJsonObj.Report.LogoLabelPos+'" ><img id="flogoimg" style="max-width:400px; max-height:400px;"/>&#10;'+reportJsonObj.Report.CompanyName+'</div>'; -->
+             <!-- headernStr += '<div style="white-space: pre-wrap;" class="'+reportJsonObj.Report.CompanyLabelPos+'">'+reportJsonObj.Report.CompanyAddressStreet +'&#10;'+ reportJsonObj.Report.CompanyAddressCity +'&nbsp;'+ reportJsonObj.Report.CompanyAddressState +'&nbsp;'+ reportJsonObj.Report.CompanyAddressZip +'&#10;'+ reportJsonObj.Report.CompanyWorkPhone +'&#10;'+ reportJsonObj.Report.Date +'</div>'; -->
+            
+             
+            <!-- $("#header1").html(headernStr); -->
+          
+			
+			<!-- $("#flogoimg").on("load", function() { -->
+				<!-- var iwidth = $(this).width(); -->
+				<!-- var iheight = $(this).height(); -->
+				<!-- if( iwidth > 150) iwidth = 150; -->
+				<!-- $("#flogoimg").css('width', iwidth); -->
+			<!-- }); -->
+			<!-- $("#flogoimg").attr('src', reportJsonObj.Report.Logo); -->
+			
+			<!-- var totalHeightHeader = $("#header1").height(); -->
+			
+			<!-- var firstSpace = totalHeightHeader * 25 / 100; -->
+			<!-- var secondSpace = totalHeightHeader * 3 / 100; -->
+			<!-- $("#firstSpaceTr").css('height', firstSpace); -->
+			<!-- $("#secondSpaceTr").css('height', secondSpace); -->
+			
+			var header1Str = '<table style="width: 100%; padding-top: 2px;">';
+			header1Str += (reportJsonObj.Report.ReportTitle != '') ? ('<tr align="center"><td colspan="3" style="font: 18px \'Arial\';line-height: 18px; height: 18px;">'+reportJsonObj.Report.ReportTitle +'</td></tr>') : '<tr align="center"><td colspan="3" style="height: 18px;"></td></tr>';
+			//header1Str += '<tr style="height: 50px;"><td></td></tr>';
+			header1Str += (reportJsonObj.Report.ClientName != '') ? ('<tr align="center"><td colspan="3" style="font: 18px \'Arial\';line-height: 18px;height: 18px;">'+reportJsonObj.Report.ClientName +'</td></tr>') : '<tr align="center"><td colspan="3" style="height: 18px;"></td></tr>';
+			header1Str += (reportJsonObj.Report.ClientCompanyName != '') ? ('<tr align="center"><td colspan="3" style="font: 18px \'Arial\';line-height: 18px;height: 18px;">'+reportJsonObj.Report.ClientCompanyName +'</td></tr>') : '<tr align="center"><td colspan="3" style="height: 18px;"></td></tr>';
+			header1Str += (reportJsonObj.Report.ClientAddress1Street != '') ? ('<tr align="center"><td colspan="3" style="font: 18px \'Arial\';line-height: 18px;height: 18px;">'+reportJsonObj.Report.ClientAddress1Street +'</td></tr>') : '<tr align="center"><td colspan="3" style="height: 18px;"></td></tr>';
+			header1Str += (reportJsonObj.Report.ClientAddress1City != '' || reportJsonObj.Report.ClientAddress1State != '' || reportJsonObj.Report.ClientAddress1Zip != '') ? ( '<tr align="center"><td colspan="3" style="font: 18px \'Arial\';line-height: 18px;height: 18px;">'+ reportJsonObj.Report.ClientAddress1City + ((reportJsonObj.Report.ClientAddress1State != '') ? ', ':'') + reportJsonObj.Report.ClientAddress1State + ((reportJsonObj.Report.ClientAddress1Zip != '') ? ' ':'') + reportJsonObj.Report.ClientAddress1Zip + '</td></tr>') : '<tr align="center"><td colspan="3" style="height: 18px;"></td></tr>';
+			header1Str += '<tr id="firstSpaceTr"><td colspan="3"></td></tr>';
+			header1Str += '<tr align="center"><td style="width: 45%"></td><td align="center"><img id="flogoimg"/></td><td style="width: 45%"></td></tr>';
+			header1Str += '<tr id="secondSpaceTr"><td colspan="3"></td></tr>';
+			header1Str += (reportJsonObj.Report.CompanyName != '') ? ('<tr align="center"><td colspan="3" style="font: 16px \'Arial\'; line-height: 16px;">'+reportJsonObj.Report.CompanyName +'</td></tr>') : '<tr align="center"><td style="height: 16px;"></td></tr>';
+			header1Str += '<tr style="height: 30px;"><td colspan="3"></td></tr>';
+			header1Str += (reportJsonObj.Report.CompanyAddressStreet != '') ? ('<tr align="center"><td colspan="3" style="font: 16px \'Arial\'; line-height: 16px; height: 16px;">'+reportJsonObj.Report.CompanyAddressStreet +'</td></tr>') : '<tr align="center"><td style="height: 16px;"></td></tr>';
+			header1Str += (reportJsonObj.Report.CompanyAddressCity != '' || reportJsonObj.Report.CompanyAddressState != '' ||  reportJsonObj.Report.CompanyAddressZip != '') ? ( '<tr align="center"><td colspan="3" style="font: 16px \'Arial\'; line-height: 16px;height: 16px;">'+ reportJsonObj.Report.CompanyAddressCity + ((reportJsonObj.Report.CompanyAddressState != '') ? ', ':'') + reportJsonObj.Report.CompanyAddressState + ((reportJsonObj.Report.CompanyAddressZip != '') ? ' ':'') + reportJsonObj.Report.CompanyAddressZip + '</td></tr>') : '<tr align="center"><td style="height: 16px;"></td></tr>';
+			header1Str += (reportJsonObj.Report.CompanyWorkPhone != '') ? ('<tr align="center"><td colspan="3" style="font: 16px \'Arial\'; line-height: 16px; height: 16px;">'+reportJsonObj.Report.CompanyWorkPhone +'</td></tr>') : '<tr align="center"><td style="height: 16px;"></td></tr>';
+			/* header1Str += '<tr style="height: 25px;"><td></td></tr>'+((reportJsonObj.Report.Contractor != undefined && reportJsonObj.Report.Contractor != '' && reportJsonObj.Report.Contractor.length > 0) ? ('<tr align="center"><td style="font: 18px \'Arial\'; line-height: 18px;">'+'Contractor# : '+reportJsonObj.Report.Contractor +'</td></tr>') : '');
+			header1Str += (reportJsonObj.Report.SalesPersonName != '') ? ('<tr align="center"><td style="font: 18px \'Arial\'; line-height: 18px;">'+reportJsonObj.Report.SalesPersonName +'</td></tr>') : '';
+			header1Str += '<tr align="center"><td style="font: 18px \'Arial\'; line-height: 18px;">'+reportJsonObj.Report.Date +'</td></tr>'; */
+			header1Str += '<tr align="center"><td colspan="3" style="font: 16px \'Arial\'; line-height: 16px;">'+reportJsonObj.Report.Date +'</td></tr></table>';
+						
+                        var element = document.getElementById('header1');
+                        element.style.border = 'none';
+                        if(reportJsonObj.Report.DeviceOS == "iOS"){
+                            element.style.color = reportJsonObj.Report.ReportsCoverFontColor;
+                            var headernStr = '';
+                            if(reportJsonObj.Report.ReportsCover.length>0){
+                                headernStr += '<img id="reportCover" src="' +reportJsonObj.Report.ReportsCover+ '" style = "width:100%;height:100%;">';
+                            }
+                            headernStr += '<div id="clientLabel" style="white-space: pre-wrap;" class="'+reportJsonObj.Report.ClientLabelPos+'" >'+reportJsonObj.Report.ReportTitle +'&#10;'+ reportJsonObj.Report.ClientName +'&#10;'+ reportJsonObj.Report.ClientCompanyName +'&#10;'+ reportJsonObj.Report.ClientAddress1Street +'&#10;'+ reportJsonObj.Report.ClientAddress1City +'&nbsp;'+ reportJsonObj.Report.ClientAddress1State +'&nbsp;'+ reportJsonObj.Report.ClientAddress1Zip +'</div>';
+                            
+                            headernStr += '<div style="white-space: pre-wrap;" class="'+reportJsonObj.Report.LogoLabelPos+'" ><img id="flogoimg" style="max-width:400px; max-height:400px;"/>&#10;'+reportJsonObj.Report.CompanyName+'</div>';
+                            headernStr += '<div style="white-space: pre-wrap;" class="'+reportJsonObj.Report.CompanyLabelPos+'">'+reportJsonObj.Report.CompanyAddressStreet +'&#10;'+ reportJsonObj.Report.CompanyAddressCity +'&nbsp;'+ reportJsonObj.Report.CompanyAddressState +'&nbsp;'+ reportJsonObj.Report.CompanyAddressZip +'&#10;'+ reportJsonObj.Report.CompanyWorkPhone +'&#10;'+ reportJsonObj.Report.Date +'</div>';
+                            $("#header1").html(headernStr);
+                        }else{
+                            if(reportJsonObj.Report.ReportsCover.length>0){
+                                element.style.background = "url(#ApplicationDataPath#/simple_cover.png) no-repeat center";
+                                element.style.backgroundColor = "#dfdfdf";
+
+                            }else{
+                                element.style.backgroundColor = "#ffffff";
+                            }
+                            element.style.height = "950px";
+                            $("#header1").html(header1Str);
+                        }
+			
+			$("#flogoimg").on("load", function() {
+				var iwidth = $(this).width();
+				var iheight = $(this).height();
+				if( iwidth > 150) iwidth = 150;
+				$("#flogoimg").css('width', iwidth);
+			});
+			$("#flogoimg").attr('src', reportJsonObj.Report.Logo);
+			
+			var totalHeightHeader = $("#header1").height();
+			
+			var firstSpace = totalHeightHeader * 25 / 100;
+			var secondSpace = totalHeightHeader * 3 / 100;
+			$("#firstSpaceTr").css('height', firstSpace);
+			$("#secondSpaceTr").css('height', secondSpace);
+					
+			var header2Str = '<table style="width: 100%">';
+			header2Str += '<tr><td style="width: 50%; font-size: 12px; color: #2e95d1;" align="left">CLIENT INFORMATION</td></tr>';
+			header2Str += (reportJsonObj.Report.ClientName != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientName+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientEmail != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left"><a href="mailto:'+reportJsonObj.Report.ClientEmail+'">'+reportJsonObj.Report.ClientEmail+'</a></td></tr>') : ' ';
+			header2Str += (reportJsonObj.Report.ClientCompanyName != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientCompanyName+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientHomePhone != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientHomePhone+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientMobilePhone != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientMobilePhone+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientWorkPhone != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientWorkPhone+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientOpenField != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientOpenField+'</td></tr>') : ''
+			header2Str += (reportJsonObj.Report.ClientAddress1Label != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientAddress1Label+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientAddress1Street != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientAddress1Street+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientAddress1City != '' || reportJsonObj.Report.ClientAddress1State != '' || reportJsonObj.Report.ClientAddress1Zip != '') ? (
+								'<tr>'+
+									'<td style="width: 50%; font-size: 11px;" align="left">'+
+										((reportJsonObj.Report.ClientAddress1City != '') ? (reportJsonObj.Report.ClientAddress1City +', ') : '') + ((reportJsonObj.Report.ClientAddress1State != '') ? (reportJsonObj.Report.ClientAddress1State +' '):' ') + reportJsonObj.Report.ClientAddress1Zip +
+									'</td>'+
+								'</tr>') : '';
+			header2Str += '<tr><td style="width: 50%; font-size: 10px;"></td></tr>';
+			header2Str += '<tr><td style="width: 50%; font-size: 10px;"></td></tr>';
+			header2Str += '<tr><td style="width: 50%; font-size: 10px;"></td></tr>';
+			header2Str += '</table>';
+						
+			$("#header2").html(header2Str);
+						
+			var header3Str = '<table style="width: 100%">';
+			header3Str += '<tr><td style="width: 50%; font-size: 12px; color: #2e95d1;" align="right">COMPANY INFORMATION</td></tr>';
+			header3Str += '<tr><td style="width: 50%; font-size: 11px;" align="right">'+reportJsonObj.Report.CompanyName+'</td></tr>';
+			header3Str += ((reportJsonObj.Report.CompanyWorkPhone != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="right">'+reportJsonObj.Report.CompanyWorkPhone+'</td></tr>') : ' ')
+			header3Str += ((reportJsonObj.Report.CompanyEmail != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="right"><a href="mailto:'+reportJsonObj.Report.CompanyEmail+'">'+reportJsonObj.Report.CompanyEmail+'</a></td></tr>') : ' ');
+			header3Str += '<tr><td style="width: 50%; font-size: 11px;" align="right">'+reportJsonObj.Report.CompanyAddressStreet+'</td></tr>';
+			header3Str += '<tr><td style="width: 50%; font-size: 11px;" align="right">'+ ((reportJsonObj.Report.CompanyAddressCity != '') ? (reportJsonObj.Report.CompanyAddressCity + ', ') : ' ') +
+									((reportJsonObj.Report.CompanyAddressState != '') ? (reportJsonObj.Report.CompanyAddressState +' '):' ') + reportJsonObj.Report.CompanyAddressZip + '</td></tr>';
+			header3Str += ((reportJsonObj.Report.Contractor != undefined && reportJsonObj.Report.Contractor != '' && reportJsonObj.Report.Contractor.length > 0) ? ('<tr><td style="width: 50%; font-size: 11px;" align="right">'+'Contractor# : '+reportJsonObj.Report.Contractor +'</td></tr>') : ' ');
+			header3Str += '<tr><td style="width: 50%; font-size: 11px;" align="right">'+reportJsonObj.Report.SalesPersonName+'</td></tr>';
+			header3Str += ((reportJsonObj.Report.SalesPersonEmail != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="right"><a href="mailto:'+reportJsonObj.Report.SalesPersonEmail+'">'+reportJsonObj.Report.SalesPersonEmail+'</a></td></tr>') : ' ');
+			header3Str += ((reportJsonObj.Report.CompanyMobilePhone != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="right">Mobile :'+reportJsonObj.Report.CompanyMobilePhone+'</td></tr>') : ' ')
+			header3Str += '</table>';
+						
+			$("#header3").html(header3Str);
+			
+			$("#logoid").append('<img class="imgv" src="'+reportJsonObj.Report.Logo+'" name="logoimg" id="slogoimg" width="150" />');
+			$("#slogoimg").on("load", function() {
+				var iwidth = $(this).width();
+				var iheight = $(this).height();
+				var maxHeight = 150;
+				var ratio = 0;
+				
+				if( iheight > maxHeight ) {
+					ratio = maxHeight / iheight;					
+					iwidth = iwidth * ratio;
+					iheigth = maxHeight;
+				}
+				
+				$("#slogoimg").css('width', iwidth );
+			});
+			
+			var html = "";
+			if( reportJsonObj.Report.Rooms.Room != undefined ) {
+				if(isArray(reportJsonObj.Report.Rooms.Room)) 
+				{
+					for(var i = 0; reportJsonObj.Report.Rooms.Room.length > i; ++i ) {
+						var room = reportJsonObj.Report.Rooms.Room[i];
+						html += populatePackages(room, reportJsonObj.Report.ShowComments);
+					}
+				} else {
+					var room = reportJsonObj.Report.Rooms.Room
+					html += populatePackages(room, reportJsonObj.Report.ShowComments);
+				}
+			}
+			$('#bodyTable').html(html);
+						
+			if(reportJsonObj.Report.NoPriceSummary == 1 ) {
+                $('#pricingDiv').hide();
+            } else {
+                if(reportJsonObj.Report.PagebreakForTotal == 1){
+                    var element = document.getElementById("pricingDiv");
+                       element.classList.add("pagebreak");
+                }else{
+                    
+                }
+				html = '<div class="p" style="text-align: right; font-size: 12px; width:80%; display: inline-block; margin: 2px;" align="center">'+
+				'<table style="width: 100%;" cellpadding="0">'
+					+'<tr>'
+						+'<td width="85%" align="right" style="padding-right: 15px;">'
+							+'<div style="height:40px; width:400px; padding: 10px; background-color: #747474; color: #67c9f6; display: table-cell; vertical-align: middle;"><b>SUB TOTAL</b></div>'
+						+'</td><td align="left">'+
+							'<div style="height:40px; width: 400px; padding: 10px; background-color: #747474; color: #fbffc3; display: table-cell; vertical-align: middle;"><b>' + reportJsonObj.Report.SubTotal + '</b></div></td></tr>';
+				
+				if( reportJsonObj.Report.Taxes.Tax != undefined ) {
+					if(isArray(reportJsonObj.Report.Taxes.Tax)) 
+					{
+						for( var i = 0; reportJsonObj.Report.Taxes.Tax.length > i; ++i ) {
+							var tax = reportJsonObj.Report.Taxes.Tax[i];
+							html += "<tr><td width='85%' align='right' style='padding-right: 15px;'><div style=\"height:40px; width:400px; padding: 10px; background-color: #747474; color: #67c9f6; display: table-cell; vertical-align: middle;\"><b>" + tax.TaxName.toUpperCase() + "</b></div></td>"+
+									"<td align='left'><div style=\"height:40px; width: 400px; padding: 10px; background-color: #747474; color: #fbffc3; display: table-cell; vertical-align: middle;\"><b>" + tax.TaxPrice + "</b></div></td></tr>";
+						}
+					} else if(reportJsonObj.Report.Taxes.Tax != undefined){
+						var tax = reportJsonObj.Report.Taxes.Tax;
+						html += "<tr><td width='85%' align='right' style='padding-right: 15px;'><div style=\"height:40px; width:400px; padding: 10px; background-color: #747474; color: #67c9f6; display: table-cell; vertical-align: middle;\"><b>" + tax.TaxName.toUpperCase() + "</b></div></td>"+
+								"<td align='left'><div style=\"height:40px; width: 400px; padding: 10px; background-color: #747474; color: #fbffc3; display: table-cell; vertical-align: middle;\"><b>" + tax.TaxPrice + "</b></div></td></tr>";
+					}
+				}
+				html += '</table><hr style="background-color: #fbffc3; height: 5px; border: 0;" /><table style="width: 100%;"><tr><td width="85%" align="right" style="padding-right: 15px;"><h2><div style="color: #fbffc3; padding: 10px;">TOTAL</div></h2>'+
+						'</td><td align="left"><h2><div style="color: #fbffc3; padding: 10px;">' + reportJsonObj.Report.Total + '</div></h2></td></tr></table></div>';
+				$('#pricingDiv').html(html);
+			}
+			
+			var isAdded = false;
+			var lastPackageState = "";
+			html = '<table width="100%" border="0" cellpadding="10" style="border-collapse: collapse;">';
+			if(reportJsonObj.Report.OtherCharges != undefined && reportJsonObj.Report.OtherCharges.Package != undefined ) {
+				if(isArray(reportJsonObj.Report.OtherCharges.Package)) 
+				{
+					for( var i = 0; reportJsonObj.Report.OtherCharges.Package.length > i; ++i ) 
+					{
+						isAdded = true;
+						html += "<tr>";
+						if( i == 0 ) {
+							html += "<td colspan='6' bgcolor='#C4BFBF' style='color: #2ea4d1;'>"+reportJsonObj.Report.OtherCharges.Package[i].PackageState+" Charges</td>";
+						} else if( lastPackageState != reportJsonObj.Report.OtherCharges.Package[i].PackageState ) {
+							html += "<td colspan='6' bgcolor='#C4BFBF' style='color: #2ea4d1;'>" + reportJsonObj.Report.OtherCharges.Package[i].PackageState + " Charges</td>";
+						}
+						html += "</tr>";
+						html += "<tr class='printHeader2' width='10%' style='text-align: center;'><td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'><img width='85' src='" + reportJsonObj.Report.OtherCharges.Package[i].PackageIcon + "' name='img'/></td>";
+						html += "<td width='15%' style='text-align: left; font-size: 12px;padding-top: 5px; padding-bottom: 5px;'><h4>" + reportJsonObj.Report.OtherCharges.Package[i].PackageName+"</h4></td>";
+						html += "<td width='45%' style='text-align: left; font-size: 12px;padding-top: 5px; padding-bottom: 5px;'>" + reportJsonObj.Report.OtherCharges.Package[i].PackageDescription+"</td>";
+						html += "<td width='13%' style='text-align: left; font-size: 12px;padding-top: 5px; padding-bottom: 5px;'>" + reportJsonObj.Report.OtherCharges.Package[i].PackagePrice+"</td>";
+						html += "<td width='5%' style='text-align: left; font-size: 12px;padding-top: 5px; padding-bottom: 5px;'>" + reportJsonObj.Report.OtherCharges.Package[i].PackageQuantity+"</td>";
+						html += "<td width='12%' style='text-align: left; font-size: 12px;padding-top: 5px; padding-bottom: 5px;'>" + reportJsonObj.Report.OtherCharges.Package[i].PackageTotal+"</td></tr>";
+						lastPackageState = reportJsonObj.Report.OtherCharges.Package[i].PackageState;
+					}
+				} else if(reportJsonObj.Report.OtherCharges.Package != undefined){
+					isAdded = true;
+					html += "<tr>";
+					if( i == 0 ) {
+						html += "<td colspan='6' bgcolor='#C4BFBF' style='color: #2ea4d1;'>"+reportJsonObj.Report.OtherCharges.Package.PackageState+" Charges</td>";
+					} else if( lastPackageState != reportJsonObj.Report.OtherCharges.Package.PackageState ) {
+						html += "<td colspan='6' bgcolor='#C4BFBF' style='color: #2ea4d1;'> " + reportJsonObj.Report.OtherCharges.Package.PackageState + " Charges</td>";
+					}
+					html += "</tr>";
+					html += "<tr class='printHeader2' width='10%' style='text-align: center;'><td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'><img width='85' src='" + reportJsonObj.Report.OtherCharges.Package.PackageIcon + "' name='img'/></td>";
+					html += "<td width='15%' style='text-align: left; font-size: 12px;padding-top: 5px; padding-bottom: 5px;'><h4>" + reportJsonObj.Report.OtherCharges.Package.PackageName+"</h4></td>";
+					html += "<td width='45%' style='text-align: left; font-size: 12px;padding-top: 5px; padding-bottom: 5px;'>" + reportJsonObj.Report.OtherCharges.Package.PackageDescription+"</td>";
+					html += "<td width='13%' style='text-align: left; font-size: 12px;padding-top: 5px; padding-bottom: 5px;'>" + reportJsonObj.Report.OtherCharges.Package.PackagePrice+"</td>";
+					html += "<td width='5%' style='text-align: left; font-size: 12px;padding-top: 5px; padding-bottom: 5px;'>" + reportJsonObj.Report.OtherCharges.Package.PackageQuantity+"</td>";
+					html += "<td width='12%' style='text-align: left; font-size: 12px;padding-top: 5px; padding-bottom: 5px;'>" + reportJsonObj.Report.OtherCharges.Package.PackageTotal+"</td></tr>";
+				}
+			}
+			html += "</table>";
+			
+			if(reportJsonObj.Report.OtherCharges != undefined && reportJsonObj.Report.OtherCharges.OtherCharge != undefined 
+					&& reportJsonObj.Report.OtherCharges.OtherCharge.length > 0 ) {
+				html += '<div class="hdr4"><table style="width: 100%;"><tr class="printHeader2"><td width="85%" align="right" style="padding-right: 15px;"><h2><span style="color: #ffffff;">Total</span></h2>'+
+						'</td><td align="left"><h2><span style="color: #ffffff;">reportJsonObj.Report.OtherCharges.TotalOtherCharge</span></h2></td></tr></table></div>';
+			}
+				
+			if(isAdded > 0 )
+				$('#othPackageTbl').html(html);
+			else
+				$('#othPackageTbl').hide();
+			
+			html = "";
+			
+			if(reportJsonObj.Report.ShowContract == 1) {
+				html = '<div class="body1hd" style="background-color: #C4BFBF; color: #00000;"><h1 align="center" style="text-align: center;">TERMS AND AGREEMENT/CONTRACT</h1></div>';
+				html += '<p>'+reportJsonObj.Report.Contract+'</p>';
+				$('#contractDiv').html(html);
+			} else {
+				$('#contractDiv').hide();
+			}
+			
+			var html = "";
+			html = '<tr><td width="40%" style="vertical-align:top"><div style="height:125px;"><div class="inner" id="inner"><br><br><br><br><span class="docusignTag" id="docusignTag">Sign Here</span></div><div id="sig1" class="sigStyle"></div>';
+			html += '<input id="signatureJSON1" type="hidden"></input></div>';
+			html += '<p style="width:330px; hieght:10px;font-size: 12px;" align="center">Client Signature</p>';
+			html += '<div align="left" sytle="font-size: 12px;">' +reportJsonObj.Report.ClientAddress2Label+'<br />'+reportJsonObj.Report.ClientWorkStreet+'<br />'+reportJsonObj.Report.ClientWorkCity;
+			if( reportJsonObj.Report.ClientWorkState != undefined && reportJsonObj.Report.ClientWorkState != '')
+				html += ', ' + reportJsonObj.Report.ClientWorkState;
+			if( reportJsonObj.Report.ClientWorkZip != undefined && reportJsonObj.Report.ClientWorkZip != '')
+				html +=  ', ' + reportJsonObj.Report.ClientWorkZip;
+			html += '</div></td><td width="25%" style="font-size: 12px;"><p align="center">Date Time</p><p align="center">'+reportJsonObj.Report.DateTime+'</p></td><td width="35%" style="">';
+			
+			if( reportJsonObj.Report.ShowPaymentSchedule == 1 ) {
+				html += '<p align="center">Total Amount</p><p align="center">'+reportJsonObj.Report.Total+'</p><p align="center">Deposit Amount</p><input id="paiedAmountRO" type="hidden" value="'+reportJsonObj.Report.DepositAmount+'"/>';
+				html += '<p align="center"><input type="text" style="width: 150px;" id="paiedAmount" value="'+reportJsonObj.Report.DepositAmount+'" /></p></td></tr>';
+			} else {
+				html += '<p align="center">Total Amount</p><p align="center">'+reportJsonObj.Report.Total+'</p><p align="center">Deposit Amount</p><input id="paiedAmountRO" type="hidden" value=""/>';
+				html += '<p align="center"><input type="text" style="width: 150px;" id="paiedAmount" /></p></td></tr>';
+			}
+			
+			$("#signatureTable").html(html);
+			
+			html = "";
+			
+			if( reportJsonObj.Report.ShowComments == 1 ) {
+				html += "<tr style='border: 1px solid black; border-collapse: collapse;'><th bgcolor='#2EA4D1' style='color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;'><b>LOCATION</b></th><th bgcolor='#2EA4D1' style='color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;'><b>SYSTEM</b></th><th bgcolor='#2EA4D1' style='color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;'><b>PACKAGE</b></th><th bgcolor='#2EA4D1' style='color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;'><b>DATE</b></th><th bgcolor='#2EA4D1' style='color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;'><b>COMMENT</b></th></tr>";
+				if(isArray(reportJsonObj.Report.Comments.Comment)) 
+				{
+					for( var i = 0 ; reportJsonObj.Report.Comments.Comment.length > i ; ++i ) {
+						html += "<tr class='printHeader2' width='10%' style='text-align: center;'><td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'>"+reportJsonObj.Report.Comments.Comment[i].RoomGroupName+"</td>";
+						html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'>"+reportJsonObj.Report.Comments.Comment[i].PackageGroupName+"</td>";
+						html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'>"+reportJsonObj.Report.Comments.Comment[i].PackageName+"</td>";
+						html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'>"+reportJsonObj.Report.Comments.Comment[i].CommentDate+"</td>";
+						html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'>"+reportJsonObj.Report.Comments.Comment[i].CommentText+"</td>";
+						html += "</tr>";
+					}
+                    $("#commentsBody").html(html);
+                    $("#commentsBody").show();
+				} else if(reportJsonObj.Report.Comments.Comment != undefined) {
+					html += "<tr class='printHeader2' width='10%' style='text-align: center;'>";
+					html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'>"+reportJsonObj.Report.Comments.Comment.RoomGroupName+"</td>";
+					html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'>"+reportJsonObj.Report.Comments.Comment.PackageGroupName+"</td>";
+					html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'>"+reportJsonObj.Report.Comments.Comment.PackageName+"</td>";
+					html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'>"+reportJsonObj.Report.Comments.Comment.CommentDate+"</td>";
+					html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'>"+reportJsonObj.Report.Comments.Comment.CommentText+"</td>";
+					html += "</tr>";
+                    $("#commentsBody").html(html);
+                    $("#commentsBody").show();
+				}
+				else{
+                    $("#commentsBody").html(html);
+                    $("#commentsBody").hide();
+                }
+			} else {
+				$("#commentsBody").hide();
+			}
+			
+			if( reportJsonObj.Report.ShowPaymentSchedule == 1 ) {
+                if(reportJsonObj.Report.PagebreakForPaymentSchedule == 1){
+                    var element = document.getElementById("paymentScheduleDiv");
+                       element.classList.add("pagebreak");
+                }else{
+                    
+                }
+				html = '<div style="text-align: right; font-size: 12px; width:95%;"><table style="width: 100%;" cellpadding="0">';
+				if(isArray(reportJsonObj.Report.PaymentSchedules.PaymentSchedule)) 
+				{
+					for( var i = 0 ; reportJsonObj.Report.PaymentSchedules.PaymentSchedule.length > i ; ++i ) {
+						html += "<tr><td width='60%' align='right' style='padding-right: 15px;'><div style=\"height:40px; width:500px; padding: 10px; background-color: #747474; color: #67c9f6; display: table-cell; vertical-align: middle;\"><b>"+reportJsonObj.Report.PaymentSchedules.PaymentSchedule[i].PaymentScheduleName.toUpperCase()+"</b></td>";
+						html += "<td width='20%' align='left'><div style=\"height:40px; width: 400px; padding: 10px; background-color: #747474; color: #67c9f6; display: table-cell; vertical-align: middle;\"><b>"+reportJsonObj.Report.PaymentSchedules.PaymentSchedule[i].PaymentScheduleValue+"</b></td>";
+						html += "<td width='20%' align='left'><div style=\"height:40px; width: 400px; padding: 10px; background-color: #747474; color: #fbffc3; display: table-cell; vertical-align: middle;\"><b>"+reportJsonObj.Report.PaymentSchedules.PaymentSchedule[i].PaymentScheduleCalVal+"</b></td>";
+						html += "</tr>";
+					}
+				} else if(reportJsonObj.Report.PaymentSchedules.PaymentSchedule != undefined) {
+					html += "<tr><td width='60%' align='right' style='padding-right: 15px;'><div style=\"height:40px; width:500px; padding: 10px; background-color: #747474; color: #67c9f6; display: table-cell; vertical-align: middle;\"><b>"+reportJsonObj.Report.PaymentSchedules.PaymentSchedule.PaymentScheduleName.toUpperCase()+"</b></td>";
+					html += "<td width='20%' align='left'><div style=\"height:40px; width: 400px; padding: 10px; background-color: #747474; color: #67c9f6; display: table-cell; vertical-align: middle;\"><b>"+reportJsonObj.Report.PaymentSchedules.PaymentSchedule.PaymentScheduleValue+"</b></td>";
+					html += "<td width='20%' align='left'><div style=\"height:40px; width: 400px; padding: 10px; background-color: #747474; color: #fbffc3; display: table-cell; vertical-align: middle;\"><b>"+reportJsonObj.Report.PaymentSchedules.PaymentSchedule.PaymentScheduleCalVal+"</b></td>";
+					html += "</tr>";
+				}
+				
+				$("#paymentScheduleBody").html(html);
+				$("#paymentScheduleBody").show();
+				$("#paymentScheduleHeader").show();
+			} else {
+				$("#paymentScheduleBody").hide();
+				$("#paymentScheduleHeader").hide();
+			}
+			
+			
+			$('#sig1').signature({syncField: '#signatureJSON1'});
+			$('#paiedAmount').on('input', function() {
+				$('#paiedAmountRO').val($('#paiedAmount').val()); 
+			}); 
+			
+			
+		});
+
+		function isArray(what) {
+		    return Object.prototype.toString.call(what) === '[object Array]';
+		}
+		
+		function populatePackages(room, showComments) {
+			var html = "";
+			if( room.Packages.Package != undefined ) {
+				if(isArray(room.Packages.Package)) 
+				{
+					var lastPackageGroupName = "";
+					for(var j = 0; room.Packages.Package.length > j; ++j ) {
+						var package1 = room.Packages.Package[j];
+						if( j == 0 ) {
+							html += "<tr><td colspan='1' bgcolor='#C4BFBF' style='color: #000000;'>" + room.RoomName.toUpperCase() + "</td><td bgcolor='#C4BFBF' style='text-align: left;color: #000000;' colspan='4'>"+ package1.PackageGroupName.toUpperCase() + "</td></tr>";
+						} else if( lastPackageGroupName != package1.PackageGroupName ){
+							html += "<tr><td colspan='1' style='margin-left: 2px;'></td><td bgcolor='#C4BFBF' style='text-align: left;color: #000000;' colspan='4'>" + package1.PackageGroupName.toUpperCase() + "</td></tr>";
+						}
+						html += "<tr class='printHeader2' width='15%' style='text-align: center;'><td width='15%' style='text-align: left;padding-top: 5px; padding-bottom: 5px;'><img width='70' src='" + package1.PackageIcon + "' name='img'/><br /><h4>" + package1.PackageName + "</h4></td>";
+						/* html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'></td>"; */
+						html += "<td width='55%' style='text-align: left; font-size: 11px;padding-top: 5px; padding-bottom: 5px;'>";
+						if( package1.PackageComment && showComments == 1)
+							html += "	<div style='border-bottom: 1px solid #000000;'>";
+						else 
+							html += "	<div style=''>";
+						if( package1.PackageDescription )
+							html += package1.PackageDescription.replace(/\n/g, "<br/>");
+						html += "	</div>";
+						if( package1.PackageComment && showComments == 1)
+							html += "	<div><b style='color: #67c9f6;'>Comment : </b>" + package1.PackageComment + " </div>";
+						html += "</td>";
+						html += "<td width='13%' style='text-align: center;padding-top: 5px; padding-bottom: 5px;'>" + package1.PackagePrice + "</td>";
+						html += "<td width='5%' style='text-align: center;padding-top: 5px; padding-bottom: 5px;'>" + package1.PackageQuantity + "</td>";
+						html += "<td width='12%' style='text-align: center;padding-top: 5px; padding-bottom: 5px;'>" + package1.PackageTotal + "</td></tr>";
+						lastPackageGroupName = package1.PackageGroupName;
+					}
+				} else {
+					var package1 = room.Packages.Package;
+					html += "<tr><td colspan='1' bgcolor='#C4BFBF' style='color: #000000;'>" + room.RoomName.toUpperCase() + "</td><td bgcolor='#C4BFBF' style='text-align: left;color: #000000;' colspan='4'>"+ package1.PackageGroupName.toUpperCase() + "</td></tr>";
+					html += "<tr class='printHeader2' width='15%' style='text-align: center;'><td width='15%' style='text-align: left;padding-top: 5px; padding-bottom: 5px;'><img width='70' src='" + package1.PackageIcon + "' name='img'/><br /><h4>" + package1.PackageName + "</h4></td>";
+					/* html += "<td style='vertical-align:middle;padding-top: 5px; padding-bottom: 5px;'><h4>" + package1.PackageName + "</h4><br /></td>"; */
+					html += "<td width='55%' style='text-align: left; font-size: 11px;padding-top: 5px; padding-bottom: 5px;'>";
+					if( package1.PackageComment && showComments == 1)
+						html += "	<div style='border-bottom: 1px solid #000000;'>";
+					else 
+						html += "	<div style=''>";
+					if( package1.PackageDescription )
+						html += package1.PackageDescription.replace(/\n/g, "<br/>");
+					html += "	</div>";
+					if( package1.PackageComment && showComments == 1)
+						html += "	<div><b style='color: #67c9f6;'>Comment : </b>" + package1.PackageComment + " </div>";
+					html += "</td>";
+					html += "<td width='13%' style='text-align: center;padding-top: 5px; padding-bottom: 5px;'>" + package1.PackagePrice + "</td>";
+					html += "<td width='5%' style='text-align: center;padding-top: 5px; padding-bottom: 5px;'>" + package1.PackageQuantity + "</td>";
+					html += "<td width='12%' style='text-align: center;padding-top: 5px; padding-bottom: 5px;'>" + package1.PackageTotal + "</td></tr>";
+				}
+			}
+			return html;
+		}
+        function hasSignature(){
+            return $('#sig1').signature('isEmpty');
+        }
+        function clearSignature(){
+            $('#sig1').signature('clear');
+        }
+	</script>
+	</head>
+	<body style="font-size: 10px;" class="portraitPage" bgcolor="#FFFFFF">
+<!--		<div id="header1" style="background: url(#ApplicationDataPath#/simple_cover.png) no-repeat center; height: 950px;">-->
+<!--		</div>-->
+        <!-- <div id="header1" class="header1"> -->
+        <!-- </div> -->
+        <div id="header1" class="header1">
+        </div>
+<!--		<div id="header1" style="background: url(#ApplicationDataPath#/simple_cover.png) no-repeat center; height: 950px; background-color : #dfdfdf;">-->
+<!--		</div>-->
+		<div style="margin-top: 20px; width: 99%; padding: 5px;" align="center">
+			<div class="printHeader2">
+				<div id="header2" style="width: 30%; float: left; padding-top: 10px;">
+				</div>
+				<div class="frame" id="logoid">
+					<span class="helper"></span>
+				</div>
+				<div id="header3" style="width: 27%; float: right; padding-top: 10px;">
+				</div>
+				<div style="clear: both;"></div>
+				<table width="100%" border="0" cellpadding="10" bgcolor="#2EA4D1" style="margin-top: 0px;">
+					<tr>
+						<td width="25%" bgcolor="#2EA4D1" style="color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;"><b>NAME/INFO</b></td>
+						<td width="45%" bgcolor="#2EA4D1" style="text-align: center; color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;"><b>DESCRIPTION</b></td>
+						<td width="13%" bgcolor="#2EA4D1" style="text-align: center; color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;"><b>UNIT PRICE</b></td>
+						<td width="5%" bgcolor="#2EA4D1" style="color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;"><b>QTY</b></td>
+						<td width="12%" bgcolor="#2EA4D1" style="text-align: center; color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;"><b>PRICE</b></td>
+					</tr>
+				</table>
+				<table id="bodyTable" width="100%" border="0"><!-- style="border-collapse: collapse;" -->
+					
+				</table>
+			</div>
+			<div class="hdr4 pagebreak" id="pricingDiv" style="width: 100%; text-align: center; margin-top: 15px; padding-top: 10px;" align="center">
+			</div>
+			<div style="font-size: 14px; padding-top: 10px;" align="center" id="othPackageTbl">
+			</div>
+			<div class="body1" id="contractDiv" align="left" style="text-align: left; font-size: 12px;">
+			</div>
+            <div id="paymentScheduleDiv">
+				<div id="paymentScheduleHeader" class="body1hd" style="background-color: #C4BFBF; color: #00000;"><h1 align="center" style="text-align: center;">PAYMENT SCHEDULE</h1></div>
+				<div class="hdr4" style="font-size: 14px; padding: 5px; padding-left: 10px;" align="left" id="paymentScheduleBody">
+				</div>
+			</div>
+			<div>
+				<table style="width: 100%;" id="signatureTable">
+				</table>
+			</div>
+			<div class="">
+				<table style='border: 1px; width: 100%' id="commentsBody">
+				</table>
+			</div>
+		</div>
+		<div id="floorPlans"  class="pagebreak">
+        </div>
+        <div id="cameraImages"  class="pagebreak">
+        </div>
+	</body>
+</html>

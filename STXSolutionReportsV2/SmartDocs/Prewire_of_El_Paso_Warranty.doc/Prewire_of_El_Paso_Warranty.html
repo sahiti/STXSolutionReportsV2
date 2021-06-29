@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Form Smart Home And Home Theater Information</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--link rel="stylesheet" type="text/css" href="common.css" /-->
+ <link rel="stylesheet" type="text/css" href="#ApplicationDataPath#/common.css" />
+  <link rel="stylesheet" type="text/css" href="#ApplicationDataPath#/print.css" />
+	<script src="#ApplicationDataPath#/jquery.min.js"></script>
+	<link rel="stylesheet" href="#ApplicationDataPath#/jquery-ui.css"/>
+	<script src="#ApplicationDataPath#/jquery-ui.js"></script>
+	<link type="text/css" href="#ApplicationDataPath#/jquery.signature.css" rel="stylesheet">
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.signature.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/excanvas.js"></script>
+	<!--script type="text/javascript" src="data.js"></script-->
+	<script>
+		var reportJson = #REPORT_JSON#;
+		$(document).ready(function(){
+			$(".company_name_div").html(reportJson.Report.CompanyName);
+			$("#logo_image").attr("src", reportJson.Report.Logo);
+			$("#company_name").html(reportJson.Report.CompanyName);
+			$("#companyName1").html(reportJson.Report.CompanyName);
+			$("#companyEmail1").html(reportJson.Report.CompanyEmail);
+			$("#companyWebsite1").html(reportJson.Report.CompanyEmail);
+			changeAllElements();
+			
+		})
+		
+		function changeAllElements()
+		{
+			$("input[type=text]").each(function(){
+				var id = $(this).prop('id');
+				var id_RO = id + "_RO";
+				//console.log($(this).val());
+				$("#" + id_RO).val($(this).val());
+			})
+			$("input[type=text]").each(function(){
+				$(this).on('input', function(){
+					var id = $(this).prop('id');
+					var id_RO = id + "_RO";
+					//console.log($(this).val());
+					$("#" + id_RO).val($(this).val());
+				});
+			})
+		}
+	</script>
+</head>
+<body>
+	<div id = "page_7">
+		<div class = "header">
+			<div id="logo_container">
+				<img src="" 
+						class="logo_image" id="logo_image" alt="Image Not Found" />
+			</div>
+			<h3 class = "text_center">
+				Warranty and Installation Policies
+			</h3>
+		</div>
+		<div class = "row">
+			<h5 class = "no_margin p5 text_center">
+				EQUIPMENT AND WIRING WARRANTY
+			</h5>
+		</div>
+		<div class = "row text_justify">
+			In accordance with the sale and installation between 
+			<div class = "company_name_div col"></div>
+			(hereinafter referred to as 
+			" <div class = "company_name_div col"></div> " or SELLER) and Buyer, 
+			which this supplements, the Schedule of Protection will include the following 
+			labor and materials. All provisions of the contract govern the installation and
+			nothing contained herein is intended to modify or terminate the contract or any 
+			provision contained therein.
+		</div>
+		<h4 class = "text_center no_margin p10">LIMITED WARRANTY</h4>
+		<div class = "row text_justify">
+			In the event that any part of the Video, Audio, Camera, Digital Components, 
+			Speakers, Receivers, Accessories, etc. equipment or writing becomes defective,
+			or in the event that any repairs are required, 
+			<div class = "company_name_div col"></div> agrees 
+			to make all repairs and replacements of parts without costs to the Buyer for a 
+			period on ninety (90) days from the date of installation. 
+			<div class = "company_name_div col"></div>
+			reserves the option to either replace or repair the equipment, and reserves the right 
+			to substitute materials of equal quality at the time of replacement, or to use 
+			reconditioned parts in fulfilment of this warranty. 
+			<div class = "company_name_div col"></div>
+			warranty does not include batteries, reprogramming, damage by lighting, 
+			electrical surge, or wire breaks. 
+			<div class = "company_name_div col"></div> is not the manufacturer 
+			of the equipment and other than 
+			<div class = "company_name_div col"></div> limited warranty Buyer 
+			agrees to look exclusively to the manufacturer of the equipment for repairs under
+			its warranty coverage if any.
+		</div>
+		<div class = "row text_justify">
+			Except as set forth in this agreement,
+			<div class = "company_name_div col"></div> makes no express 
+			warranties a to any matter whatsoever, including, without limitation, the 
+			condition of the equipment, its merchantability, or its fitness for any 
+			particular purpose. 
+			<div class = "company_name_div col"></div>does not represent nor warrant that 
+			the security equipment may not be compromised or circumvented, or that the system 
+			will prevent any loss by burglary, hold up, fire or otherwise; or that the system 
+			will in all cases provide the protection for which it is installed. 
+			<div class = "company_name_div col"></div>
+			expressly disclaims any limited warranties, including implied warranties of
+			merchantability or fitness for a particular purpose.
+		</div>
+		<div class = "row text_justify">
+			The warranty does not cover any damage to material or equipment caused by accident, 
+			misuse, attempted or unauthorized repair service, modification, or improper
+			installation by anyone other than <div class = "company_name_div col"></div>. 
+			<div class = "company_name_div col"></div> shall not be liable for consequential damages. 
+			Buyer acknowledges that affirmation of fact or promise made by 
+			<div class = "company_name_div col"></div> shall not be deemed to create an express warranty 
+			unless included in this contract in writing; that Buyer is not relying on 
+			<div class = "company_name_div col"></div> skill or judgment in selecting or furnishing a
+			system suitable for any particular purpose and there are no warranties which 
+			extend beyond those on the face of this agreement, and that 
+			<div class = "company_name_div col"></div> 
+			has offered additional and more sophisticated equipment 
+			for an additional charge which Buyer has declined. Buyer exclusive remedy for
+			<div class = "company_name_div col"></div> 
+			breach of this contract or negligence to any degree under
+			this contract is to require 
+			<div class = "company_name_div col"></div> to repair or replace, at 
+			<div class = "company_name_div col"></div> option, any equipment which is non-operational. 
+			Some states do not allow the exclusion or limitation of consequential or 
+			incidental damages, or a limitation on the duration of implied warranties, 
+			so the above limitations or exclusions may not apply to you. The warranty
+			gives you specific legal rights and you may also have other rights which may
+			vary from state to state. If required by law, 
+			<div class = "company_name_div col"></div> will 
+			procure all permits required by local law and will provide certificate of
+			workman compensation prior starting work.
+		</div>
+		<h4 class = "text_center no_margin p10">ATTIC AND POSTWIRE WORK DISCLAIMER</h4>
+		<div class = "row text_justify">
+			<div class = "company_name_div col"></div> 
+			has been contracted by you, the homeowner to run wires
+			through the attic area and or post wired inside or outside of the house. 
+			<div class = "company_name_div col"></div> 
+			will make every effort to run wire requested through the 
+			attic and fish down through designate wall locations or through the interior or
+			exterior post wiring in an attempt to conceal wire from being exposed. Because we 
+			have no specific layout of home or full knowledge of the quality and condition of 
+			the attic beams and rafters, stucco or brick; ceiling and or attic floor and 
+			framing supports we cannot be held responsible or liable for damage; cracks or 
+			holes made in the effort to run wires through attic and walls. We are not 
+			responsible for any repair of sheetrock, texturing or painting of affected area
+			resulting from, arising out of, or occurring in connection with the design and 
+			execution of the work provided.
+		</div>
+		<!-- <div class = "row text_justify"> -->
+			<!-- Be assured that our services are in accordance and meet all applicable industry  -->
+			<!-- standards. Safety is given the utmost attention at all times.  -->
+			<!-- <div class = "company_name_div_ col"></div>  -->
+			<!-- acknowledges that it shall be responsible for providing -->
+			<!-- its workmen with appropriate tools and equipment.  -->
+			<!-- <div class = "company_name_div1 col"></div> shall -->
+			<!-- clean-up its debris, excess material and equipment so as to maintain safe and  -->
+			<!-- accessible conditions at the homeowners premise.  -->
+			<!-- <div class = "company_name_div1 col"></div>  -->
+			<!-- technician will make every effort to anticipate difficulties and or issues with -->
+			<!-- running the cable; however each location is unique with differences that sometimes  -->
+			<!-- cannot be foreseen.  -->
+			<!-- <div class = "company_name_div1 col"></div> will notify customer of any obvious  -->
+			<!-- issues immediately before work begins. -->
+		<!-- </div> -->
+		<h4 class = "text_center no_margin p10">
+			SURVEILLANCE CAMERA INSTALLATION AND PROGRAMMING
+		</h4>
+		<div class = "row text_justify">
+			Security cameras are utilized to enhance the security camera, protection and safety 
+			of your home or business. Reasonable privacy expectations will be applied in 
+			positioning each camera view. Systems are set up with customer’s current internet
+			provider; any change with provider will require a technician to be dispatched to 
+			reconfigure your cameras; this is not covered under warranty.
+		</div>
+		<div class = "row pt10">
+			<div class = "col">
+				INSTALLATION DATE: 
+				<input type = "text" name = "installation_date" id = "installation_date" />
+				<input id="installation_date_RO" type="hidden"/>				
+			</div>
+			&nbsp;
+			<div class = "col" id = "job_address_div">
+				JOB ADDRESS: 
+				<input type = "text" name = "job_address_2" id = "job_address_2" />
+				<input id="job_address_2_RO" type="hidden"/>
+			</div>
+		</div>
+		<div class = "row">
+			<br>
+			INSTALLATION OF MATERIAL, WIRING & EQUIPMENT:
+			<br>
+			<input type = "text" name = "wiring1" id = "wiring1" />
+			<input id="wiring1_RO" type="hidden"/>
+			<input type = "text" name = "wiring2" id = "wiring2" />
+			<input id="wiring2_RO" type="hidden"/>
+		</div>
+	</div>
+	<div id = "page_8" class = "text_justify">
+	<div class="row text_left">
+	<div id="company_name" class = "pb5" ></div>
+	</div>
+		<div class = "row text_center">
+			<div class = "col float_left text_left">
+				<div class = "pb5">By: </div>
+				<input type = "text" name = "by" id = "by"/>
+				<input id="by_RO" type="hidden"/>
+			</div>
+			<div class = "col text_left">
+				<div class = "pb5">BUYER: </div>
+				<input type = "text" name = "buyer" id = "buyer"/>
+				<input id="buyer_RO" type="hidden"/>
+			</div>
+			<div class = "col pb5 float_right">
+				<br>
+				<input type = "text" name = "no_name" id = "no_name" />
+				<input id="no_name_RO" type="hidden"/>
+			</div>
+		</div><br>
+		<table width="800px">
+			<tr>
+				<td width="250"> <div id="companyName1" class = "pb5" ></div> <td>
+				<td width="275"> <div id="companyEmail1" class = "pb5" ></div> <td>
+				<td width="275"> <div id="companyWebsite1" class = "pb5" ></div> <td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

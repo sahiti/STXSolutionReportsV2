@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Guard Service Agreement</title>
+	<link href="#ApplicationDataPath#/common.css" rel="stylesheet"/>
+	<link href="#ApplicationDataPath#/guard_services_agreement.css" rel="stylesheet"/>
+	<script src="#ApplicationDataPath#/jquery.min.js"></script>
+	<link rel="stylesheet" href="#ApplicationDataPath#/jquery-ui.css"/>
+	<script src="#ApplicationDataPath#/jquery-ui.js"></script>
+	<link type="text/css" href="#ApplicationDataPath#/jquery.signature.css" rel="stylesheet">
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.signature.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/excanvas.js"></script>
+	<style>
+		.signature_pad_heading{
+			width : 280px;
+			text-align : center;
+		}
+		#subscriber_signature_field{
+						width:280px;
+						/*padding:2px;*/
+						height:120px;
+						border: none;
+					    border-bottom:solid black;
+						border-width:1px;
+						z-index:3;
+						position:absolute;
+						min-width:280px;
+						left:0px;
+                        background-color :#FFFF00;
+						/*float:left;*/
+					}
+			#company_signature_div{
+				/*width:auto;
+				display:inline;
+				position:absolute;*/
+				right:0px;
+			}
+			#company_signature_field{
+				width:280px;
+				/*padding:2px;*/
+				height:120px;
+				border: none;
+				border-bottom:solid black;
+				border-width:1px;
+				z-index:3;
+				position:absolute;
+				min-width:280px;
+				left:0px;
+				/*float:left;*/
+			}
+			.outer{
+				position:absolute;
+				display:inline-block;
+				height:122px;
+				width:280px;
+				min-width:280px;
+				border-bottom:solid black;
+				border-width:1px;
+			}
+			.center{
+				height:120px;
+				width:280px;
+				min-width:280px;
+			   /* border-bottom:solid black;
+				border-width:1px;*/
+				position:absolute;
+			}
+			.center p {
+			   width:280px;
+			   height:120px;
+				position:relative;
+			   line-height: 1.5;
+			   display: inline-block;
+			   vertical-align: top;
+			   text-align:center;
+			   color:#e5e7e9;
+			   z-index:-1;
+			   transform: translateY(-40px);
+			}
+			div.a{
+				width:280px;
+				vertical-align: bottom;
+			}
+    .requiredFields{
+        background-color:#ffa500;
+    }
+    .optionalFields{
+        background-color:#eaeaff;
+    }
+    .requiredFields_div{
+        background-color:#ffa500;
+    }
+    @media print{
+        .requiredFields{
+            background-color:#eaeaff;
+        }
+        .requiredFields_div{
+            background-color:#ffffff;
+        }
+        #subscriber_signature_field{
+            background-color:#ffffff;
+        }
+        center.p{
+            color:#ffffff;
+        }
+        
+    }
+	</style>
+	<script>
+var reportJson = #REPORT_JSON#;
+
+function toMonth(month)
+{
+	if(month < 10)
+	{
+		return "0"+month;
+	}
+	else
+		return month;
+}
+function hasSignature(){
+    return $('#subscriber_signature_field').signature('isEmpty');
+}
+function clearSignature(){
+    $('#subscriber_signature_field').signature('clear');
+    $('#company_signature_field').signature('clear');
+}
+function checkThis(rawData)
+{
+	var cls = document.getElementsByClassName("agreement_type_checkbox");
+		for(var i = 0; i < cls.length; i++) {
+			if(cls[i].hasAttribute("checked")){
+			cls[i].removeAttribute("checked");
+			}
+		}
+		$(".agreement_type_checkbox").prop("checked",false);
+		$(rawData).prop("checked",true);
+		if(rawData.checked == true)
+		 $(document.getElementById(rawData.id)).attr("checked", "checked");
+}
+function setProv()
+{
+	var abbr = ["AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"];
+	var names = ["Alberta","British Columbia","Manitoba","New Brunswick","Newfoundland and Labrador","Nova Scotia","Northwest Territories","Nunavut","Ontario","Prince Edward Island","Quebec","Saskatchewan","Yukon"];
+	
+	var state = reportJson.Report.ClientAddress1State;
+	if(state.length == 2)
+	{
+		$("#prov_field").val(state.toUpperCase());
+	}
+	else if(state.length > 2)
+	{
+		for(var i = 0; i < names.length; i++)
+		{
+
+			if(state.toLowerCase() == names[i].toLowerCase())
+			{
+				$("#prov_field").val(abbr[i]);
+			}
+		}
+	}
+}
+function changeElement(param1, param2){
+	$(param1).on("input", function() {
+		$(param2).val($(param1).val()); 
+	});
+}
+$(document).ready(function(){
+	var date = new Date();
+	//setProv();
+	$("#agreement_date_and_year_field").datepicker();
+	$("#agreement_date_and_year_field").on("change",function(){
+			var selected = $(this).val();
+			$('#agreement_date_and_year_field_RO').val(selected);
+		});
+	$("#agreement_date_and_year_field").val(reportJson.Report.Date);
+	$("#company_name_field").val(reportJson.Report.CompanyName);
+	$("#subscriber_name_field").val(reportJson.Report.ClientName);
+	$("#email_field").val(reportJson.Report.ClientEmail);
+	$("#city_field").val(reportJson.Report.ClientAddress1City);
+	$("#address_field").val(reportJson.Report.ClientAddress1Street);
+    $("#postal_code_field").val(reportJson.Report.ClientAddress1Zip);
+	$("#subscriber_signature_field").signature();
+	$('#subscriber_signature_field').signature({syncField: '#signatureJSON'});
+	$("#company_signature_field").signature();
+	$('#company_signature_field').signature({syncField: '#company_signature_field_RO'});
+	$("#prov_field").val(reportJson.Report.ClientAddress1State);
+                  var img = document.getElementById("logo_image");
+                  img.src = reportJson.Report.Logo;
+	changeElement('#agreement_date_and_year_field', '#agreement_date_and_year_field_RO');
+	changeElement('#company_name_field', '#company_name_field_RO');
+	changeElement('#subscriber_name_field', '#subscriber_name_field_RO');
+	changeElement('#prov_field', '#prov_field_RO');
+    changeElement('#station_code_field', '#station_code_field_RO');
+	changeElement('#address_field', '#address_field_RO');
+	changeElement('#city_field', '#city_field_RO');
+	changeElement('#postal_code_field', '#postal_code_field_RO');
+	changeElement('#email_field', '#email_field_RO');
+    var docusignTag = document.getElementById("centerP");
+    
+    if(reportJson.Report.DeviceOS != null && reportJson.Report.DeviceOS=="iOS"){
+        docusignTag.style.cssText = 'transform: translateY(50%) !important';
+    }else{
+        docusignTag.style.cssText = 'transform: translateY(-40px) !important';
+    }
+})
+function loadCompanyDetails(){ 	
+			var street = reportJson.Report.CompanyAddressStreet;
+			var city = "";
+				city = city + "" + reportJson.Report.CompanyAddressCity + ", " +reportJson.Report.CompanyAddressState +"";
+			var phone_field = "";
+			if(reportJson.Report.CompanyWorkPhone.length>0){
+				phone_field = phone_field + "Phone: " + reportJson.Report.CompanyWorkPhone + " ";
+			}
+			if(reportJson.Report.CompanyMobilePhone.length>0){
+				phone_field = phone_field + "Mob: "+reportJson.Report.CompanyMobilePhone +" ";
+			}
+			var email_field = reportJson.Report.CompanyEmail;
+			document.getElementById("CompanyName").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("companyName1").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("companyName2").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("companyName3").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("companyName4").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("companyName5").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("companyName6").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("companyName7").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("companyName8").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("companyName9").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("CompanyAdressStreet").innerHTML = street;
+			document.getElementById("CompanyAddressCity").innerHTML = city;
+			document.getElementById("CompanyPhoneField").innerHTML = phone_field;
+			document.getElementById("CompanyEmailId").innerHTML = email_field;
+            var docusignTag = document.getElementById("centerP");
+            
+            if(reportJson.Report.DeviceOS=="iOS"){
+                docusignTag.style.cssText = 'transform: translateY(50%) !important';
+            }else{
+                docusignTag.style.cssText = 'transform: translateY(-40px) !important';
+            }
+				
+}
+window.onload = loadCompanyDetails;
+	</script>
+</head>
+<body>
+<div class="navbar_div">
+	<div class="logo_space">
+		<img src="guard_services_agreement_logo.png" class="logo_image" id="logo_image" alt="Image Not Found" />
+	</div>
+	<div class="company_details_text">
+		<span class="text-center">
+			<h3 name="CompanyName" id="CompanyName">Trusted and Dedicated to Protecting Lives and Property</h3>
+			<span id="CompanyAdressStreet">Suite 412, 9707-110 St.</span>
+			<span id="CompanyAddressCity" >Edmonton, AB T5K 2L9</span>
+			<span id="CompanyPhoneField" >Phn: (780) 488-3263 Fax: (780) 665-0060</span>
+			<span id="CompanyEmailId" >ar@cmlsecurity.com</span>
+		</span>
+		<script>
+		
+		</script>
+	</div>
+</div>
+<div class="main_body_div">
+	<h3 class="text-center pageTitle">Guard Service Agreement</h3>
+	<div>
+		<div style="">
+			<span id="agreement_date_and_year_span">
+				<label>This agreement made the &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+				<span class="bordered">
+					<input type="text" class="text-center optionalFields" name="agreement_date_and_year_field" id="agreement_date_and_year_field" />
+					<input id="agreement_date_and_year_field_RO" type="hidden"/>
+				</span>
+				&nbsp;&nbsp;<i class="comment">between</i>&nbsp;&nbsp;
+			</span>
+		</div>
+		<div>
+			<span>
+				<label >&nbsp;Company:&nbsp;</label>
+				<span class="bordered">
+					<input type="text" name="company_name_field" id="company_name_field" class = "optionalFields" />
+					<input id="company_name_field_RO" type="hidden"/>
+				</span>
+				&nbsp;&nbsp;<i class="comment">(the "Company")</i>
+			</span>
+		</div>
+		<div>
+			<p class="text-center" style="margin-top:-1px;margin-bottom:-1px;font-size:11px"><i>and</i></p>
+			<span >
+				<label class="text-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Name:&nbsp;</label>
+				<span class="bordered">
+					<input type="text" name="subscriber_name_field" id="subscriber_name_field" class = "optionalFields" />
+					<input id="subscriber_name_field_RO" type="hidden"/>
+				</span>
+				&nbsp;<i class="comment">(the "Subscriber")</i>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label style="vertical-align:top">&nbsp;&nbsp;&nbsp;Address:&nbsp;</label>
+				<span class="bordered">
+					<textarea name="address_field" id="address_field" class = "optionalFields"></textarea>
+					<input id="address_field_RO" type="hidden"/>
+				</span>
+				&nbsp;&nbsp;&nbsp;<i style="vertical-align:top"  class="comment">(the "Premises")</i>
+			</span>
+		</div>
+		<div style="margin-left:24px">
+			<span>
+				<label>&nbsp;&nbsp;City:&nbsp;&nbsp;</label>
+				<span class="bordered">
+					<input type="text" name="city_field" id="city_field" class = "optionalFields" />
+					<input id="city_field_RO" type="hidden"/>
+				</span>
+			</span>
+			<span>
+				<label>State/Region:</label>
+				<span class="bordered">
+					<!--<select id="prov_field">
+						<option value=""></option>
+						<option value="AB">AB</option>
+						<option value="BC">BC</option>
+						<option value="MB">MB</option>
+						<option value="NB">NB</option>
+						<option value="NL">NL</option>
+						<option value="NS">NS</option>
+						<option value="NT">NT</option>
+						<option value="NU">NU</option>
+						<option value="ON">ON</option>
+						<option value="PE">PE</option>
+						<option value="QC">QC</option>
+						<option value="SK">SK</option>
+						<option value="YT">YT</option>
+					</select>-->
+					<input type="text" name="prov_field" id="prov_field" class = "optionalFields" />
+					<input id="prov_field_RO" type="hidden"/>
+				</span>
+			</span>
+			<span style="margin-left: 16px">
+				<label>Pc:</label>
+				<span class="bordered">
+					<input type="text" name="postal_code_field" id="postal_code_field" class = "optionalFields" />
+					<input id="postal_code_field_RO" type="hidden"/>
+				</span>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:&nbsp;</label>
+				<span class="bordered">
+					<input type="text" name="email_field" id="email_field" class = "optionalFields" />
+					<input id="email_field_RO" type="hidden"/>
+				</span>
+			</span>&nbsp;
+			<span>
+				<label>Station Code:</label>
+				<span class="bordered">
+					<input type="text" name="station_code_field" id="station_code_field" class="requiredFields"/>
+					<input id="station_code_field_RO" type="hidden"/>
+				</span>
+			</span>
+		</div>
+	</div>
+	<div><br>
+		<!-- <p class="text-justify">The <i>Company</i> is pleased to offer an affordable alternative to the high cost of police response in the Edmonton Area.</p> -->
+		<!-- <br> -->
+		<!-- <p class="text-justify"> -->
+			<!-- The Edmonton Police Service will not respond to a single zone tripped, but will respond to two or more zones tripped. -->
+			<!-- The Edmonton Police Service can levy a fee for responding to False Alarms and will not respond unless there is a valid -->
+			<!-- alarm Permit for the Premises. The fees currently are charged according to the square footage for commercial/business -->
+			<!-- premises starting at $150.00 and a set fee of $75.00 for residential premises. For additional information, contact the -->
+			<!-- Edmonton Police Service at (780)421-3410. -->
+		<!-- </p> -->
+		<!-- <br> -->
+		<p class="text-justify">
+			In order to provide a good option the <i id="companyName1">Company</i> is offering the following service options: For an additional monthly fee of
+			$6.00, the <i id="companyName2">Company</i> will have a Guard dispatched to the Premises should an intrusion alarm be received. If the
+			responding guard finds an actual intrusion has occurred, the police would then be dispatched to the Premises. This fee
+			covers the cost of two (2) guard dispatches within a twelve (12) month period.
+		</p>
+		
+	</div>
+	<div class="requiredFields_div" >
+		<div style="padding-left:30px">
+			<div>
+				<p class="display-inline-block text-justify">
+					<input type="checkbox" class="agreement_type_checkbox" onclick="checkThis(this)" id="agreement_type_checkbox1"/>
+					I request and authorize the <i id="companyName3">Company</i> to dispatch a Guard in response to receiving any intrusion alarms.</p>
+			</div>
+			<h4 class="text-center or-text"><i>or</i></h4>
+			<div>
+				<p class="display-inline-block text-justify">
+					<input type="checkbox" class="agreement_type_checkbox" onclick="checkThis(this)" id="agreement_type_checkbox2"/>
+					I request and authorize the <i id="companyName4">Company</i> to dispatch a Guard in response to receiving a single zone intrusion
+					alarm. Should multiple zone intrusion alarms be received, the <i id="companyName5">Company</i> will attempt to dispatch the Police
+					Service, provided the Subscriber has a valid Alarm Permit Number on File with the <i id="companyName6">Company</i>.
+				</p>
+			</div>
+			<h4 class="text-center or-text"><i>or</i></h4>
+			<div>
+				<p class="display-inline-block text-justify">
+					<input type="checkbox" class="agreement_type_checkbox" onclick="checkThis(this)" id="agreement_type_checkbox3"/>
+					I request and authorize the <i id="companyName7">Company</i> to dispatch a Key Holder to verify single zone alarms. The <i id="companyName8">Company</i>
+					would dispatch a Guard in response to receiving any multiple zone intrusion alarms or when no Key Holders are
+					available.
+				</p>
+			</div>
+			<h4 class="text-center or-text"><i>or</i></h4>
+		</div>
+		<div>
+			<p class="display-inline-block text-justify">
+				<input type="checkbox" class="agreement_type_checkbox" onclick="checkThis(this)" id="agreement_type_checkbox4"/>
+				For an additional monthly fee of $4.00, the <i id="companyName9">Company</i> will have a Guard dispatched to the Premises should no other
+				keyholders be availible. This fee covers the cost of one (1) guard dispatch within a twelve (12) month period.
+			</p>
+		</div>
+		
+		<p class="text-justify"> 
+			Guard dispatches in excess within a twelve (12) month period are invoiced at $45.00 per occurrence - subject
+			to change without notice.
+		</p>
+	</div>
+	<div class="text-center">
+		<br>
+		<p>
+			THE SUBSCRIBER ACKNOWLEDGES HAVING READ AND UNDERSTOOD THIS AGREEMENT, AND AGREES TO BE
+			BOUND BY ALL ITS TERMS AND CONDITIONS.
+		</p>
+	</div>
+		<table width = "100%">
+		<tr>
+			<td>
+				<div class = "signature_pad_heading">For the Subscriber</div>
+				<div class="outer">
+					<div id="subscriber_signature_field" ></div>
+					<div class="center">
+						<p id="centerP">Sign Here</p>
+					</div>
+					<input id="signatureJSON" type="hidden"></input>
+				</div><br>
+				<div class="a" align="center">Signature</div>
+			</td>
+			<td>
+				<div class = "signature_pad_heading">For The Company</div>
+				<div class="outer">
+					<div id="company_signature_field" class="requiredFields_div"></div>
+					<!-- <div class="center"> -->
+						<!-- <p></p> -->
+					<!-- </div> -->
+					<input id="company_signature_field_RO" type="hidden"></input>
+				</div><br>
+				<div class="a" align="center" id="companyName1">Signature</div>
+			</td>
+		</tr>
+		<!-- <tr> -->
+			<!-- <td align="center"><h4 style="font-size: 13px;">For the Subscriber</h4></td> -->
+			<!-- <td align="center"><h4 style="font-size: 13px;"> -->
+				<!-- For the <i>Company</i> -->
+			<!-- </h4></td> -->
+		<!-- </tr> -->
+	</table>
+</div>
+</body>
+</html>

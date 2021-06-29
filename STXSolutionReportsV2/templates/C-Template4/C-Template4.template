@@ -1,0 +1,12 @@
+{ "Reports":
+[
+ 	{
+  		"ReportName" : "CLIENT REPORT 4",
+ 		"ReportImage": "Report-folder-blank.png",
+     	"ReportTemplatePackage": "C-Template4",
+      	"ReportDescription":"By  System - Displays Package name, icon, description, unit price, location total, total price",
+        "visiblilityRule":"TOTAL_PRICE_CHECK",
+        "ReportType": "CLIENT",
+        "ReportTypeImage": "Reports folder.png"
+	}
+]}

@@ -1,0 +1,12 @@
+{ "Reports":
+[
+ 	{
+  		"ReportName" : "FIELD REPORT 1",
+ 		"ReportImage": "Report-folder-blank.png",
+     	"ReportTemplatePackage": "F-Template1",
+      	"ReportDescription":"By Location, by System - Displays Package name Icon, image, description, no pricing, no total",
+        "visiblilityRule":"TOTAL_PRICE_CHECK",
+        "ReportType": "FIELD",
+        "ReportTypeImage": "Reports folder.png"
+	}
+]}

@@ -1,0 +1,68 @@
+	body {
+		width : 100%;
+		margin : 0px;
+		padding : 0px;
+		font-size : 13px;
+		
+		width : 50%;
+		margin : auto;
+	}
+	input[type=text]{
+		font-size : 14px;
+	}
+	.font_12{
+		font-size : 12px;
+	}
+	.small_font{
+		font-size : 10px;
+	}
+	/* .outer{ */
+    /* min-width:50px; */
+    /* height:40px; */
+    /* width:50px; */
+    /* position:absolute; */
+    /* border-bottom:solid black; */
+    /* border-width: 1px; */
+	/* } */
+	.inner{
+    min-width : 30px;
+    min-height:20px;
+    height: 40px;
+    width:30px;
+    position:absolute;
+    z-index: -2;
+    display:inline-block;
+    text-align:center;
+    vertical-align:middle;
+	}
+	.docusignTag{
+	/*background-color: green;*/
+    display:block;
+    position:relative;
+    color:white;
+    vertical-align:bottom;
+    width:30px;
+    height:10px;
+    z-index: -1;
+    text-align:center;
+    vertical-align:middle;
+    /* top:50%; */
+    transform: translateY(-30px);
+	/* transform: translateX(20px); */
+	}
+	#page_5 .box{
+		padding : 20px;
+		border : 1px solid #000;
+		margin : 15px 0px;
+		text-align : justify;
+		font-size : 14px;
+	}
+@media print{ 
+	body {
+		width : 100%;
+		margin : 0px;
+		padding : 0px;
+		font-size : 13px;
+	}
+	.page_break{page-break-after: always;}
+}

@@ -1,0 +1,12 @@
+{ "Reports":
+[
+ 	{
+  		"ReportName" : "CLIENT REPORT 6",
+ 		"ReportImage": "Report-folder-blank.png",
+     	"ReportTemplatePackage": "C-Template6",
+        "ReportDescription":"Show floor plans only from current session. Use printer to set paper size",
+        "visiblilityRule":"TOTAL_PRICE_CHECK",
+        "ReportType": "CLIENT",
+        "ReportTypeImage": "Reports folder.png"
+	}
+]}

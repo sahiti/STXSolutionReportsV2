@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Alarm services contract</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--link rel="stylesheet" type="text/css" href="common.css" /-->
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en"></script>
+	<link rel="stylesheet" type="text/css" href="#ApplicationDataPath#/common.css" />
+  <link rel="stylesheet" type="text/css" href="#ApplicationDataPath#/print.css" />
+	<script src="#ApplicationDataPath#/jquery.min.js"></script>
+	<link rel="stylesheet" href="#ApplicationDataPath#/jquery-ui.css"/>
+	<script src="#ApplicationDataPath#/jquery-ui.js"></script>
+	<link type="text/css" href="#ApplicationDataPath#/jquery.signature.css" rel="stylesheet">
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.signature.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/excanvas.js"></script>
+    <style>
+    .requiredFields{
+        background-color:#ff8c00;
+    }
+    .optionalFields{
+        background-color:yellow;
+    }
+    .requiredFields_div{
+        background-color:#ff8c00;
+    }
+    select.requiredFields_select{
+        background-color:#ff8c00;
+    }
+
+@media print{
+    .requiredFields{
+        background-color:#ffffff;
+    }
+    .requiredFields_div{
+        background-color:#ffffff;
+    }
+    .optionalFields{
+        background-color:#ffffff;
+    }
+    select.requiredFields_select{
+        background-color:#ffffff;
+    }
+    #signature_field{
+        background-color:#ffffff;
+    }
+    span.docusignTag{
+        color:#ffffff;
+    }
+    }
+    </style>
+</head>
+
+<body>
+	<script>
+		var reportJson = #REPORT_JSON#;
+		$(document).ready(function(){
+			var companyAddressLine1 = "";
+			var companyAddressLine2 = "";
+			//console.log(reportJson);
+			//$(".signature_pad").signature();
+			$("#initials_1").signature();
+			$('#initials_1').signature({syncField: '#signatureJSON'});
+			$("#initials_2").signature();
+			$('#initials_2').signature({syncField: '#signatureJSON2'});
+			$("#account_signature").signature();
+			$('#account_signature').signature({syncField: '#signatureJSON3'});
+			$("#buyer_signature_1").signature();
+			$('#buyer_signature_1').signature({syncField: '#signatureJSON4'});
+			$("#buyer_signature_2").signature();
+			$('#buyer_signature_2').signature({syncField: '#signatureJSON5'});
+			
+			$(".company_name_div").html(reportJson.Report.CompanyName);
+			$(".logo_image").attr("src", reportJson.Report.Logo);
+			companyAddressLine1 += reportJson.Report.CompanyAddressStreet ? reportJson.Report.CompanyAddressStreet : "";
+			companyAddressLine1 += reportJson.Report.CompanyAddressCity ? " ," + reportJson.Report.CompanyAddressCity : "";
+			companyAddressLine2 += reportJson.Report.CompanyAddressState ? reportJson.Report.CompanyAddressState : "";
+			companyAddressLine2 += reportJson.Report.CompanyAddressZip ? " ," + reportJson.Report.CompanyAddressZip : "";
+			$("#company_address_line1").html(companyAddressLine1);
+			$("#company_address_line2").html(companyAddressLine2);
+			$(".company_address_div").html(companyAddressLine1 + " " + companyAddressLine2);
+			$(".company_website_div").html(reportJson.Report.CompanyWebsite);
+			$("#company_phone").html(reportJson.Report.CompanyWorkPhone);
+			$("#date_of_transaction").val(formatDate());
+			<!-- var totalAmount = reportJson.Report.Total; -->
+			<!-- totalAmount = totalAmount.replace("$", ""); -->
+			<!-- $("#total").val(totalAmount); -->
+			getMonthlyMonitoringRate2();
+			//getTax();
+			populateClientData();
+			populatePackages();
+			changeAllElements();
+			calculateTaxes();
+		})
+		
+		function populateClientData()
+		{
+			$("#subscriber_name_field").val(reportJson.Report.ClientName);
+			$("#pre_address_field").val(reportJson.Report.ClientAddress1Street);
+			$("#city_field").val(reportJson.Report.ClientAddress1City);
+			$("#prov_field").val(reportJson.Report.ClientAddress1State);
+			$("#postal_code_field").val(reportJson.Report.ClientAddress1Zip);
+			var telephone = reportJson.Report.ClientMobilePhone;
+			telephone = telephone.replace("Mobile:", "");
+			$("#telephone").val(telephone);
+			$("#email_field").val(reportJson.Report.ClientEmail);
+			
+			$("#buyer_address").val(reportJson.Report.ClientAddress1Street);
+			$("#buyer_name").val(reportJson.Report.ClientName);
+			var csz = reportJson.Report.ClientAddress1City ? reportJson.Report.ClientAddress1City + ", " : "";
+			csz += reportJson.Report.ClientAddress1State ? reportJson.Report.ClientAddress1State + ", " : "";
+			csz += reportJson.Report.ClientAddress1Zip ? reportJson.Report.ClientAddress1Zip + ", " : "";
+			$("#buyer_zip").val(csz);
+			$("#buyer_signature_date").val(reportJson.Report.Date);
+		}
+		
+		function isValidKeyword(keyword = "")
+		{
+			//console.log(keyword);
+			if(keyword)
+			{
+				var keyword = keyword.toLowerCase();
+				if(keyword.search("security") >= 0 || keyword.search("surveillance") >= 0 || keyword.search("camera") >= 0)
+				{
+					//console.log(keyword);
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			return false;
+		}
+		
+		function populatePackages() 
+		{
+			var myGeneretedJson = [];
+			for(var i = 0; i < reportJson.Report.Rooms.Room.length; i++)
+			{
+				var room = reportJson.Report.Rooms.Room[i];
+				if( room.Packages.Package != undefined )
+				{
+					if(Array.isArray(room.Packages.Package)) 
+					{
+						for(var j = 0; j < room.Packages.Package.length; j++)
+						{
+							var packageData =  room.Packages.Package[j];
+							if(isValidKeyword(packageData.PackageGroupName))
+							{
+								myGeneretedJson.push(packageData); 
+							}
+						}
+					}
+					else
+					{
+						var packageData =  room.Packages.Package;
+						if(isValidKeyword(packageData.PackageGroupName))
+						{
+							myGeneretedJson.push(packageData);
+						}
+					}
+				
+				}	
+					
+			}
+			
+			if(myGeneretedJson.length > 5)
+			{
+				var table1Data = "";
+				var table2Data = "";
+				var half = myGeneretedJson.length / 2;
+				half = Math.ceil(half);
+				
+				for(var i = 0; i < half; i++)
+				{
+					var packageData = myGeneretedJson[i];
+					table1Data += "<tr>";
+					table1Data += "<td>" + packageData.PackageName + "</td>"; 
+					table1Data += "<td class=text_center>" + packageData.PackageQuantity + "</td>"; 
+					table1Data += "</tr>";
+				}
+				
+				for(var i = half; i < myGeneretedJson.length; i++)
+				{
+					var packageData = myGeneretedJson[i];
+					table2Data += "<tr>";
+					table2Data += "<td>" + packageData.PackageName + "</td>"; 
+					table2Data += "<td class=text_center>" + packageData.PackageQuantity + "</td>"; 
+					table2Data += "</tr>";
+				}
+				
+				$("#packages_table_body").html(table1Data);
+				$("#packages_table_2_body").html(table2Data);
+				if(table2Data)
+					$("#packages_table_2").show();
+				
+			}
+			else
+			{
+				var table1Data = "";
+				for(var i = 0; i < myGeneretedJson.length; i++)
+				{
+					var packageData = myGeneretedJson[i];
+					table1Data += "<tr>";
+					table1Data += "<td>" + packageData.PackageName + "</td>"; 
+					table1Data += "<td class=text_center>" + packageData.PackageQuantity + "</td>"; 
+					table1Data += "</tr>";
+				}
+				$("#packages_table_body").html(table1Data);
+				$("#packages_table_2").hide();
+			}
+			
+		}
+		
+		function calculateTaxes()
+		{
+			var monthlyTaxTotal = 0;
+			if(reportJson.Report.Taxes.Tax == undefined){
+				monthlyTaxTotal = 0;
+			}
+			else{
+				if(Array.isArray(reportJson.Report.Taxes.Tax)){
+				
+				for(var j = 0; j < reportJson.Report.Taxes.Tax.length; j++)
+				{
+					var taxData = reportJson.Report.Taxes.Tax[j];
+					if(taxData.ApplyTo != undefined)
+					{
+						var taxRate = taxData.TaxRate.split("%");
+						
+						taxRate = taxRate[0] ? Number(taxRate[0]) : 0;
+						
+						if(reportJson.Report.OtherCharges.Package != undefined)
+						{
+								var pkgArray = reportJson.Report.OtherCharges.Package;
+							if(reportJson.Report.OtherCharges.Package.length != undefined)
+							{
+								for(var i = 0; i < reportJson.Report.OtherCharges.Package.length; i++)
+								{
+									
+									var packageData = reportJson.Report.OtherCharges.Package[i];
+									if(packageData.PackageState == "Monthly")
+									{
+										if(taxData.ApplyTo == 'Labor' && packageData.PackageLaborPrice)
+										{
+											var packageLaborPrice = packageData.PackageLaborPrice.split("$");
+											packageLaborPrice = packageLaborPrice[1].replace(/,/g, "");	
+											<!-- packageLaborPrice = packageLaborPrice[1] ? Number(packageLaborPrice[1]) : 0; -->
+											packageLaborPrice = Number(packageLaborPrice);
+											var amt = 0;
+											if(packageLaborPrice != 0){
+												amt = (packageLaborPrice * taxRate) / 100 ;
+											}
+											monthlyTaxTotal += Number(amt);
+										}
+										if(taxData.ApplyTo == 'Equipment' && packageData.PackageEquipmentPrice)
+										{
+											var PackageEquipmentPrice = packageData.PackageEquipmentPrice.split("$");
+											PackageEquipmentPrice = PackageEquipmentPrice[1].replace(/,/g, "");
+											<!-- PackageEquipmentPrice = PackageEquipmentPrice[1] ? Number(PackageEquipmentPrice[1]) : 0; -->
+											var amt = 0;
+											if(PackageEquipmentPrice != 0){
+												amt = (PackageEquipmentPrice * taxRate) / 100 ;
+											}
+											
+											monthlyTaxTotal += Number(amt);
+										}
+										if(taxData.ApplyTo == 'Both' )
+										{
+											if(packageData.PackageLaborPrice)
+											{
+												var packageLaborPrice = packageData.PackageLaborPrice.split("$");
+												packageLaborPrice = packageLaborPrice[1].replace(/,/g, "");	
+													<!-- packageLaborPrice = packageLaborPrice[1] ? Number(packageLaborPrice[1]) : 0; -->
+													packageLaborPrice = Number(packageLaborPrice);
+													var amt = 0;
+													if(packageLaborPrice != 0){
+														amt = (packageLaborPrice * taxRate) / 100 ;
+													}
+												monthlyTaxTotal += Number(amt);
+											}
+											if(packageData.PackageEquipmentPrice)
+											{
+												var PackageEquipmentPrice = packageData.PackageEquipmentPrice.split("$");
+												PackageEquipmentPrice = PackageEquipmentPrice[1].replace(/,/g, "");
+													<!-- PackageEquipmentPrice = PackageEquipmentPrice[1] ? Number(PackageEquipmentPrice[1]) : 0; -->
+													var amt = 0;
+													if(PackageEquipmentPrice != 0){
+														amt = (PackageEquipmentPrice * taxRate) / 100 ;
+													}
+												monthlyTaxTotal += Number(amt);
+											}
+										}
+									}
+								}
+							}
+							else if(reportJson.Report.OtherCharges.Package.PackageName != undefined)
+							{
+								var packageData = reportJson.Report.OtherCharges.Package;
+								if(packageData.PackageState == "Monthly")
+								{
+									if(taxData.ApplyTo == 'Labor' && packageData.PackageLaborPrice)
+									{
+										var packageLaborPrice = packageData.PackageLaborPrice.split("$");
+										if(packageLaborPrice && packageLaborPrice[1].search(',') != -1)
+										{
+											packageLaborPrice = packageLaborPrice[1].replace(/,/g, "");
+										}
+										packageLaborPrice = packageLaborPrice ? Number(packageLaborPrice) : 0;
+										var amt = (packageLaborPrice * taxRate) / 100 ;
+										monthlyTaxTotal += Number(amt);
+										
+									}
+									if(taxData.ApplyTo == 'Equipment' && packageData.PackageEquipmentPrice)
+									{
+										var PackageEquipmentPrice = packageData.PackageEquipmentPrice.split("$");
+										if(PackageEquipmentPrice && PackageEquipmentPrice[1].search(',') != -1)
+										{
+											PackageEquipmentPrice = PackageEquipmentPrice[1].replace(/,/g, "");
+										}
+										PackageEquipmentPrice = PackageEquipmentPrice ? Number(PackageEquipmentPrice) : 0;
+										var amt = (PackageEquipmentPrice * taxRate) / 100 ;
+										monthlyTaxTotal += Number(amt);
+									}
+									if(taxData.ApplyTo == 'Both' )
+									{
+										if(packageData.PackageLaborPrice)
+										{
+											var packageLaborPrice = packageData.PackageLaborPrice.split("$");
+											if(packageLaborPrice && packageLaborPrice[1].search(',') != -1)
+											{
+												packageLaborPrice = packageLaborPrice[1].replace(/,/g, "");
+											}
+											packageLaborPrice = packageLaborPrice ? Number(packageLaborPrice) : 0;
+											var amt = (packageLaborPrice * taxRate) / 100 ;
+											monthlyTaxTotal += Number(amt);
+										}
+										if(packageData.PackageEquipmentPrice)
+										{
+											var PackageEquipmentPrice = packageData.PackageEquipmentPrice.split("$");
+											if(PackageEquipmentPrice && PackageEquipmentPrice[1].search(',') != -1)
+											{
+												PackageEquipmentPrice = PackageEquipmentPrice[1].replace(/,/g, "");
+											}
+											PackageEquipmentPrice = PackageEquipmentPrice ? Number(PackageEquipmentPrice) : 0;
+											var amt = (PackageEquipmentPrice * taxRate) / 100 ;
+											monthlyTaxTotal += Number(amt);
+										}
+									}
+								}
+							}
+						}
+
+					}
+					
+				}
+				
+			}
+			else
+			{
+					var taxData = reportJson.Report.Taxes.Tax;
+					if(taxData.ApplyTo != undefined)
+					{
+						var taxRate = taxData.TaxRate.split("%");
+						taxRate = taxRate[0] ? Number(taxRate[0]) : 0;
+						
+						if(reportJson.Report.OtherCharges.Package != undefined)
+						{
+								var pkgArray = reportJson.Report.OtherCharges.Package;
+							if(reportJson.Report.OtherCharges.Package.length != undefined)
+							{
+								for(var i = 0; i < reportJson.Report.OtherCharges.Package.length; i++)
+								{
+									
+									var packageData = reportJson.Report.OtherCharges.Package[i];
+									
+									if(packageData.PackageState == "Monthly")
+									{
+										if(taxData.ApplyTo == 'Labor' && packageData.PackageLaborPrice)
+										{
+											var packageLaborPrice = packageData.PackageLaborPrice.split("$");
+											packageLaborPrice = packageLaborPrice[1].replace(/,/g, "");	
+													<!-- packageLaborPrice = packageLaborPrice[1] ? Number(packageLaborPrice[1]) : 0; -->
+													packageLaborPrice = Number(packageLaborPrice);
+													var amt = 0;
+													if(packageLaborPrice != 0){
+														amt = (packageLaborPrice * taxRate) / 100 ;
+													}
+											monthlyTaxTotal += Number(amt);
+										}
+										if(taxData.ApplyTo == 'Equipment' && packageData.PackageEquipmentPrice)
+										{
+											var PackageEquipmentPrice = packageData.PackageEquipmentPrice.split("$");
+											PackageEquipmentPrice = PackageEquipmentPrice[1].replace(/,/g, "");	
+											PackageEquipmentPrice = PackageEquipmentPrice ? Number(PackageEquipmentPrice) : 0;
+											var amt = 0;
+											if(PackageEquipmentPrice != 0){
+												 amt = (PackageEquipmentPrice * taxRate) / 100 ;
+											}else{
+												amt = 0
+											}
+											monthlyTaxTotal += Number(amt);
+										}
+										if(taxData.ApplyTo == 'Both' )
+										{
+											if(packageData.PackageLaborPrice)
+											{
+												var packageLaborPrice = packageData.PackageLaborPrice.split("$");
+												packageLaborPrice = packageLaborPrice[1].replace(/,/g, "");	
+													<!-- packageLaborPrice = packageLaborPrice[1] ? Number(packageLaborPrice[1]) : 0; -->
+													packageLaborPrice = Number(packageLaborPrice);
+													var amt = 0;
+													if(packageLaborPrice != 0){
+														amt = (packageLaborPrice * taxRate) / 100 ;
+													}
+											monthlyTaxTotal += Number(amt);
+												monthlyTaxTotal += Number(amt);
+											}
+											if(packageData.PackageEquipmentPrice)
+											{
+												var PackageEquipmentPrice = packageData.PackageEquipmentPrice.split("$");
+												PackageEquipmentPrice = PackageEquipmentPrice[1].replace(/,/g, "");
+													<!-- PackageEquipmentPrice = PackageEquipmentPrice[1] ? Number(PackageEquipmentPrice[1]) : 0; -->
+													var amt = 0;
+													if(PackageEquipmentPrice != 0){
+														amt = (PackageEquipmentPrice * taxRate) / 100 ;
+													}
+												monthlyTaxTotal += Number(amt);
+											}
+										}
+									}
+								}
+							}
+							else if(reportJson.Report.OtherCharges.Package.PackageName != undefined)
+							{
+								var packageData = reportJson.Report.OtherCharges.Package;
+								if(packageData.PackageState == "Monthly")
+								{
+									if(taxData.ApplyTo == 'Labor' && packageData.PackageLaborPrice)
+									{
+										var packageLaborPrice = packageData.PackageLaborPrice.split("$");
+										if(packageLaborPrice && packageLaborPrice[1].search(',') != -1)
+										{
+											packageLaborPrice = packageLaborPrice[1].replace(/,/g, "");
+										}
+										packageLaborPrice = packageLaborPrice ? Number(packageLaborPrice) : 0;
+										var amt = (packageLaborPrice * taxRate) / 100 ;
+										monthlyTaxTotal += Number(amt);
+										
+									}
+									if(taxData.ApplyTo == 'Equipment' && packageData.PackageEquipmentPrice)
+									{
+										var PackageEquipmentPrice = packageData.PackageEquipmentPrice.split("$");
+										if(PackageEquipmentPrice && PackageEquipmentPrice[1].search(',') != -1)
+										{
+											PackageEquipmentPrice = PackageEquipmentPrice[1].replace(/,/g, "");
+										}
+										PackageEquipmentPrice = PackageEquipmentPrice ? Number(PackageEquipmentPrice) : 0;
+										var amt = (PackageEquipmentPrice * taxRate) / 100 ;
+										monthlyTaxTotal += Number(amt);
+									}
+									if(taxData.ApplyTo == 'Both' )
+									{
+										if(packageData.PackageLaborPrice)
+										{
+											var packageLaborPrice = packageData.PackageLaborPrice.split("$");
+											if(packageLaborPrice && packageLaborPrice[1].search(',') != -1)
+											{
+												packageLaborPrice = packageLaborPrice[1].replace(/,/g, "");
+											}
+											packageLaborPrice = packageLaborPrice ? Number(packageLaborPrice) : 0;
+											var amt = (packageLaborPrice * taxRate) / 100 ;
+											monthlyTaxTotal += Number(amt);
+										}
+										if(packageData.PackageEquipmentPrice)
+										{
+											var PackageEquipmentPrice = packageData.PackageEquipmentPrice.split("$");
+											if(PackageEquipmentPrice && PackageEquipmentPrice[1].search(',') != -1)
+											{
+												PackageEquipmentPrice = PackageEquipmentPrice[1].replace(/,/g, "");
+											}
+											PackageEquipmentPrice = PackageEquipmentPrice ? Number(PackageEquipmentPrice) : 0;
+											var amt = (PackageEquipmentPrice * taxRate) / 100 ;
+											monthlyTaxTotal += Number(amt);
+										}
+									}
+								}
+							}
+						}
+
+					}
+			}
+			}
+			if(monthlyTaxTotal != 0)
+			{
+			
+				monthlyTaxTotal = Number(monthlyTaxTotal.toFixed(2));
+
+				$("#taxes").val(monthlyTaxTotal.toLocaleString('en-US'));
+				$("#taxes_RO").val(monthlyTaxTotal.toLocaleString('en-US'));
+				var mma = $("#monthly_monitoring_amount").val() ? $("#monthly_monitoring_amount").val() : 0;
+				if(mma && mma.search(',') != -1)
+				{
+					mma = mma.replace(/,/g, "");	
+				}
+				console.log(mma);
+				mma = Number(mma);
+				var total = mma + monthlyTaxTotal;
+				<!-- var number = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total); -->
+				<!-- var displayNumber = number.replace("$", ""); -->
+				$("#total").val(total);
+				$("#total_RO").val(total);
+				$("#total_monthly").val(total);
+				$("#total_monthly_RO").val(total);
+				
+				//console.log(total);
+			}
+			else
+			{
+				$("#taxes").val("0.00");
+				$("#taxes_RO").val("0.00");
+			}
+		}
+		
+		function formatDate() {
+			var d = new Date();
+			var month = '' + (d.getMonth() + 1);
+			var day = '' + d.getDate();
+			var year = d.getFullYear();
+
+			if (month.length < 2) 
+			{
+				month = '0' + month;
+			}
+			if (day.length < 2) 
+			{
+				day = '0' + day;
+			}
+			return [month, day, year].join('-');
+		}
+		
+		function checkThis(rawData)
+			{
+				var cls = document.getElementsByClassName("duration");
+					for(var i = 0; i < cls.length; i++) {
+						if(cls[i].hasAttribute("checked")){
+						cls[i].removeAttribute("checked");
+						}
+					}
+					$(".duration").prop("checked",false);
+					$(rawData).prop("checked",true);
+					if(rawData.checked == true)
+					 $(document.getElementById(rawData.id)).attr("checked", "checked");
+			}
+		function checkPayment(rawData)
+			{
+				var cls = document.getElementsByClassName("payment");
+					for(var i = 0; i < cls.length; i++) {
+						if(cls[i].hasAttribute("checked")){
+						cls[i].removeAttribute("checked");
+						}
+					}
+					$(".payment").prop("checked",false);
+					$(rawData).prop("checked",true);
+					if(rawData.checked == true)
+					 $(document.getElementById(rawData.id)).attr("checked", "checked");
+			}
+			function checkBankType(rawData)
+			{
+				var cls = document.getElementsByClassName("bank");
+					for(var i = 0; i < cls.length; i++) {
+						if(cls[i].hasAttribute("checked")){
+						cls[i].removeAttribute("checked");
+						}
+					}
+					$(".bank").prop("checked",false);
+					$(rawData).prop("checked",true);
+					if(rawData.checked == true)
+					 $(document.getElementById(rawData.id)).attr("checked", "checked");
+			}
+			function permitType(rawData)
+				{
+						
+						 document.getElementById(rawData.id).removeAttribute("checked");	
+					if($(rawData).is(":checked"))
+					{
+						$(".permit").prop("checked",false);
+						$(rawData).prop("checked",true);
+						if(rawData.checked == true){
+						 $(document.getElementById(rawData.id)).attr("checked", "checked");
+						 }
+					}
+					else
+					{
+						$(document.getElementById(rawData.id)).prop("checked",false);
+					}
+				}
+				function billingType(rawData)
+					{
+							
+						document.getElementById(rawData.id).removeAttribute("checked");	
+						if($(rawData).is(":checked"))
+						{
+							<!-- $(".bill").prop("checked",false); -->
+							$(rawData).prop("checked",true);
+							if(rawData.checked == true){
+							 $(document.getElementById(rawData.id)).attr("checked", "checked");
+							 }
+						}
+						else
+						{
+							$(document.getElementById(rawData.id)).prop("checked",false);
+						}
+					}
+					function cardType(rawData)
+					{
+							
+							 document.getElementById(rawData.id).removeAttribute("checked");	
+						if($(rawData).is(":checked"))
+						{
+							<!-- $(".card").prop("checked",false); -->
+							$(rawData).prop("checked",true);
+							if(rawData.checked == true){
+							 $(document.getElementById(rawData.id)).attr("checked", "checked");
+							 }
+						}
+						else
+						{
+							$(document.getElementById(rawData.id)).prop("checked",false);
+						}
+					}
+					function accountType(rawData)
+					{
+							
+							 document.getElementById(rawData.id).removeAttribute("checked");	
+						if($(rawData).is(":checked"))
+						{
+							<!-- $(".card").prop("checked",false); -->
+							$(rawData).prop("checked",true);
+							if(rawData.checked == true){
+							 $(document.getElementById(rawData.id)).attr("checked", "checked");
+							 }
+						}
+						else
+						{
+							$(document.getElementById(rawData.id)).prop("checked",false);
+						}
+					}
+			
+		function changeAllElements()
+		{
+			$("input[type=text]").each(function(){
+				var id = $(this).prop('id');
+				var id_RO = id + "_RO";
+				//console.log($(this).val());
+				$("#" + id_RO).val($(this).val());
+			})
+			$("input[type=text]").each(function(){
+				$(this).on('input', function(){
+					var id = $(this).prop('id');
+					var id_RO = id + "_RO";
+					//console.log($(this).val());
+					$("#" + id_RO).val($(this).val());
+				});
+			})
+		}
+		function getSystemInstallationCost(){
+			var total = reportJson.Report.SubTotal;
+			
+			var total2 = total.replace("$", "");
+			$("#installation_cost_field").val(total2);
+		}
+		function getMonthlyMonitoringRate2(){
+				var totalPrice = 0;
+				<!-- var otherChargesTotal = reportJson.Report.OtherCharges.Package.PackagePrice.replace("$", ""); -->
+				var pkg = reportJson.Report.OtherCharges.Package;
+				if(pkg != undefined){
+					if(Array.isArray(pkg)){
+						var price = 0;
+						for(var i = 0; i < pkg.length; i++){
+						 var state = pkg[i].PackageState;
+							 if(state == "Monthly"){
+								var pkgPrice = pkg[i].PackagePrice;
+								pkgPrice = pkgPrice.replace("$", "");
+								pkgPrice=pkgPrice.replace(/\,/g,'');
+								pkgPrice=Number(pkgPrice);
+								<!-- alert(pkgPrice); -->
+								<!-- var pkgAmount = parseFloat(pkgPrice); -->
+								price = price + pkgPrice;
+							 }
+						}
+						totalPrice = price;
+					}else{
+						var pkg = reportJson.Report.OtherCharges.Package.PackagePrice.replace("$", "");
+						pkg=pkg.replace(/\,/g,'');
+						totalPrice = Number(pkg);
+						totalPrice = pkg;
+					}
+				}else{
+					totalPrice = 39.95;
+				}
+				<!-- var number = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalPrice); -->
+				<!-- var displayNumber = number.replace("$", ""); -->
+				$("#monthly_monitoring_amount").val(totalPrice);
+				$("#total").val(totalPrice);
+				$("#total_monthly").val(totalPrice);
+		}
+		function getTax(){
+			var totalTax = 0;
+			<!-- if(Array.isArray(reportJson.Report.Taxes.Tax)){ -->
+				<!-- var total = reportJson.Report.Taxes.Tax; -->
+				<!-- var price = 0; -->
+				<!-- for(var i = 0; i < total.length; i++){ -->
+					<!-- var totalTax = total[i].TaxPrice.replace("$", ""); -->
+					<!-- if(totalTax.includes("(") && totalTax.includes(")")){ -->
+						<!-- totalTax = totalTax.replace("(", "");  -->
+						<!-- totalTax = totalTax.replace(")", "");  -->
+					<!-- } -->
+					<!-- var taxes = parseFloat(totalTax); -->
+					<!-- price = price + taxes;  -->
+				<!-- } -->
+				<!-- totalTax = price; -->
+				<!-- $("#taxes").val(totalTax); -->
+			<!-- }else{ -->
+				<!-- totalTax = reportJson.Report.Taxes.Tax.TaxPrice.replace("$", ""); -->
+				
+			<!-- } -->
+			$("#taxes").val(totalTax);
+			
+			
+		}
+		
+	</script>
+	<div id = "page_1">
+		<div class = "header">
+			<div id="logo_container">
+			<!--img src="Black_Hat_Security_Service_Agreement_logo.png" -->
+				<img src="" 
+					class="logo_image" id="logo_image" alt="Image Not Found" />
+			</div>
+			<div id="company_address_container">
+				<div class = "company_name_div" id = "company_name"><p></p></div>
+				<div class = "company_address" id = "company_address_line1"><p></p></div>
+				<div class = "company_address" id = "company_address_line2"><p></p></div>
+				<div class = "company_phone" id = "company_phone"><p></p></div>
+			</div>
+		</div><br><br>
+		<h4 class = "page_heading text_center no_margin pt5 pb10 clr_bl">
+			ALARM SERVICES CONTRACT "Residential / Commercial"
+		</h4>
+		<div class = "pt10" id = "subscriber_details_top">
+			<div class = "row">
+				<div class = "col" id = "contract_date_container">
+					This Contract is made and entered into this date:
+					<input type = "text" id = "contract_date" class = "no_border" />
+					<input id="contract_date_RO" type="hidden"/>
+				</div>
+				<div class = "col" id = "acc_number_container">
+					. Account Number : 
+					<input type = "text" name = "acc_number" id = "acc_number"  class="requiredFields" />
+					<input id="acc_number_RO" type="hidden"/>
+				</div>
+			</div>
+			<div class = "row">
+				<div id = "subscriber_name_container">
+					Subscriber's Name : 
+					&nbsp;
+					<input type="text" name="subscriber_name_field" id = "subscriber_name_field" />
+					<input id="subscriber_name_field_RO" type="hidden"/>
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col" id = "address_container">
+					Address : 
+					<input type = "text" name = "pre_address_field" id = "pre_address_field" />
+					<input id="pre_address_field_RO" type="hidden"/>
+				</div>
+				<div class = "col" id = "city_container">
+					City : 
+					<input type="text" name="city_field" id = "city_field" />
+					<input id="city_field_RO" type="hidden"/>
+				</div>
+				<div class = "col" id = "state_container">
+					State : 
+					<input type="text" name="prov_field" id = "prov_field" />
+					<input id="prov_field_RO" type="hidden"/>
+				</div>
+				<div class = "col" id = "zip_container">
+					ZIP : 
+					<input type="text" name="postal_code_field" id = "postal_code_field"  />
+					<input id="postal_code_field_RO" type="hidden"/>
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col" id = "telephone_container">
+					Telephone ( 
+						<input type = "text" name = "country_code" id = "country_code" class = "no_border" /> 
+						<input id="country_code_RO" type="hidden"/> 
+					)
+					<input type="text" name="telephone" id = "telephone" />
+					<input id="telephone_RO" type="hidden"/>
+				</div>
+				<div class = "col" id = "email_container">
+					Email address : 
+					<input type="text" name="email_field" id = "email_field" />
+					<input id="email_field_RO" type="hidden"/>
+				</div>
+			</div>
+		</div>
+		<div class = "pt10 text_justify small_font">
+			<div class = "company_name_div col"></div>  
+			(hereinafter referred to as 
+			" <div class = "company_name_div col"></div> "
+			or "ALARM COMPANY")agrees to send and install,
+			at Subscriber's premises, the electronic security and or fire alarm 
+			system describe on attached Schedule of Protection Equipment and to provide Monitoring Services. 
+			I agree to pay 
+			" <div class = "company_name_div col"></div> "
+			for Services to be provided in the amounts summarized 
+			on Alarm Services Contract. Services to be provided, upon and subject to the terms and conditions
+			of this Contract. Equipment listed on attached Scheduled of Protection Equipment form; 
+			passcode to CPU software remains property of  
+			" <div class = "company_name_div col"></div> "  ; 
+			(equipment to be identified by make, model or other information); SEE ATTACHED SCHEDULE OF 
+			PROTECTION EQUIPMENT.
+		</div>
+		<div class = "pt5 requiredFields_div" >
+			<table class = "no_border" style = "width:100%">
+				<tr>
+					<td style = "width:35%" class = "pl15">
+						Monitoring Includes:
+					</td>
+					<td style = "width:25%" class = "font_bold">
+						<label>
+							<input type = "checkbox" id = "interactive" onclick="billingType(this)" class="bill" />
+							Interactive
+						</label>
+					</td>
+					<td style = "width:17%" class = "font_bold">
+						<label>
+							<input type = "checkbox" id = "gsm" onclick="billingType(this)" class="bill"/>
+							GSM
+						</label>
+					</td>
+					<td style = "width:20%" class = "font_bold">
+						<label>
+							<input type = "checkbox" id = "landline" onclick="billingType(this)" class="bill" />
+							Land Line
+						</label>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class = "pt5">
+			<table class = "no_border table2" style = "width:100%">
+				<tr>
+					<td style = "width:10%">&nbsp;</td>
+					<td style = "width:20%" class = "pl15 pb5 text_center font_bold">
+						Monthly
+					</td>
+					<td style = "width:30%" class = "font_bold">
+						&nbsp;
+					</td>
+					<td style = "width:17%" class = "font_bold">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>Monitoring: $</td>
+					<td class = "pl15 pb5">
+						
+						<input type = "text" name = "monthly_monitoring_amount" id = "monthly_monitoring_amount" class="requiredFields" />
+						<input id="monthly_monitoring_amount_RO" type="hidden"/>
+					</td>
+					<td class = "font_bold">
+						&nbsp;
+					</td>
+					<td class = "font_bold">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td >Taxes: $</td>
+					<td class = "pl15 pb5">
+						<input type = "text" name = "taxes" id = "taxes" class="requiredFields" />
+						<input id="taxes_RO" type="hidden"/>
+					</td>
+					<td class = "font_bold">
+						&nbsp;
+					</td>
+					<td class = "font_bold">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>Total: $</td>
+					<td class = "pl15 pb5">
+						<input type = "text" name = "total" id = "total" class="requiredFields" />
+						<input id="total_RO" type="hidden"/>
+					</td>
+					<td class = "font_bold">
+						&nbsp;
+					</td>
+					<td class = "font_bold">
+						&nbsp;
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class = "row pt5 requiredFields_div">
+			&nbsp;
+			Total $
+			&nbsp;&nbsp;
+			<input type = "text" name = "total_monthly" id = "total_monthly" class="requiredFields" />
+			<input id="total_monthly_RO" type="hidden"/>
+		</div>
+		<div class = "pt5">
+			Approximate date work to begin:
+			<input type = "text" name = "approximate_date" id = "approximate_date" />
+			<input id="approximate_date_RO" type="hidden"/>
+			Estimated date work to be substantially completed:
+			<input type = "text" name = "estimated_date" id = "estimated_date" />
+			<input id="estimated_date_RO" type="hidden"/>
+		</div>
+		<div class = "pt5 small_font">
+			INSTALLATION AND SERVICES CHARGES: Subscriber agrees to pay 
+			" <div class = "company_name_div col"></div> "
+		</div>
+		<div class = "text_justify pt5 small_font">
+			The Sum of $
+			<input type = "text" name="installation_and_programming_amount" id = "installation_and_programming_amount" style = "width:100px" />
+			<input id = "installation_and_programming_amount_RO" type="hidden"/>
+			,plus tax for the installation and programming of the communication software 
+			and transmitter if not already installed.
+		</div>
+		<div class = "text_justify pt5 small_font">
+			The sum of $	
+			<input type = "text" name = "monitoring_and_servicing_amount" id = "monitoring_and_servicing_amount" style = "width:100px" />
+			<input id = "monitoring_and_servicing_amount_RO" type="hidden"/>
+			,plus tax, per month, payable in advance for the monitoring and servicing of the communication 
+			software for the term of this agreement commencing on the first day of the month next succeeding 
+			the date hereof, and continuing monthly thereafter, all payments being due on the first of the 
+			month. The balance of payments for the term of this agreement is due upon execution of this 
+			agreement. For the convenience of the parties and so long as there is no default in payments.
+			Subscriber may make the payments as provided herein.
+			<div class = "outer text_center col" id = "initials_1_div" >
+				<div id="initials_1" class = "signature_pad optionalFields"></div>
+				<div id="inner" style="">
+           <span class="intialDocusignTag">Sign Here</span>
+        </div>
+				<input id="signatureJSON" type="hidden"></input>
+			</div>
+			Initials
+		</div>
+		<div class = "text_justify pt10 small_font">
+			TERM OF AGREEMENT AND RENEWAL: The term of the monitoring part of this agreement shall be for a
+			period of three years	
+			<div class = "outer text_center col" id = "initials_2_div" >
+				<div id="initials_2" class = "signature_pad optionalFields" ></div>
+				<div id="inner" style="">
+           <span class="intialDocusignTag">Sign Here</span>
+        </div>
+				<input id="signatureJSON2" type="hidden"></input>
+			</div>
+			initials and shall automatically renew month to month thereafter under the same terms and 
+			conditions, unless either party gives written notice to the other by certified mail, return 
+			receipt requested, of their intention not to renew the contract at least 30 days prior to the 
+			expiration of any term. After the expiration of one year from the date hereof 
+			<div class = "company_name_div col"></div>
+			shall be permitted from time to time to increase the monitoring charge by an amount not to
+			exceed nine percent each year and Subscriber agrees to pay such increase.
+		</div>
+		<h5 class = "no_margin pb5 pt5 ">
+			SUBSCRIBER ACKNOWLEDGES RECEIVING A FULLY EXECUTED COPY OF THIS 3 PAGE CONTRACT AND SCHEDULE 
+			OF EQUIPMENT AT TIME OF EXECUTION
+		</h5>
+	</div>
+	<div class = "page_break">&nbsp;</div>
+	<div id = "page_2" class = " pt15">
+		<h4 class = "clr_bl text_center">Schedule of Protection/Equipment</h4>
+		
+		<div class = "pt10">
+			<div class = "col" style = "width:48%">
+				<table class = "table_bordered" id = "packages_table" style = "width:100%;">
+					<thead>
+						<tr>
+							<th>
+								PRODUCT
+							</th>
+							<th>
+								QUANTITY
+							</th>
+						</tr>
+					</thead>
+					<tbody id = "packages_table_body"></tbody>
+				</table>
+			</div>
+			<div class = "col float_right" style = "vertical-align:top;width:48%">
+				<table style = "width:100%;display:none;" class = "table_bordered" id = "packages_table_2">
+					<thead>
+						<tr>
+							<th>
+								PRODUCT
+							</th>
+							<th>
+								QUANTITY
+							</th>
+						</tr>
+					</thead>
+					<tbody id = "packages_table_2_body"></tbody>
+				</table>
+			</div>
+		</div>
+		<div id = "emergency_info">
+			<h4 class = "no_margin pt10 text_center">Emergency Information</h4>
+			<div class = "row">
+				Permit Number 
+				<input type = "text" name = "permit_number" id = "permit_number" class="requiredFields"/>
+				<input id="permit_number_RO" type="hidden"/>
+			</div>
+			<div class = "row">
+				<div class = "col">
+					Police Dept. Name & Location
+					<input type = "text" name = "police_dept_name" id = "police_dept_name" class="requiredFields"/>
+					<input id="police_dept_name_RO" type="hidden"/>
+				</div>
+				<div class = "col" >
+					Phone #( 
+						<input type = "text" name = "police_dept_code" class = "code_field requiredFields" id = "police_dept_code" />
+						<input id="police_dept_code_RO" type="hidden"/>
+					)
+					<input type = "text" name = "police_dept_phone" id = "police_dept_phone" class="requiredFields"/>
+					<input id="police_dept_phone_RO" type="hidden"/>
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col">
+					Fire Dept. Name & Location
+					<input type = "text" name = "fire_dept_name" id = "fire_dept_name" class="requiredFields"/>
+					<input id="fire_dept_name_RO" type="hidden"/>
+				</div>
+				<div class = "col">
+					Phone #( 
+						<input type = "text" name = "fire_dept_code" class = "code_field requiredFields" id = "fire_dept_code"/>
+						<input id="fire_dept_code_RO" type="hidden"/>
+					)
+					<input type = "text" name = "fire_dept_phone" id = "fire_dept_phone" class="requiredFields"/>
+					<input id="fire_dept_phone_RO" type="hidden"/>
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col">
+					Medical/Ambulance	
+					<input type = "text" name = "medical_name" id = "medical_name" class="requiredFields"/>
+					<input id="medical_name_RO" type="hidden"/>
+				</div>
+				<div class = "col">
+					Phone #( 
+						<input type = "text" name = "medical_code" class = "code_field requiredFields" id = "medical_code" />
+						<input id="medical_code_RO" type="hidden"/>
+					)
+					<input type = "text" name = "medical_phone" id = "medical_phone" class="requiredFields"/>
+					<input id="medical_phone_RO" type="hidden"/>
+				</div>
+			</div>
+		</div>
+		<div class = "row text_right" id = "abort_code_container">
+			PASSWORD/ABORT CODE : 
+			<input type = "text" name = "abort_code" id = "abort_code" class="requiredFields"/>
+			<input id="abort_code_RO" type="hidden"/>
+		</div>
+		<div class = "row text_justify small_font">
+			I will issue a Password to all users of the Equipment including all people listed in 
+			the Emergency Contact List section. My Password is no less than three (3) and no more
+			than ten (10) characters in length and does not contain any punctuation, spaces, 
+			offensive language or non-standard spelling.
+		</div>
+		<h4 class = "text_center no_margin pt5 pb5">EMERGENCY CONTACT LIST</h4>
+		<div class = "row text_justify small_font">
+			Below I have listed in order of preference, those individuals who may be called in 
+			response to an alarm signal. I understand those listed may need to meet the authorities
+			in response to an alarm signal, so I shall provide them with access to the Monitored
+			Location, the password established for the account and a code to turn the Equipment on 
+			and off. I have checked the "Yes" box to next to Emergency Call Verification (ECV) to 
+			indicate which individuals may be called prior to notification of authorities and I have
+			selected least one individual. These individuals are authorized by me to CANCEL the alarm.
+		</div>
+		<div id = "emergency_contact_list_div">
+			<div class = "row" id = "emergency_contact1">
+				<div class = "col">
+					1. 
+					<input type = "text" name = "name" id = "name" class = "name requiredFields"/>
+					<input id="name_RO" type="hidden"/>
+					<br>
+					<div class = "text_center">Contact Name</div>
+				</div>
+				<div class = "col">
+					(
+						<input type = "text" name = "code" id = "code" class = "code_field requiredFields" />
+						<input id="code_RO" type="hidden"/>
+					)
+					&nbsp;
+					<input type = "text" name = "phone_number" class = "phone_number requiredFields" id = "phone_number" />
+					<input class="phone_number_RO" type="hidden"/>
+					<div class = "text_center"> 
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						Phone Number
+					</div>
+				</div>
+			</div>
+			<div class = "row" id = "emergency_contact2">
+				<div class = "col">
+					2. 
+					<input type = "text" name = "name_2" id = "name_2" class = "name requiredFields" />
+					<input id="name_2_RO" type="hidden"/>
+					<br>
+					<div class = "text_center">Contact Name</div>
+				</div>
+				<div class = "col">
+					(
+						<input type = "text" name = "code_2" id = "code_2" class = "code_field requiredFields" />
+						<input id="code_2_RO" type="hidden"/>
+					)
+					&nbsp;
+					<input type = "text" name = "phone_number_2" id = "phone_number_2" class = "phone_number requiredFields" />
+					<input id="phone_number_2_RO" type="hidden"/>
+					<div class = "text_center">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						Phone Number
+					</div>
+				</div>
+			</div>
+			<div class = "row" id = "emergency_contact3">
+				<div class = "col">
+					3. 
+					<input type = "text" name = "name_3" class = "name requiredFields" id = "name_3" />
+					<input id="name_3_RO" type="hidden"/>
+					<br>
+					<div class = "text_center">Contact Name</div>
+				</div>
+				<div class = "col">
+					(
+						<input type = "text" name = "code_3" id = "code_3" class = "code_field requiredFields" />
+						<input id="code_3_RO" type="hidden"/>
+					)
+					&nbsp;
+					<input type = "text" name = "phone_number_3" id = "phone_number_3" class = "phone_number requiredFields" />
+					<input id="phone_number_3_RO" type="hidden"/>
+					<br>
+					<div class = "text_center">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						Phone Number
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class = "page_break">&nbsp;</div>
+	<div id = "page_3">
+		<h4 class = "text_center clr_bl">Billing</h4>
+		<div class = "row small_font">
+			I authorize Dealer and the financial institution or referenced credit card 
+			company named below:
+		</div>
+		<div class = "row" id = "billing_cycle_div" >
+			<div class = "pb5">
+				Billing Cycle
+			</div>
+			<div class = "row requiredFields_div" >
+				<div class = "col" >
+					<label>
+						<input type = "checkbox" id = "annualy" class="duration"
+							onclick="checkThis(this)"/>
+						Annualy
+					</label>
+				</div>
+				<div class = "col">
+					<label>
+						<input type = "checkbox" id = "semi_annualy" class="duration"
+							onclick="checkThis(this)"/>
+						Semi-Annualy
+					</label>
+				</div>
+				<div class = "col">
+					<label>
+						<input type = "checkbox" id = "quarterly" class="duration"
+							onclick="checkThis(this)"/>
+						Quarterly
+					</label>
+				</div>
+				<div class = "col">
+					<label>
+						<input type = "checkbox" id = "monthly" class="duration"
+							onclick="checkThis(this)"/>
+						Monthly
+					</label>
+				</div>
+				<div class = "col">
+					<label>
+						<input type = "checkbox" id = "in_full" class="duration"
+						onclick="checkThis(this)"/>
+						In Full
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class = "row small_font" >
+			I authorize 
+			<div class = "company_name_div col"></div>
+			to debit my bank account for the amount of all Recurring Service Changes and all
+			Contract Termination Charges (See Paragraph 5. Early Termination of this Contract) 
+			indicated above. I may revoke this authorization only by notifying 
+			<div class = "company_name_div col"></div>
+			and my bank in writing at least 10 business days before the scheduled debit. If no 
+			box is filled above, service charges will be withdrawn monthly. Recurring Service 
+			Charges to be debited at the 1st of the month.
+		</div>
+		<div class = "row" id = "billing_methods">
+			<div class = "col col1 pr15">
+				<h4 class = "text_center no_margin pt10 pb5">
+					Credit or Debit Card
+				</h4>
+				<div class = "pb5 pt5 text_justify mb2 requiredFields_div" >
+					<label>
+						<input type = "checkbox" id = "all_charges" onclick="cardType(this)" class="card" />
+						Charge my credit/debit card for all (i) Service Charges and 
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ii) Contract 
+						Termination Charges (see Paragraph 5), Early 
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						Termination of this Contract):
+					</label>
+				</div>
+				<div class = "pb5 pt5 mb2 requiredFields_div" >
+					<label>
+						<input type = "checkbox" id = "purchase_amount_total" onclick="cardType(this)" class="card"/>
+						Purchase Amount Total
+					</label>
+				</div>
+				<div class = "pb5 pt5 mb2 requiredFields_div" >
+					<label>
+						<input type = "checkbox" id = "total_monthly_service_charges" onclick="cardType(this)" class="card" />
+						Total Monthly Service Charges 
+					</label>
+				</div>
+				<div class = "row requiredFields_div" id = "card_type_div">
+					<label>
+						<input type = "checkbox" id = "visa" class="payment"
+							onclick = "checkPayment(this)"/>
+						VISA
+					</label>
+					&nbsp;
+					<label>
+						<input type = "checkbox" id = "master_card" class="payment"
+							onclick = "checkPayment(this)"/>
+						Master Card
+					</label>
+					&nbsp;
+					<label>
+						<input type = "checkbox" id = "discover" class="payment"
+							onclick = "checkPayment(this)"/>
+						Discover
+					</label>
+					&nbsp;
+					<label>
+						<input type = "checkbox" id = "amex" class="payment"
+							onclick = "checkPayment(this)"/>
+						AMEX
+					</label>
+				</div>
+				<div class = "row" id = "card_number_and_exp_date_div">
+					<div class = "pt5 col mb2" id = "card_number_div">
+						<input type = "text" name = "card_number" id = "card_number"  
+							class="requiredFields"/>
+						<input id="card_number_RO" type="hidden"/>
+						<div class = "text_center">
+							Credit/Debit Card #
+						</div>
+					</div>
+					<div class = "pt5 col" id = "expiration_date_div">
+						<input type = "text" name = "expiration_date" id = "expiration_date" class="requiredFields"/>
+						<input id = "expiration_date_RO" type="hidden"/>
+						<div class = "text_center">
+							CC Expiration
+						</div>
+					</div>
+				</div>
+				<div class = "row" id = "security_and_zip_code_div">
+					<div class = "pt5 col" id = "security_code_div">
+						<input type = "text" name = "security_code" id = "security_code" 
+                        class="requiredFields"/>
+						<input id = "security_code_RO" type="hidden"/>
+						<div class = "text_center">
+							Credit Card Security / CVV #
+						</div>
+					</div>
+					<div class = "pt5 col" id = "zip_code_div">
+						<input type = "text" name = "zip_code"  id = "zip_code" 
+                        class="requiredFields"/>
+						<input id = "zip_code_RO" type="hidden"/>
+						<div class = "text_center">
+							Credit / Debit Card Zip Code
+						</div>
+					</div>
+				</div>
+				<div class = "row" id = "cardholder_div">
+					<input type = "text" name = "cardholder_name" id = "cardholder_name" 
+                        class="requiredFields"/>
+					<input id = "cardholder_name_RO" type="hidden"/>
+					<div class = "text_center">
+						Cardholder's Name
+					</div>
+				</div>
+			</div>
+			<div class = "col col2">
+				<h4 class = "text_center no_margin pt10 pb5">
+					Bank Account
+				</h4>
+				<div class = "row text_justify requiredFields_div">
+					<label>
+						<input type = "checkbox" name = "all_charges_from_bank" id = "all_charges_from_bank"
+							onclick="accountType(this)" class="acc"/>
+							Withdraw all Service Chrages and (ii) Contract
+							Termination Charges (see Paragraph 5), Early
+							Termination of this Contract) from my bank  account
+					<label>
+				</div>
+				<div class = "row">
+					<div class = "pb10">
+						Choose One : 
+					</div>
+					<div class = "p5 pl15 requiredFields_div" id = "account_type_div">
+						<div class = "pl5">
+							<label>
+								<input type = "checkbox" id = "checking" name = "checking" class="bank" 
+									onclick = "checkBankType(this)"/>
+								Checking
+							</label>
+						</div>
+						<div class = "pt5 pl5">
+							<label>
+								<input type = "checkbox" id = "saving" name = "saving" class="bank" 
+									onclick = "checkBankType(this)"/>
+								Saving
+							</label>
+						</div>
+					</div>
+					<br>
+					<div class = "row">
+						<input type = "text" name = "bank_name" id = "bank_name" 
+                        class="requiredFields"/>
+						<input id = "bank_name_RO" type="hidden"/>
+						<div class = "text_center">
+							Name of Bank/Credit Union
+						</div>
+					</div>
+					<div class = "pt10">
+						<div class = "col" id = "routing_number_div">
+							<input type = "text" name = "aba_routing_number" id = "aba_routing_number"
+                            class="requiredFields"/>
+							<input id = "aba_routing_number_RO" type="hidden"/>
+							<div class = "text_center">
+								ABA Routing Number
+							</div>
+						</div>
+						<div class = "col" id = "bank_account_number_div">
+							<input type = "text" name = "bank_account_number" id = "bank_account_number" 
+                            class="requiredFields"/>
+							<input id = "bank_account_number_RO" type="hidden"/>
+							<div class = "text_center">
+								Bank Account Number
+							</div>
+						</div>
+						<br>
+						<div class = "pt10">
+							<input type = "text" name = "name_in_account" id = "name_in_account" 
+                            class="requiredFields"/>
+							<input id = "name_in_account_RO" type="hidden"/>
+							<div class = "text_center">
+								Name as it appears on bank account
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class = "pt10 pb10 small_font text_justify small_font">
+			I authorize 
+			<div class = "company_name_div col"></div>
+			to withdraw the amounts in this section from my bank account or credit
+			card through an Automated Clearing House (ACH). These payments are for 
+			the equipment and servicesdescribed in this Contract. This authorization 
+			will remain in effect until the termination date of this Contract or
+			until I cancel it in writing, whichever occurs first. I also agree to notify 
+			<div class = "company_name_div col"></div> 
+			in writing of any changes in my account information at least 15 days prior to
+			the next billing date. If a payment date falls on a weekend or holiday, payment
+			may be executed on the next business day. Because this is an electronic transaction,
+			these funds may be withdrawn from my account each month as early as the transaction date. 
+			If the date or amount of the withdrawal changes, or if Contract Termination Charges 
+			(See Paragraph 5, Early Termination of this Contract) apply, 
+			<div class = "company_name_div col"></div> 
+			will notify me at least 10 days prior to the payment being collected. If an ACH 
+			transaction is rejected for non-sufficient funds (NFS), 
+			<div class = "company_name_div col"></div> 
+			may attempt to process the charge again within 30 days and an NFS may apply. The
+			origination of ACH transactions to my account must comply with the provision of U.S.
+			law. I am an authorized user of this credit card or bank account, and I will not 
+			dispute the payment with my Credit Card Company or bank so long as the amount 
+			corresponds to the terms indicated in this Contract. My first billing will be charged 
+			on the following business day of installation.
+		</div>
+		<div class = "row small_font text_justify requiredFields_div" >
+			<label>
+				<input type = "checkbox" id = "permit" onclick="permitType(this)" class="permit" />
+				Permit Required. I will obtain and pay for annual municipal alarm use permit. 
+				I acknowledge that failure to Obtain and provide
+				<div class = "company_name_div col"></div>
+				with my municipal alarm use permit registration number would result in no
+				municipal fire/police response to an alarm from my premises and/or a fine.
+			</label>
+		</div>
+		<div class = "pt10" id = "last_row">
+			<div class = "col" id = "account_signature_div">
+				<div id = "div_1">
+					<div class = "outer text_center" >
+						<div id="account_signature" class = "optionalFields"></div>
+						<div id="inner">
+							 <span class="docusignTag">Sign Here</span>
+						</div>
+						<input id="signatureJSON3" type="hidden"></input>
+					</div>
+					<div class = "pt5 text_center">Authorized Account Signature</div>
+				</div>
+			</div>
+			<div class = "col" id = "social_security_number_div">
+				<input type = "text" name = "social_security_number" id = "social_security_number" 
+					class = "text_center requiredFields"/>
+				<input id = "social_security_number_RO" type="hidden"/>
+				<div class = "text_center">Social Security Number</div>
+			</div>
+			<div class = "col" id = "dob_div">
+				<input type = "text" name = "dob" id = "dob"
+					class = "text_center requiredFields"/>
+				<input id = "dob_RO" type="hidden"/>
+				<div class = "text_center">Date Of Birth</div>
+			</div>
+			
+		</div>
+	</div>
+	<div class = "page_break">&nbsp;</div>
+	<div id = "page_4">
+		<h3 class = "heading">NOTICE OF CANCELLATION</h3>
+		<div class = "row" id = "account_number_div">
+			Account No.
+			<input type = "text" name = "account_number" id = "account_number" 
+				class="requiredFields"/>
+			<input id="account_number_RO" type="hidden"/>
+		</div>
+		<div class = "row">
+			<div class = "col text_center" id = "signature_div">
+				<div id = "div_1">
+					<div class = "font_bold">
+						I HERBY ACKNOWLEDGE RECEIPT OF THIS NOTICE
+					</div>
+					<!--div id = "buyer_signature_pad" class = "signature_pad"
+						style = "height:60px;margin-top:10px;width:90%"></div-->
+					<div class = "outer text_center" >
+						<div id="buyer_signature_1" class="optionalFields"></div>
+						<div id="inner">
+							 <span class="docusignTag">Sign Here</span>
+						</div>
+						<input id="signatureJSON4" type="hidden"></input>
+					</div>
+					<div class = "text_center pt5">Buyer's Signature</div>
+				</div>
+			</div>
+			<div class = "col text_center" id = "transaction_date_div">
+				<div class = "font_bold pb10">
+					ENTER Date Of Transaction
+				</div>
+				<br>
+				<br>
+				<input type = "text" name = "date_of_transaction" id = "date_of_transaction" 
+					class = "text_center" />
+				<input id="date_of_transaction_RO" type="hidden"/>
+				<div class = "text_center pt5">
+					Date Of Transaction
+				</div>
+			</div>
+		</div>
+		<div class = "pt15 pb10">
+			IN ORDER TO CANCEL, BUYER MUST SIGN BELOW.
+		</div>
+		<div class = "text_justify">
+			<div class = "row">
+				YOU MAY CANCEL THIS TRANSACTION, WITHOUT PENALTY OR OBLIGATION, WITHIN THREE
+				BUSINESS DAYS FROM THE DATE ABOVE.
+			</div>
+			<div class = "row">
+				IF YOU CANCEL, ANY PROPERTY TRADED IN, ANY PAYMENTS MADE NY YOU UNDER THE
+				AGREEMENT, AND ANY NEGOTIABLE INSTRUMENT EXECUTED BY YOU WILL BE RETURNED
+				WITHIN TEN (10) BUSINESS DAYS FOLLOWING RECEIPT BY THE SELLER OF YOUR
+				CANCELLATION NOTICE, AND ANY SECURITY INTEREST ARISING OUT OF THE TRANSACTION 
+				WILL BE CANCELLED.
+			</div>
+			<div class = "row">
+				IF YOU CANCEL, YOU MUST MAKE AVAILABLE TO THE SELLER AT YOUR RESIDENCE, IN
+				SUBSTANTIALLY AS GOOD CONDITION, AS WHEN RECEIVED, ANY GOODS DELEIVERED TO
+				YOU UNDER THIS AGREEMENT; OR YOU MAY IF YOU WISH, COMPLY WITH THE
+				INSTRUCTIONS OF THE SELLER REGARDING THE RETURN SHIPMENT OF THE GOODS AT THE
+				SELLER'S EXPENSE AND RISK.
+			</div>
+			<div class = "row">
+				IF YOU MAKE THE GOODS AVAILABLE TO THE SELLER AND THE SELLER DOES NOT PICK THEM
+				UP WITHIN 20 DAYS OF THE DATE OF YOUR NOTICE OF CANCELLATION, YOU MAY RETAIN
+				OR DISPOSE OF THE GOODS WITHOUT FURTHER OBLIGATION. IF YOU FAIL TO MAKE THE GOODS
+				AVAILABLE TO THE SELLER, OR IF YOU AGREE TO RETURN THE GOODS TO THE SELLER AND
+				FAIL TO DO SO, THEN YOU REAMIN LIABLE FOR PERFORMANCE OF ALL OBLIGATIONS UNDER
+				THE CONTRACT.
+			</div>
+			<div class = "row">
+				TO CANCEL THIS TRANSACTION, MAIL OR DELIVER A SIGNED AND DATED COPY OF THIS
+				CANCELLATION NOTICE OR ANY OTHER WRITTEN NOTICE TO:
+			</div>
+		</div>
+		<div class = "text_center" id = "company_data_div">
+			<div class = "company_name_div"></div>
+			<div class = "company_address_div"></div>
+		</div>
+		<div class = "p15 text_center">
+			<div class = "col">
+				NO LATER THAN MIDNIGHT OF
+				<br>&nbsp;
+			</div>&nbsp;
+			<div class = "col text_left">
+				<input type = "text" name = "no_later_than" id = "no_later_than" 
+					class = "text_center requiredFields" />
+				<input id="no_later_than_RO" type="hidden"/>
+				<div class = "text_center">(Date)</div>
+			 </div>
+		</div>
+		<h4 class = "text_center">I HEREBY CANCEL THIS TRANSACTION</h4>
+		<div class = "row">
+			<div class = "col text_center" id = "buyer_signature_div">
+				<div id = "div_1">
+					<div class = "outer text_center" >
+						<div id="buyer_signature_2" style = ""></div>
+						<input id="signatureJSON5" type="hidden"></input>
+					</div>
+					<div class = "text_center">
+						Buyer's Signature
+					</div>
+				</div>
+			</div>
+			<div class = "col" id = "date_div">
+				<input type = "text" name = "buyer_signature_date" id = "buyer_signature_date"
+					class = "text_center"/>
+				<input id="buyer_signature_date_RO" type="hidden"/>
+				<div class = "text_center pt5">Date</div>
+			</div>
+		</div>
+		<div class = "pt15" id = "last_row">
+			<div class = "col" id = "col1">
+				<div class = "row">
+					Name 
+					<input type = "text" name = "buyer_name" id = "buyer_name" />
+					<input id="buyer_name_RO" type="hidden"/>
+				</div>
+				<div class = "row">
+					Address 
+					<input type = "text" name = "buyer_address" id = "buyer_address" />
+					<input id="buyer_address_RO" type="hidden"/>
+				</div>
+				<div class = "row">
+					City/State/Zip
+					<input type = "text" name = "buyer_zip" id = "buyer_zip" />
+					<input id="buyer_zip_RO" type="hidden"/>
+				</div>
+			</div>
+			<div class = "col" id = "col2">
+				<div class = "row">
+					Digital Copy Of This Form Received By Buyer On Date Of Transaction. 
+					2 Printed Copies Presented Upon Request
+				</div>
+				<div class = "signature_pad" style = "height:60px;width:100%"></div>
+				<div class = "row">
+					BUYER INITIALS TO ACKNOWLEDGES RECEIPT OF THIS FORM
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class = "page_break">&nbsp;</div>
+	<div id = "page_8" class = "text_justify">
+		<div class = "row">
+			1.  CENTRAL OFFICE MONITORING: Upon receipt of a signal from the communication software,
+			<div class = "company_name_div col"></div> or its designee communication center shall 
+			make every reasonable effort to notify Subscriber and the appropriate municipal police
+			of fire department. Subscriber acknowledges that signals transmitted from Subscriber's 
+			premises directly to municipal police or fire departments are not monitored by personnel 
+			of <div class = "company_name_div col"></div> or 
+			<div class = "company_name_div col"></div>'s
+			designee communication center and <div class = "company_name_div col"></div> 
+			does not assume any responsibility for the manner in which such signals are monitored 
+			or the response, if any, to such signals. Subscriber acknowledges that signals which
+			are transmitted over telephone lines, wire, air waves, internet, VOIP, radio or cellular, 
+			or other modes of communication pass through communication networks wholly beyond the 
+			control of <div class = "company_name_div col"></div> and are not maintained by 
+			<div class = "company_name_div col"></div> and, therefore, 
+			<div class = "company_name_div col"></div> shall not be responsible for any failure 
+			which prevents transmission signals from reaching the central office monitoring center 
+			or damages arising there from, or for data corruption, theft or viruses to subscriber's 
+			computers if connected to the alarm communication equipment. Subscriber agrees to furnish 
+			<div class = "company_name_div col"></div> with written list of names and telephone numbers
+			of those persons Subscriber wishes to receive notification of alarm signals. All changes 
+			and revisions shall be supplied to <div class = "company_name_div col"></div> in writing. 
+			Subscriber authorizes <div class = "company_name_div col"></div> to access the control
+			panel to input or delete data and programming. If the equipment contains video or listening 
+			devices permitting central office to monitor video or sound then upon receipt of an alarm
+			signal central office shall monitor video or sound for so long as central office in its 
+			sole discretion deems appropriate to confirm an alarm condition. If Subscriber requests
+			<div class = "company_name_div col"></div> to remotely activate or deactivate the system, 
+			change combinations, openings or closings, or re-program system functions, Subscriber shall 
+			pay <div class = "company_name_div col"></div> $85 for each such service. 
+			<div class = "company_name_div col"></div> may, without prior notice, suspend or terminate
+			its service, in central office's sole discretion, in event of Subscriber's default in 
+			performance of this agreement or in event central office facility or communication 
+			network is nonoperational or subscriber's alarm system is sending excessive false alarms.
+			Central office is authorized to record and maintain audio and video transmissions, data
+			and communications, and shall be the exclusive owner of such property.
+		</div>
+		<div class = "row">
+			2. REMOTE SERVICES ACCESS: If Remote View Camera(s) and/or Remote Keypad Control Module is included in the schedule of equipment to be installed by <div class = "company_name_div col"></div> and remote services are to be provided, the equipment will transmit data via subscriber's high speed Internet service to subscriber's device which is compatible with <div class = "company_name_div col"></div> remote services server. <div class = "company_name_div col"></div> will grant access to server permitting subscriber to monitor the security system, access the system to arm and disarm the system, and view the remote video camera(s). The remote services server is provided either by <div class = "company_name_div col"></div> or a third party. <div class = "company_name_div col"></div> shall install the camera(s) in a permissible legal location in subscriber's premises to permit Subscriber viewing. <div class = "company_name_div col"></div> shall have no responsibility for failure of data transmission, corruption or unauthorized access and shall not monitor or view the camera data.
+		</div>
+		<div class = "row">
+			3. WIRELESS AND INTERNET ACCESS CAPABILITIES: Subscriber is responsible for supplying high speed internet access at Subscriber's premises. <div class = "company_name_div col"></div> does not provide internet service or maintain internet connection or wireless access, computer, smart phone, electric current connection or supply, or the remote video server. In consideration of Subscriber making its monthly payments for access to <div class = "company_name_div col"></div> online account management website, <div class = "company_name_div col"></div> will provide Subscriber with a unique passcode which will access <div class = "company_name_div col"></div> website, accessing Subscriber's security system. <div class = "company_name_div col"></div> is not responsible for Subscriber's access to the internet or any interruption of service or down time of remote access. Subscriber acknowledges that Subscriber's security system can be compromised if the internet codes or devices used for access are lost or accessed by others and <div class = "company_name_div col"></div> shall have no liability for such third party unauthorized access.
+		</div>
+		<div class = "row">
+			4. PAYMENTS AND CONSUMER REPORTS. All changes are payable in advance. I authorize <div class = "company_name_div col"></div> to obtain a non-investigative consumer report, commonly referred to as a credit check or credit report about me from a consumer reporting agency at any time during the term and renewal term of this Contract. By my authorized signature, I authorize <div class = "company_name_div col"></div> to request and obtain credit history from a credit bureau or other agency and that such credit bureau of other agency has my permission to release credit information to <div class = "company_name_div col"></div>.
+		</div>
+		<div class = "row">
+			5. EARLY TERMINATION OF THIS CONTRACT: The parties agree that due to the nature of the services to be provided by <div class = "company_name_div col"></div>, the payments to be made by the Subscriber for the term of the monitoring part of this agreement pursuant to paragraph 4 from an integral part of <div class = "company_name_div col"></div>'s anticipated profits; that in the event of Subscriber's default it would be difficult if not impossible to affix <div class = "company_name_div col"></div>'s actual damages. Therefore, in the event Subscriber defaults in the payment of any charges to be paid to <div class = "company_name_div col"></div>, the balance of all payments for the entire term herein shall immediately become due and payable. Subscriber terminating this contract during its initial term of contract shall be liable for 75% of the remaining monthly service charges thereof as liquidated damages and <div class = "company_name_div col"></div> shall be permitted to terminate all its services under this agreement and to remotely re-program or delete any programming without relieving Subscriber of any obligation herein. In the event of Subscriber's breach of this agreement, <div class = "company_name_div col"></div> may at its option either remove its software or deem same sold to Subscriber for 75% of the amount specified as the value of the software in addition to the liquidated damages provided for herein. Exception is any and all Alarm Service Contracts signed for less than three year (3) year term will be held responsible for the full term amount balance of contract.
+		</div>
+		<div class = "row">
+			6. LIMITED WARRANTY: In the event that any part of the security system becomes defective, or in the event that any repairs are required, <div class = "company_name_div col"></div> agrees to make all repairs and replacement of parts without costs to the Subscriber for a period of ninety (90) days from the date of installation. <div class = "company_name_div col"></div> reserves the option to either replace or repair the alarm equipment, and reserves the right to substitute materials of equal quality at the time of replacement, or to use reconditioned parts in fulfillment of this warranty. This warranty does not include batteries reprogramming, damaged by lighting, electrical surge, wire, foil breaks or any acts of God, fire, riot, war terrorism, negligence, vandalism or any external cause. <div class = "company_name_div col"></div> is not the manufacturer of the equipment and other than <div class = "company_name_div col"></div>'s limited warranty Subscriber agrees to look exclusively to the manufacturer of the equipment for repairs under its warranty coverage if any. Except as set forth in this agreement, <div class = "company_name_div col"></div> makes no express warranties as to any matter whatsoever including without limitation, the condition of the equipment, its merchantability, or its fitness for any particular purpose. <div class = "company_name_div col"></div> does not represent nor warrant that the security system may not be compromised or circumvented, or that the system will prevent any loss by burglary, hold-up, fire or otherwise; or that the system will in all cases provide the protection for which it is installed. <div class = "company_name_div col"></div> expressly disclaims any implied warranties, including implied warranties of merchantability or fitness for a particular purpose. The warranty does not cover any damage to material or equipment caused by accident, misuse, attempted or unauthorized repair service, modification or improper installation by anyone other than <div class = "company_name_div col"></div>. <div class = "company_name_div col"></div> shall not be liable for consequential damages. Subscriber acknowledges that any affirmation of fact or promise made by <div class = "company_name_div col"></div> shall not be deemed to create an express warranty unless included in this contract in writing.
+		</div>
+		<div class = "row">
+			7. EXTENDED LIMITED WARRANTY: If I purchase Extended Limited Warranty, <div class = "company_name_div col"></div> will repair or at its option replace any part of the Equipment that requires repair or replacement due to ordinary wear and tear or malfunction and will provide at No Labor rate to the Subscriber. For each service call there will be a trip charge. Trip charges will be at a discounted rate. Charges for repair services will be collected at the time repair service is rendered. Such service rates are subject to change without notice. I acknowledge that it is my responsibility to make any pay for all repairs and replacements should any part of the Equipment be damaged by lighting, electrical surges or other acts of God, fire, riot war, terrorism, negligence, vandalism or any eternal cause. <div class = "company_name_div col"></div> will use new or functionally operative parts for replacements. <div class = "company_name_div col"></div> shall service upon Subscriber's request the security system installed in Subscriber's premises between the hours of 9 a.m. and 5 p.m. Monday through Friday, within reasonable time after receiving notice from subscriber that service is required, exclusive of Saturdays, Sundays and legal holidays.
+		</div>
+		<div class = "row">
+			8.WARRANTY EXCLUSIONS: Warranty Service performed only during normal working hours, between the hours of 9 a.m. and 5 p.m. Monday through Friday, within reasonable time after receiving notice from subscriber that service is required, exclusive of Saturdays, Sundays and legal holidays. If I request <div class = "company_name_div col"></div> to perform warranty services outside normal working hours, I will pay <div class = "company_name_div col"></div> for the services at <div class = "company_name_div col"></div>'s then-current rates for labor and parts and trip charge, the Limited Warranty provider under this contract and if purchased does not apply if <div class = "company_name_div col"></div> determines upon inspection that any of the following conditions caused the need of service. (A) Damage resulting from accidents, theft, Acts of God, natural disasters, labor disputes, terrorism, war, civil strife, electrical surges, alterations or misuse. (B) Failure to properly close or secure a door, window or other point protected by an alarm device; (C) Failure to properly follow the operating instructions; (D) Trouble in a telephone line use of non-traditional telephone line or service (including but not limited to DSL, ADSL, VOIP, etc.) or due to interruption of power; (E) Repairs needed to window foil, security screens, exterior mounted devices or PROM (Programmable Read Only Memory); (F) Alterations to my premises or failure of my premises to comply with any applicable codes, regulations or laws; or (G) Alterations or damage to the Equipment caused by Me or by a cause beyond <div class = "company_name_div col"></div>'s control. <div class = "company_name_div col"></div> will not perform warranty services on any device not installed by <div class = "company_name_div col"></div>.
+		</div>
+		<div class = "row">
+			9. COMMUNICATION SOFTWARE REMAINS PERSONAL PROPERTY OF <div class = "company_name_div col"></div>: <div class = "company_name_div col"></div> shall instruct Subscriber in the proper use of the security system, install, program and service in the premises of the Subscriber, communication software which shall remain the sole personal property of <div class = "company_name_div col"></div> and shall not be considered a fixture or a part of the realty and Subscriber shall not permit the attachment thereto of any apparatus not furnished by <div class = "company_name_div col"></div>. Communication software is part of the instrument panel programmed to transmit a signal Passcode to CPU software remains property of <div class = "company_name_div col"></div>. Provided Subscriber performs this agreement for the full term thereof, upon termination <div class = "company_name_div col"></div> shall at its option provide to Subscriber the passcode to the CPU software or change the passcode to the manufacturer's default code.
+		</div>
+		<div class = "row">
+			10. FIRE ALARMS: Unless the schedule of protection provides for a fire alarm system to code, <div class = "company_name_div col"></div> makes no representation that the fire alarm equipment meets NFPA 72 or local code requirements or constitutes a fire alarm system as that term is defined by the Authority Having Jurisdiction [AHJ] of fire alarm systems in Subscriber's premises. If a fire alarm system to code is specified in the schedule of installation then <div class = "company_name_div col"></div> will install fire alarm equipment pursuant plans and specifications of architect or professional engineer engaged by Subscriber, field and approved by the AHJ over fire alarm systems. Subscriber agrees that any equipment required by the AHJ not specified in the schedule of installation shall be an extra to this contract to be paid for by Subscriber at the time said additional equipment is requested.
+		</div>
+		<div class = "row">
+			11. DELAY IN INSTALLATION: <div class = "company_name_div col"></div> shall not be liable for any damage or loss sustained by Subscriber as a result of delay in installation of equipment, equipment failure, or for interruption of service due to electric failure, strikes, walk-outs, war, acts of God, or other causes, including <div class = "company_name_div col"></div>'s negligence in the performance of this contract. The estimated date work is to be substantially completed is not a definite completion date and time is not of the essence.
+		</div>
+		<div class = "row">
+			12. TESTING AND SERVICE OF COMMUNICATION SOFTWARE: Communication software, once installed, is in the exclusive possession and control of the Subscriber, and it is Subscriber's sole responsibility to test the operation of the communication software and to notify <div class = "company_name_div col"></div> if it is in need of repair. <div class = "company_name_div col"></div> shall not be required to service the communication software unless it has received notice from Subscriber, and upon such notice, <div class = "company_name_div col"></div> shall service the communication software to the best of its ability within 36 hours, exclusive of Saturday, Sunday and legal holidays, during the business hours of 9 a.m. and 5 p.m. Any repair or other services provided by <div class = "company_name_div col"></div> to Subscriber's alarm or security equipment shall be at <div class = "company_name_div col"></div>'s option on a per call request by Subscriber, and Subscriber shall pay for such labor and material at time such repair or other service is performed. All such repair or other service shall be governed by the terms of this contract. In the event Subscriber complies with the terms of this agreement and <div class = "company_name_div col"></div> fails to repair the communication software, Subscriber agrees to send notice in writing by certified or registered mail, return receipt requested and Subscriber shall not be responsible for payments due while the communication software remains inoperable. In any lawsuit between the parties in which condition or operation of the communication software is in issue, the Subscriber shall be precluded from raising the issue that the communication software was not operating unless Subscriber can produce a post office certified or registered receipt, signed by <div class = "company_name_div col"></div>, evidencing that service was requested by Subscriber. Only Communication software is covered by service. It shall be Subscriber's sole responsibility to maintain the communication hardware and subscriber's alarm equipment and system in working order.
+		</div>
+		<div class = "row">
+			13. ALTERATION OF PREMISES FOR INSTALLATION: <div class = "company_name_div col"></div> is authorized to make preparations such as drilling holes, driving nails making attachments or doing any other thing necessary in <div class = "company_name_div col"></div>'s sole discretion for the installation and service of the security system, and <div class = "company_name_div col"></div> shall not be responsible for any condition created thereby as a result of such installation, service, or removal of the security system, and Subscriber represents that the owner of the premises, if other than Subscriber, authorizes the installation of the security system under the terms of this agreement.
+		</div>
+		<div class = "row">
+			14. SUBSCRIBER'S DUTY TO SUPPLY ELECTRIC AND TELEPHONE SERVICE: Subscriber agrees to furnish, at Subscriber's expense, all 110 Volt AC power and electrical outlets and receptacles, internet connection, high speed broadband cable or DSL and IP Address, telephone hook-ups, RJ31x Block or equivalent, as deemed necessary by <div class = "company_name_div col"></div>.
+		</div>
+		<div class = "row">
+			15. APPLICATION OF PAYMENTS: LIEN LAW: <div class = "company_name_div col"></div> or any subcontractor engaged by <div class = "company_name_div col"></div> to perform the work or furnish material who is not paid may have a claim against purchaser or the owner of the premises if other than purchaser which may be enforced against the property in accordance with the applicable lien laws.
+		</div>
+		<div class = "row">
+			16. INDEMNITY/WAIVER OF SUBROGATION RIGHTS/ASSIGNMENTS: SUBSCRIBER AGREES TO INDEMNFY AND HOLD HARMLESS <div class = "company_name_div col"></div>, ITS EMPLOYEES AGENTS AND SUBCONTRACTORS, FROM AND AGAINST ALL CLAIMS, LAWSUITS, INCLUDING THOSE BROUGHT BY THIRD-PARTIES OR BY SBSCRIBER, INCLUDING REASONABLE ATTORNEYS' FEES AND LOSSES, ASSERTED AGAINST AND ALLEGED TO BE CAUSED BY <div class = "company_name_div col"></div> PERFORMANCE, NEGLIGENCE OR FAILURE TO PERFORM ANY OBLIGATION UNDER THIS AGREEMENT. Parties agree that there are no third party beneficiaries of this contract. Subscriber on its behalf and any insurance carrier waives any right of subrogation Subscriber's insurance carrier may otherwise have against <div class = "company_name_div col"></div> or <div class = "company_name_div col"></div>'s subcontractors arising out of this agreement or the relation of the parties hereto. Subscriber shall not be permitted to assign this agreement without written consent of <div class = "company_name_div col"></div>. <div class = "company_name_div col"></div> shall have the right to assign this contract and shall be relieved of any obligations herein upon such assignment.
+		</div>
+		<div class = "row">
+			17. EXCLUPATORY CLAUSE: <div class = "company_name_div col"></div> AND SUBSCRIBER AGREE THAT <div class = "company_name_div col"></div> IS NOT AN INSURER AND NO INSURANCE COVERAGE IS EXCULPATORY CLAUSE: <div class = "company_name_div col"></div> AND SUBSCRIBER AGREE THAT <div class = "company_name_div col"></div> IS NOT INSURER NOT liable to Subscriber for any loss, personal injury, data corruption or inability to retrieve data, or property damage sustained by Subscriber as a result of burglary, theft, hold-up, fire, equipment failure, smoke, or any other cause, whatsoever, regardless of whether or not such loss or INSURANCE COVERAGE IS OFFERED HEREIN. THE SECURITY EQUIPMENT IS DESIGNED TO REDUCE CERTAIN RISKS OF LOSS, THOUGH <div class = "company_name_div col"></div> DOES NOT GUARANTEE THAT NO LOSS WILL OCCUR. <div class = "company_name_div col"></div> is not assuming liability, and, therefore shall not be damage was caused by or contributed to by <div class = "company_name_div col"></div>'s negligent performance, failure to perform any obligation or strict products liability. Subscriber releases <div class = "company_name_div col"></div>'s from any claims for contribution, indemnity or subrogation.
+		</div>
+		<div class = "row">
+			18.INSURANCE: The Subscriber shall maintain a policy of public liability, property damage, burglary and theft insurance under which <div class = "company_name_div col"></div> and the Subscriber are named as insured, and under which insurer agrees to indemnify and hold <div class = "company_name_div col"></div> harmless from and against all costs, expenses including attorney's fees and liability arising out of or based upon any and all claims, injuries and damages arising under this agreement, including, but not limited to, those claims, injuries and damages contributed to by <div class = "company_name_div col"></div> negligent performance to any degree or its failure to perform any obligation. The minimum limits of liability of such insurance shall be one million dollars for any injury or death, and property damage, burglary and theft coverage in an amount necessary to indemnify Subscriber for property on its premises. <div class = "company_name_div col"></div> shall not be responsible for any portion of any loss or damage which is recovered or recoverable by the Subscriber from insurance covering such loss or damage or for such loss or damage against which Subscriber is indemnified or insured.
+		</div>
+		<div class = "row">
+			19. LIMITATION OF LIABILITY: SUBSCRIBER AGREES THAT SHOULD THERE ARISE ANY LIABILITY ON THE PART OF <div class = "company_name_div col"></div>. AS A RESULT OF <div class = "company_name_div col"></div>'s NEGLIGENT PERFORMANCE TO ANY DEGREE OF FILURE OR PERFORM ANY OF <div class = "company_name_div col"></div>'s OBLIGATIONS OR EQUIPMENT FAILURE, OR STRICT PRODUCTS LIABILITY, THAT <div class = "company_name_div col"></div>'s LIABILITY SHALL BE LIMITED TO THE SUM OF $250 OR 5% OF THE SALES PRICE, WHICHEVER IS GREATER. If Subscriber wishes to increase <div class = "company_name_div col"></div>'s amount of limitation of liability, Subscriber may, as a matter of right, at any time, by entering into a supplemental contract, obtain a higher limit by paying an annual payment consonant with <div class = "company_name_div col"></div>'s increased liability. This shall not be construed as insurance coverage.
+		</div>
+		<div class = "row">
+			20. LIQUIDATED DAMAGES: THE PARTIES AGREE THAT IN THE EVENT SUBSCRIBER SUFFERS DAMAGES AS A RESULT OF <div class = "company_name_div col"></div>'s NEGLIGENCE TO ANY DEGREE OR FAILURE TO PERFORM ANY OBLIGATION, IT WOULD BE IMPRACTICAL AND EXTREMLY DIFFICULT TO ANTICIPATE OR FIX ACTUAL DAMAGES. THEREFORE, SUBSCRIBER AGREES THAT SHOULD THERE ARISE ANY LIABILITY ON THE PART OF <div class = "company_name_div col"></div>, SUBSCRIBER AGREES TO ACCEPT $250 OR THE AMOUNT PROVIDED FOR IN PARAGRAPH 22, WHICHEVER IS GREATER, AS LIQUIDATED DAMAGES IN COMPLETE SATISFACTION OF SUCH LIABILITY AND <div class = "company_name_div col"></div> IS RELEASED AND DISCHARGED FROM ANY FURTHER LIABILITY.
+		</div>
+		<div class = "row">
+			21. LEGAL ACTION: In the event <div class = "company_name_div col"></div> refers this contract to an attorney, to recover any amounts owed by Subscriber to <div class = "company_name_div col"></div> hereunder, the parties agree that the amount to be recovered, and any judgment to be entered, shall include interest at the rate of 1.5% per month from the date payment is due and Subscriber shall pay <div class = "company_name_div col"></div>'s legal fees. In any action commenced by <div class = "company_name_div col"></div> against Subscriber, Subscriber shall not be permitted to interpose any counterclaim. The commencement of any action, proceeding or arbitration and service of legal process or papers in any action proceeding or arbitration between the parties may be served by prepaid First-Class Mail delivered by the U.S. Post Office or overnight by Federal Express or UPS to the party's address in this agreement or other address provided by a party in writing to other party. This agreement shall be governed by the laws of the State of Texas. The parties agree that the courts of the State of Texas shall have exclusive jurisdiction over the parties hereto regarding any dispute between them and <div class = "company_name_div col"></div> and Subscriber submits to the jurisdiction of the State of Texas. Subscriber submits to the jurisdiction of Texas and agrees that any litigation between the parties must be commenced and maintained exclusively in the State of Texas and in the Country where <div class = "company_name_div col"></div>'s principal place of business is located. The parties waive trial by jury in any action between them. Any action by Subscriber against <div class = "company_name_div col"></div> must be commenced within one year of the accrual of the cause of action or shall be barred. All actions or proceedings against <div class = "company_name_div col"></div> must be based on the provisions of this agreement. Any other action that Subscriber may have or bring against <div class = "company_name_div col"></div> in respect to other services rendered in connection with this agreement shall be deemed to have merged in and be restricted to the terms and conditions of this agreement.
+		</div>
+		<div class = "row">
+			22. <div class = "company_name_div col"></div>'S RIGHT TO SUBCONTRACT SPECIAL SERVICES: Subscriber agrees that <div class = "company_name_div col"></div> is authorized and permitted to subcontract any services to be provided by <div class = "company_name_div col"></div> to third parties who may be independent of <div class = "company_name_div col"></div>, and that <div class = "company_name_div col"></div> shall not be liable for any loos or damage sustained by Subscriber by reason of fire, theft, burglary or any other cause whatsoever caused by the negligence of third parties, except that <div class = "company_name_div col"></div> shall not obligate Subscriber to make any payments to such third parties. Subscriber appoints <div class = "company_name_div col"></div> to act as a Subscriber's agent with respect to such third parties, except that <div class = "company_name_div col"></div> shall not obligate Subscriber to make any payments to such third parties. Subscriber acknowledges, that this agreement, and particularly those paragraphs relating to <div class = "company_name_div col"></div>'s disclaimer of warranties exemption from liability, even for its negligence, limitation of liability and third party indemnification, inure to the benefit of and are applicable to any assignee, subcontractors and communication centers of <div class = "company_name_div col"></div>.
+		</div>
+		<div class = "row">
+			23 NON-SOLICITATION.  Subscriber agrees that it will not solicit for employment for itself, or any other entity, or employ, in any capacity; any employee of <div class = "company_name_div col"></div> assigned by <div class = "company_name_div col"></div> to perform any service for or on behalf of Subscriber for a period of two years after <div class = "company_name_div col"></div> has completed providing service to Subscriber. In the event of Subscriber's violation of this provision, in addition to injunctive relief, <div class = "company_name_div col"></div> shall recover from Subscriber an amount equal to such employee's salary based upon the average three months preceding employee's termination of employment with <div class = "company_name_div col"></div>, times twelve, together with <div class = "company_name_div col"></div>'s counsel and expert witness fees.
+		</div>
+		<div class = "row">
+			24. FALSE ALARMS/PERMIT FEES: Subscriber is responsible for all alarm permits and fees, agrees to file for and maintain any permits required by applicable law and indemnify or reimburse <div class = "company_name_div col"></div> for any fines relating to permits or false alarms. <div class = "company_name_div col"></div> shall have no liability for permit fees, false alarms, false alarm fines, police or fire response, any damage to personal or real property or personal injury caused by police or fire department response to alarm, whatever false alarm or otherwise, or the refusal of the police or fire department to respond. In the event of termination of police or fire response by the municipal police or fire department this contract shall nevertheless remain in full force and Subscriber shall remain liable for all payments provided for herein. Should <div class = "company_name_div col"></div> be require by existing or hereinafter enacted law to perform any service or furnish any material not specifically covered by the terms of this agreement Subscriber agrees to pay <div class = "company_name_div col"></div> for such service or material.
+		</div>
+		<div class = "row">
+			25.SECURITY INTEREST/COLLATERAL: To secure Subscriber's obligations under this agreement Subscriber grants <div class = "company_name_div col"></div> a security interest in the security equipment installed by <div class = "company_name_div col"></div> and <div class = "company_name_div col"></div> is authorized to file financing statement.
+		</div>
+		<div class = "row">
+			26. FULL AGREEMENT/SEVERABILITY/CONFLICTING DOCUMENTS. This agreement constitutes the full understanding of the parties and may not be amended or modified or canceled except in writing signed by both parties, except <div class = "company_name_div col"></div>'s requirements regarding items of protection provided for this agreement imposed by Authority Having Jurisdiction. Should there arise any conflict between this agreement and Subscriber's purchase order or other document, this agreement will govern, whether such purchase order or document is prior to or subsequent to this agreement. Should any provision of this agreement be deemed void, all other provisions will remain in effect.
+		</div>
+	</div>
+</body>
+</html>

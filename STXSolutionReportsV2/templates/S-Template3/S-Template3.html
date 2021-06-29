@@ -1,0 +1,647 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Cover Page</title>
+		<link type="text/css" href="#ApplicationDataPath#/jquery-ui.css" rel="stylesheet"/>
+		<link type="text/css" href="#ApplicationDataPath#/jquery.signature.css" rel="stylesheet"/>
+		<style type="text/css">
+			@page land { size:landscape; }
+			@page port { size:portrait; }
+			.landscapePage { page:land; }
+			.portraitPage {	page:port; }
+			
+			.pagebreak { page-break-before: always; }
+
+			.border1 {
+				border: thin solid #000;
+			}
+
+			.3cl {
+				height: 30px;
+			}
+
+			.hdr {
+				background-color: #C4BFBF;
+			}
+
+			.hdr3 {
+				background-color: #C4BFBF;
+			}
+
+			.hdr4 {
+				background-color: #838383;
+			}
+
+			.body1 .body1hd .h1 {
+				color: #dfdfdf;
+			}
+
+			.body1 {
+				height: auto;
+				width: 100%;
+				padding: 2px;
+			}
+
+			.body1 .body1hd {
+				background-color: #dfdfdf;
+			}
+
+			.hdr4 .p {
+				line-height: 100%;
+				color: #FFF;
+			}
+
+			.hdr2 {
+				height: 20px;
+				line-height: 0.2px;
+				font-weight: normal;
+				font-variant: normal;
+				color: #FFF;
+			}
+
+			.hdr4 .rt {
+				color: #FFF;
+			}
+
+			.body1 .h3 {
+				text-decoration: underline;
+				font-size: 12px;
+			}
+
+			.body1 .content .box1 {
+				border: thin dotted #F00;
+				height: 30px;
+				width: 200px;
+				clear: none;
+				margin-left: 10px;
+			}
+
+			.body {
+				height: 100%;
+				width: 100%;
+            }
+			.body .p {
+				padding-left: 5px;
+			}
+			.body .border {
+				background-color: #dfdfdf;
+				width: 99%;
+			}
+			.footer {
+				width: 100%;
+			}
+			.body .ta1 {
+				background-color: #dfdfdf;
+				width: 100%;
+				color: #FFF;
+			}
+			tr.border_bottom td {
+			border-bottom:1pt solid black;
+			border-top:1pt solid black;
+			}
+			.body .chart .table2 {
+				float: none;
+			}
+			.productTable {
+				border: 1px solid black;
+				border-collapse: collapse;
+			}
+			.body .chart {
+				width: 90%;
+				border: thin solid #000;
+				border-radius: 30px;
+			}
+			.body .chart .table tr .row2 {
+				width: 400px;
+			}
+			.body .ta1 tr .table {
+				width: 200px;
+			}
+
+			.kbw-signature {
+				width: 400px; height: 200px; 
+			}
+			
+			.sigStyle {
+				min-width:330px;
+				position:absolute;
+				width:330px;
+				height:120px;
+				border-bottom:solid black;
+				border-width: 1px;
+				z-index: 3;
+				<!-- width: 400px;  -->
+				<!-- height: 120px; -->
+				<!-- z-index: 3; -->
+			}
+			.lineblock{
+				min-width:330px;
+				position:absolute;
+				width:330px;
+				height:120px;
+				border-bottom:solid black;
+				border-width: 1px;
+			}
+			
+            div.a{
+                width:400px;
+            }
+            .outer{
+                width:400px;
+                height:200px;
+                position:relative
+            }
+            
+            
+			/* table, th, td, tr, td, img	 {
+			   border: 1px solid black;
+			} */
+			
+			.frame {
+			    height: 150px;      /* equals max image height */
+			    width: 40%;
+			    white-space: nowrap;
+			    float: left;
+			    text-align: center; margin: 1em 0;
+			}
+			
+			.helper {
+			    display: inline-block;
+			    height: 100%;
+			    vertical-align: middle;
+			}
+			
+			.imgv {
+			    vertical-align: middle;
+			    max-height: 150px;
+			}
+			.inner{
+				min-width:330px;
+				min-height:120px;
+				height: 100px;
+				width:330px;
+				position:absolute;
+				z-index: -2;
+				display:inline-block;
+				text-align:center;
+				vertical-align:middle;
+                background-color:#ffff00;
+			}
+			.docusignTag{
+				display:block;
+				position:relative;
+				color: #e5e7e9 ;
+				vertical-align:bottom;
+				width:330px;
+				height:120px;
+				z-index: -1;
+				text-align:center;
+				vertical-align:middle;
+				<!-- top:50%; -->
+				transform: translateY(-30%);
+			}
+        @media print{
+            sigStyle {
+                background-color:#ffffff;
+            }
+           
+            div.inner{
+                background-color:#ffffff;
+            }
+            span.docusignTag{
+                color:#ffffff;
+            }
+        }
+		</style>
+		<script type="text/javascript" src="#ApplicationDataPath#/excanvas.js"></script>
+		<script type="text/javascript" src="#ApplicationDataPath#/jquery.min.js"></script>
+		<script type="text/javascript" src="#ApplicationDataPath#/jquery-ui.min.js"></script>
+		<script type="text/javascript" src='#ApplicationDataPath#/jquery.signature.js'></script>
+		<script type="text/javascript" src='#ApplicationDataPath#/jquery.ui.touch-punch.min.js'></script>
+
+		<script type="text/javascript">
+		
+		var reportJson = #REPORT_JSON#;
+		 
+		$(function() {
+			var iwidth = 0;
+			var iheight = 0 ;
+			
+			var reportJsonDecoded = reportJson;
+			//var reportJsonObj = $.parseJSON(reportJsonDecoded);
+			var reportJsonObj = reportJsonDecoded;
+			
+          if(reportJsonObj.Report.PrintVersion == 1) {
+              $("#header1").css('background', 'none');
+              document.body.style.backgroundColor="#ffffff";
+              var elements = document.getElementsByClassName('printHeader2');
+          
+              for (var i = 0; i < elements.length; ++i) {
+              var item = elements[i];
+              item.style.backgroundColor = "#FFFFFF";
+              }
+          
+          }
+          else{
+              document.body.style.backgroundColor="#dfdfdf";
+              var elements = document.getElementsByClassName('printHeader2');
+              for (var i = 0; i < elements.length; ++i) {
+              var item = elements[i];
+              item.style.backgroundColor = "#FFFFFF";
+              }
+          }
+			
+			var header1Str = '<table style="width: 100%; padding-top: 2px;">';
+			header1Str += (reportJsonObj.Report.ReportTitle != '') ? ('<tr align="center"><td colspan="3" style="font: 18px \'Arial\';line-height: 18px; height: 18px;">'+reportJsonObj.Report.ReportTitle +'</td></tr>') : '<tr align="center"><td colspan="3" style="height: 18px;"></td></tr>';
+			//header1Str += '<tr style="height: 50px;"><td></td></tr>';
+			header1Str += (reportJsonObj.Report.ClientName != '') ? ('<tr align="center"><td colspan="3" style="font: 18px \'Arial\';line-height: 18px;height: 18px;">'+reportJsonObj.Report.ClientName +'</td></tr>') : '<tr align="center"><td colspan="3" style="height: 18px;"></td></tr>';
+			header1Str += (reportJsonObj.Report.ClientCompanyName != '') ? ('<tr align="center"><td colspan="3" style="font: 18px \'Arial\';line-height: 18px;height: 18px;">'+reportJsonObj.Report.ClientCompanyName +'</td></tr>') : '<tr align="center"><td colspan="3" style="height: 18px;"></td></tr>';
+			header1Str += (reportJsonObj.Report.ClientAddress1Street != '') ? ('<tr align="center"><td colspan="3" style="font: 18px \'Arial\';line-height: 18px;height: 18px;">'+reportJsonObj.Report.ClientAddress1Street +'</td></tr>') : '<tr align="center"><td colspan="3" style="height: 18px;"></td></tr>';
+			header1Str += (reportJsonObj.Report.ClientAddress1City != '' || reportJsonObj.Report.ClientAddress1State != '' || reportJsonObj.Report.ClientAddress1Zip != '') ? ( '<tr align="center"><td colspan="3" style="font: 18px \'Arial\';line-height: 18px;height: 18px;">'+ reportJsonObj.Report.ClientAddress1City + ((reportJsonObj.Report.ClientAddress1State != '') ? ', ':'') + reportJsonObj.Report.ClientAddress1State + ((reportJsonObj.Report.ClientAddress1Zip != '') ? ' ':'') + reportJsonObj.Report.ClientAddress1Zip + '</td></tr>') : '<tr align="center"><td colspan="3" style="height: 18px;"></td></tr>';
+			header1Str += '<tr id="firstSpaceTr"><td colspan="3"></td></tr>';
+			header1Str += '<tr align="center"><td style="width: 45%"></td><td align="center"><img id="flogoimg"/></td><td style="width: 45%"></td></tr>';
+			header1Str += '<tr id="secondSpaceTr"><td colspan="3"></td></tr>';
+			header1Str += (reportJsonObj.Report.CompanyName != '') ? ('<tr align="center"><td colspan="3" style="font: 16px \'Arial\'; line-height: 16px;">'+reportJsonObj.Report.CompanyName +'</td></tr>') : '<tr align="center"><td style="height: 16px;"></td></tr>';
+			header1Str += '<tr style="height: 30px;"><td colspan="3"></td></tr>';
+			header1Str += (reportJsonObj.Report.CompanyAddressStreet != '') ? ('<tr align="center"><td colspan="3" style="font: 16px \'Arial\'; line-height: 16px; height: 16px;">'+reportJsonObj.Report.CompanyAddressStreet +'</td></tr>') : '<tr align="center"><td style="height: 16px;"></td></tr>';
+			header1Str += (reportJsonObj.Report.CompanyAddressCity != '' || reportJsonObj.Report.CompanyAddressState != '' ||  reportJsonObj.Report.CompanyAddressZip != '') ? ( '<tr align="center"><td colspan="3" style="font: 16px \'Arial\'; line-height: 16px;height: 16px;">'+ reportJsonObj.Report.CompanyAddressCity + ((reportJsonObj.Report.CompanyAddressState != '') ? ', ':'') + reportJsonObj.Report.CompanyAddressState + ((reportJsonObj.Report.CompanyAddressZip != '') ? ' ':'') + reportJsonObj.Report.CompanyAddressZip + '</td></tr>') : '<tr align="center"><td style="height: 16px;"></td></tr>';
+			header1Str += (reportJsonObj.Report.CompanyWorkPhone != '') ? ('<tr align="center"><td colspan="3" style="font: 16px \'Arial\'; line-height: 16px; height: 16px;">'+reportJsonObj.Report.CompanyWorkPhone +'</td></tr>') : '<tr align="center"><td style="height: 16px;"></td></tr>';
+			/* header1Str += '<tr style="height: 25px;"><td></td></tr>'+((reportJsonObj.Report.Contractor != undefined && reportJsonObj.Report.Contractor != '' && reportJsonObj.Report.Contractor.length > 0) ? ('<tr align="center"><td style="font: 18px \'Arial\'; line-height: 18px;">'+'Contractor# : '+reportJsonObj.Report.Contractor +'</td></tr>') : '');
+			header1Str += (reportJsonObj.Report.SalesPersonName != '') ? ('<tr align="center"><td style="font: 18px \'Arial\'; line-height: 18px;">'+reportJsonObj.Report.SalesPersonName +'</td></tr>') : '';
+			header1Str += '<tr align="center"><td style="font: 18px \'Arial\'; line-height: 18px;">'+reportJsonObj.Report.Date +'</td></tr>'; */
+			header1Str += '<tr align="center"><td colspan="3" style="font: 16px \'Arial\'; line-height: 16px;">'+reportJsonObj.Report.Date +'</td></tr></table>';
+						
+			$("#header1").html(header1Str);
+			
+			$("#flogoimg").on("load", function() {
+				var iwidth = $(this).width();
+				var iheight = $(this).height();
+				if( iwidth > 150) iwidth = 150;
+				$("#flogoimg").css('width', iwidth);
+			});
+			$("#flogoimg").attr('src', reportJsonObj.Report.Logo);
+			
+			var totalHeightHeader = $("#header1").height();
+			
+			var firstSpace = totalHeightHeader * 25 / 100;
+			var secondSpace = totalHeightHeader * 3 / 100;
+			$("#firstSpaceTr").css('height', firstSpace);
+			$("#secondSpaceTr").css('height', secondSpace);
+					
+			var header2Str = '<table style="width: 100%">';
+			header2Str += '<tr><td style="width: 50%; font-size: 12px; color: #2e95d1;" align="left">CLIENT INFORMATION</td></tr>';
+			header2Str += (reportJsonObj.Report.ClientName != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientName+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientEmail != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left"><a href="mailto:'+reportJsonObj.Report.ClientEmail+'">'+reportJsonObj.Report.ClientEmail+'</a></td></tr>') : ' ';
+			header2Str += (reportJsonObj.Report.ClientCompanyName != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientCompanyName+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientHomePhone != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientHomePhone+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientMobilePhone != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientMobilePhone+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientWorkPhone != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientWorkPhone+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientOpenField != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientOpenField+'</td></tr>') : ''
+			header2Str += (reportJsonObj.Report.ClientAddress1Label != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientAddress1Label+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientAddress1Street != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="left">'+reportJsonObj.Report.ClientAddress1Street+'</td></tr>') : '';
+			header2Str += (reportJsonObj.Report.ClientAddress1City != '' || reportJsonObj.Report.ClientAddress1State != '' || reportJsonObj.Report.ClientAddress1Zip != '') ? (
+								'<tr>'+
+									'<td style="width: 50%; font-size: 11px;" align="left">'+
+										((reportJsonObj.Report.ClientAddress1City != '') ? (reportJsonObj.Report.ClientAddress1City +', ') : '') + ((reportJsonObj.Report.ClientAddress1State != '') ? (reportJsonObj.Report.ClientAddress1State +' '):' ') + reportJsonObj.Report.ClientAddress1Zip +
+									'</td>'+
+								'</tr>') : '';
+			header2Str += '<tr><td style="width: 50%; font-size: 10px;"></td></tr>';
+			header2Str += '<tr><td style="width: 50%; font-size: 10px;"></td></tr>';
+			header2Str += '<tr><td style="width: 50%; font-size: 10px;"></td></tr>';
+			header2Str += '</table>';
+						
+			$("#header2").html(header2Str);
+						
+			var header3Str = '<table style="width: 100%">';
+			header3Str += '<tr><td style="width: 50%; font-size: 12px; color: #2e95d1;" align="right">COMPANY INFORMATION</td></tr>';
+			header3Str += '<tr><td style="width: 50%; font-size: 11px;" align="right">'+reportJsonObj.Report.CompanyName+'</td></tr>';
+			header3Str += ((reportJsonObj.Report.CompanyWorkPhone != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="right">'+reportJsonObj.Report.CompanyWorkPhone+'</td></tr>') : ' ')
+			header3Str += ((reportJsonObj.Report.CompanyEmail != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="right"><a href="mailto:'+reportJsonObj.Report.CompanyEmail+'">'+reportJsonObj.Report.CompanyEmail+'</a></td></tr>') : ' ');
+			header3Str += '<tr><td style="width: 50%; font-size: 11px;" align="right">'+reportJsonObj.Report.CompanyAddressStreet+'</td></tr>';
+			header3Str += '<tr><td style="width: 50%; font-size: 11px;" align="right">'+ ((reportJsonObj.Report.CompanyAddressCity != '') ? (reportJsonObj.Report.CompanyAddressCity + ', ') : ' ') +
+									((reportJsonObj.Report.CompanyAddressState != '') ? (reportJsonObj.Report.CompanyAddressState +' '):' ') + reportJsonObj.Report.CompanyAddressZip + '</td></tr>';
+			header3Str += ((reportJsonObj.Report.Contractor != undefined && reportJsonObj.Report.Contractor != '' && reportJsonObj.Report.Contractor.length > 0) ? ('<tr><td style="width: 50%; font-size: 11px;" align="right">'+'Contractor# : '+reportJsonObj.Report.Contractor +'</td></tr>') : ' ');
+			header3Str += '<tr><td style="width: 50%; font-size: 11px;" align="right">'+reportJsonObj.Report.SalesPersonName+'</td></tr>';
+			header3Str += ((reportJsonObj.Report.SalesPersonEmail != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="right"><a href="mailto:'+reportJsonObj.Report.SalesPersonEmail+'">'+reportJsonObj.Report.SalesPersonEmail+'</a></td></tr>') : ' ');
+			header3Str += ((reportJsonObj.Report.CompanyMobilePhone != '') ? ('<tr><td style="width: 50%; font-size: 11px;" align="right">Mobile :'+reportJsonObj.Report.CompanyMobilePhone+'</td></tr>') : ' ')
+			header3Str += '</table>';
+						
+			$("#header3").html(header3Str);
+			
+			$("#logoid").append('<img class="imgv" src="'+reportJsonObj.Report.Logo+'" name="logoimg" id="slogoimg" width="150" />');
+			$("#slogoimg").on("load", function() {
+				var iwidth = $(this).width();
+				var iheight = $(this).height();
+				var maxHeight = 150;
+				var ratio = 0;
+				
+				if( iheight > maxHeight ) {
+					ratio = maxHeight / iheight;					
+					iwidth = iwidth * ratio;
+					iheigth = maxHeight;
+				}
+				
+				$("#slogoimg").css('width', iwidth );
+			});
+			var html = "";
+			if( reportJsonObj.Report.PackageGroups.PackageGroup != undefined ) {
+				if(isArray(reportJsonObj.Report.PackageGroups.PackageGroup)) 
+				{
+					for(var i = 0; reportJsonObj.Report.PackageGroups.PackageGroup.length > i; ++i ) {
+						var packageGroup = reportJsonObj.Report.PackageGroups.PackageGroup[i];
+						html += populatePackages(packageGroup, reportJsonObj.Report.ShowComments);
+					}
+				} else {
+					var packageGroup = reportJsonObj.Report.PackageGroups.PackageGroup;
+					html += populatePackages(packageGroup, reportJsonObj.Report.ShowComments);
+				}
+			}
+			
+			$('#bodyTable').html(html);
+
+			if(reportJsonObj.Report.NoPriceSummary == 1 ) {
+					$('#totalTable').hide();
+			} 
+			else {
+				html = "<tr><td width='85%' align='right' style='padding-right: 15px;'>Sub-total</td>";
+				html += "<td width='15%' align='left'>" + reportJsonObj.Report.SubTotal + "</td>";
+				html += "</tr>";;
+				if( reportJsonObj.Report.Taxes.Tax != undefined ) {
+					if(isArray(reportJsonObj.Report.Taxes.Tax)) 
+					{
+						for( var i = 0; reportJsonObj.Report.Taxes.Tax.length > i; ++i ) {
+							var tax = reportJsonObj.Report.Taxes.Tax[i];
+							html += "<tr><td width='85%' align='right' style='padding-right: 15px;'><span>" + tax.TaxName + "</span></td>"+
+									"<td align='left'><span>" + tax.TaxPrice + "</span></td></tr>";
+						}
+					} else if(reportJsonObj.Report.Taxes.Tax != undefined){
+						var tax = reportJsonObj.Report.Taxes.Tax;
+						html += "<tr><td width='85%' align='right' style='padding-right: 15px;'><span>" + tax.TaxName + "</span></td>"+
+								"<td align='left'><span>" + tax.TaxPrice + "</span></td></tr>";
+					}
+				}
+				html += "<td width='85%' align='right' style='padding-right: 15px;'> Total</td>";
+				html += "<td width='15%' align='left'>"+ reportJsonObj.Report.Total +"</td>";
+				html += "</tr>";
+				
+				$('#totalTable').html(html);
+				$('#totalTable').hide();
+			}
+			
+			var html = "";
+			html = '<tr><td width="50%" style="vertical-align:top"><div style="height:125px;"><div id="inner" class="inner" style=""><br><br><br><br><span id="docusignTag" class="docusignTag">Sign Here</span></div><div id="sig1" class="sigStyle"></div>';
+			html += '<input id="signatureJSON1" type="hidden"></input></div>';
+			html += '<p style="width:330px; hieght:10px;font-size: 12px;" align="center">Client Signature</p>';
+			html += '<div align="left" sytle="font-size: 12px;">' +reportJsonObj.Report.ClientAddress2Label+'<br />'+reportJsonObj.Report.ClientWorkStreet+'<br />'+reportJsonObj.Report.ClientWorkCity;
+			if( reportJsonObj.Report.ClientWorkState != undefined && reportJsonObj.Report.ClientWorkState != '')
+				html += ', ' + reportJsonObj.Report.ClientWorkState;
+			if( reportJsonObj.Report.ClientWorkZip != undefined && reportJsonObj.Report.ClientWorkZip != '')
+				html +=  ', ' + reportJsonObj.Report.ClientWorkZip;
+			html += '</div></td><td width="25%" style="font-size: 12px;"><p align="center">Date Time</p><p align="center">'+reportJsonObj.Report.DateTime+'</p></td><td width="25%" style="">';
+			$("#signatureTable").html(html);
+			
+			html = "";
+			$('#sig1').signature({syncField: '#signatureJSON1'});
+				
+		});
+
+		function isArray(what) {
+		    return Object.prototype.toString.call(what) === '[object Array]';
+		}
+        
+		function hasPrimaryProducts(package1){
+			// if( package1.PrimaryProduct1.Quantity>0 || package1.PrimaryProduct2.Quantity>0 || package1.PrimaryProduct3.Quantity>0 || package1.PrimaryProduct4.Quantity>0 || package1.PrimaryProduct5.Quantity>0 || package1.PrimaryProduct6.Quantity>0 || package1.PrimaryProduct7.Quantity>0 || package1.PrimaryProduct8.Quantity>0 || package1.PrimaryProduct9.Quantity>0 || package1.PrimaryProduct10.Quantity>0 || package1.PrimaryProduct11.Quantity>0 || package1.PrimaryProduct12.Quantity>0 || package1.PrimaryProduct13.Quantity>0 || package1.PrimaryProduct14.Quantity>0 || package1.PrimaryProduct15.Quantity>0 || package1.PrimaryProduct16.Quantity>0 || package1.PrimaryProduct17.Quantity>0 || package1.PrimaryProduct18.Quantity>0 || package1.PrimaryProduct19.Quantity>0 || package1.PrimaryProduct20.Quantity>0)
+			// 	{
+			// 		return true;
+
+			// 	}
+			// 	else{
+			// 		return false;
+			// 	}
+			console.log('in has primary');
+			if(package1.HasPrimaryProducts === "YES"){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		function populatePackages(packageGroup, showComments) {
+			var html = "<tr style= 'height: 10px; background-color : #C4BFBF'>"
+			html += "<td style = 'padding:0px; margin:0px; background-color : #C4BFBF; padding-right: 20px; colspan=4;'  >" + packageGroup.PackageGroupName + "</td>";
+			html += "<td  style='text-align: right;padding:0px; margin:0px;background-color : #C4BFBF; padding-right: 20px; colspan=1;'>"+ packageGroup.PackageGroupPrice +"</td>";
+			html += "</tr>";
+			if(isArray(packageGroup.Package)) 
+			{
+				for(var j = 0; packageGroup.Package.length > j; ++j ) {
+					var package1 = packageGroup.Package[j];
+					if (hasPrimaryProducts(package1)){
+						
+						if( package1.PrimaryProduct1)
+							html += processPrimaryProduct(package1.PrimaryProduct1);
+						if( package1.PrimaryProduct2)
+							html += processPrimaryProduct(package1.PrimaryProduct2);
+						if( package1.PrimaryProduct3 )
+							html += processPrimaryProduct(package1.PrimaryProduct3);
+						if( package1.PrimaryProduct4 )
+							html += processPrimaryProduct(package1.PrimaryProduct4);
+						if( package1.PrimaryProduct5 )
+							html += processPrimaryProduct(package1.PrimaryProduct5);
+						if( package1.PrimaryProduct6 )
+							html += processPrimaryProduct(package1.PrimaryProduct6);
+						if( package1.PrimaryProduct7 )
+							html += processPrimaryProduct(package1.PrimaryProduct7);
+						if( package1.PrimaryProduct8 )
+							html += processPrimaryProduct(package1.PrimaryProduct8);
+						if( package1.PrimaryProduct9 )
+							html += processPrimaryProduct(package1.PrimaryProduct9);
+						if( package1.PrimaryProduct10 )
+							html += processPrimaryProduct(package1.PrimaryProduct10);
+							if( package1.PrimaryProduct11 )
+							html += processPrimaryProduct(package1.PrimaryProduct11);
+						if( package1.PrimaryProduct12 )
+							html += processPrimaryProduct(package1.PrimaryProduct12);
+						if( package1.PrimaryProduct13 )
+							html += processPrimaryProduct(package1.PrimaryProduct13);
+						if( package1.PrimaryProduct14 )
+							html += processPrimaryProduct(package1.PrimaryProduct14);
+						if( package1.PrimaryProduct15 )
+							html += processPrimaryProduct(package1.PrimaryProduct15);
+						if( package1.PrimaryProduct16 )
+							html += processPrimaryProduct(package1.PrimaryProduct16);
+							if( package1.PrimaryProduct17 )
+							html += processPrimaryProduct(package1.PrimaryProduct17);
+						if( package1.PrimaryProduct18 )
+							html += processPrimaryProduct(package1.PrimaryProduct18);
+						if( package1.PrimaryProduct19 )
+							html += processPrimaryProduct(package1.PrimaryProduct19);
+						if( package1.PrimaryProduct20 )
+							html += processPrimaryProduct(package1.PrimaryProduct20);
+					}
+					else{
+						html += "<tr style= 'height: 15px;' class='border_bottom' >";
+						html += "<td style='text-align: center;padding:0px; margin:0px;' width='5%' >" + package1.PackageQuantity + "</td>";
+						html += "<td style='text-align: left;vertical-align:middle;padding-top: 1px; padding-bottom: 1px;margin:0px;'  width='15%' >" + package1.Manufacturer +'<br>' +  package1.ModelNumber + "</td>";
+
+						html += "<td width='55%' style = 'text-align: left;padding:0px; margin:0px;'>" + package1.PackageName + "</td>";
+						html += "<td style='vertical-align:middle;text-align: right;padding:0px; margin:0px;' width='12%' >"+package1.PackagePrice+"</td>";
+						html += "<td style='vertical-align:middle;text-align: right;padding:0px; margin:0px;' width='13%' >"+package1.PackageTotal+"</td>";
+						html += "</tr>";
+						
+						// if( package1.MasterPackageIdentifier ) {
+						// 	html += "<tr style= 'height: 10px;'>";
+						// 	html += "<td bgcolor='#7ec0ee' style='vertical-align:middle;text-align: left;padding:0px; margin:0px;' colspan='3' >Master Package Identifier&nbsp;&nbsp;&nbsp;&nbsp;"+package1.MasterPackageIdentifier+"</td>";
+						// 	html += "<td colspan='1'></td></tr>";
+						// }
+					}
+				}
+			} else {
+				var package1 = packageGroup.Package;
+				if (hasPrimaryProducts(package1)){
+					
+					if( package1.PrimaryProduct1 )
+						html += processPrimaryProduct(package1.PrimaryProduct1);
+					if( package1.PrimaryProduct2 )
+						html += processPrimaryProduct(package1.PrimaryProduct2);
+					if( package1.PrimaryProduct3 )
+						html += processPrimaryProduct(package1.PrimaryProduct3);
+					if( package1.PrimaryProduct4 )
+						html += processPrimaryProduct(package1.PrimaryProduct4);
+					if( package1.PrimaryProduct5 )
+						html += processPrimaryProduct(package1.PrimaryProduct5);
+					if( package1.PrimaryProduct6 )
+						html += processPrimaryProduct(package1.PrimaryProduct6);
+					if( package1.PrimaryProduct7 )
+						html += processPrimaryProduct(package1.PrimaryProduct7);
+					if( package1.PrimaryProduct8 )
+						html += processPrimaryProduct(package1.PrimaryProduct8);
+					if( package1.PrimaryProduct9 )
+						html += processPrimaryProduct(package1.PrimaryProduct9);
+					if( package1.PrimaryProduct10 )
+						html += processPrimaryProduct(package1.PrimaryProduct10);
+						if( package1.PrimaryProduct11 )
+						html += processPrimaryProduct(package1.PrimaryProduct11);
+					if( package1.PrimaryProduct12 )
+						html += processPrimaryProduct(package1.PrimaryProduct12);
+					if( package1.PrimaryProduct13 )
+						html += processPrimaryProduct(package1.PrimaryProduct13);
+					if( package1.PrimaryProduct14 )
+						html += processPrimaryProduct(package1.PrimaryProduct14);
+					if( package1.PrimaryProduct15 )
+						html += processPrimaryProduct(package1.PrimaryProduct15);
+					if( package1.PrimaryProduct16 )
+						html += processPrimaryProduct(package1.PrimaryProduct16);
+						if( package1.PrimaryProduct17 )
+						html += processPrimaryProduct(package1.PrimaryProduct17);
+					if( package1.PrimaryProduct18 )
+						html += processPrimaryProduct(package1.PrimaryProduct18);
+					if( package1.PrimaryProduct19 )
+						html += processPrimaryProduct(package1.PrimaryProduct19);
+					if( package1.PrimaryProduct20 )
+						html += processPrimaryProduct(package1.PrimaryProduct20);
+				}
+				else{
+					html += "<tr style= 'height: 15px;' class='border_bottom'>";
+					html += "<td style='text-align: center;padding:0px; margin:0px;' width='5%' >" + package1.PackageQuantity + "</td>";
+					html += "<td style='vertical-align:middle;padding-top: 1px; padding-bottom: 1px;margin:0px;text-align: left;' width='15%' >" + package1.Manufacturer +'<br>' +  package1.ModelNumber + "</td>";
+
+					html += "<td width='55%' style = 'padding:0px; margin:0px;text-align: left;'>" + package1.PackageName + "</td>";
+					html += "<td style='vertical-align:middle;text-align: right;padding:0px; margin:0px;' width='12%' >"+package1.PackagePrice+"</td>";
+					html += "<td style='vertical-align:middle;text-align: right;padding:0px; margin:0px;' width='13%' >"+package1.PackageTotal+"</td>";
+						
+					html += "</tr>";
+					
+					// if( package1.MasterPackageIdentifier ) {
+					// 	html += "<tr style= 'height: 10px;'>";
+					// 	html += "<td bgcolor='#7ec0ee' style='vertical-align:middle;text-align: left;padding:0px; margin:0px;' colspan='3' >Master Package Identifier&nbsp;&nbsp;&nbsp;&nbsp;"+package1.MasterPackageIdentifier+"</td>";
+					// 	html += "<td colspan='1'></td></tr>";
+					// }
+				}
+				
+			}
+			return html;
+		}
+		
+		function processPrimaryProduct(primaryProduct) {
+			var html = "";
+			if( primaryProduct && primaryProduct != undefined && primaryProduct ) {
+				html += "<tr style= 'height: 15px;' class='border_bottom'>";
+				html += "<td style='text-align: center;padding:0px; margin:0px;' width='5%' >" + primaryProduct.Quantity + "</td>";
+				html += "<td style='vertical-align:middle;padding-top: 1px; padding-bottom: 1px;margin:0px;text-align: left;' width='15%'  >" + primaryProduct.Manufacturer +'<br>' +  primaryProduct.ModelNumber + "</td>";
+
+				html += "<td width='55%' style = 'padding:0px; margin:0px;text-align: left;' >" + primaryProduct.Name + "</td>";
+				html += "<td style='vertical-align:middle;text-align: right;padding:0px; margin:0px;' width='12%' >"+primaryProduct.Price+"</td>";
+				html += "<td style='vertical-align:middle;text-align: right;padding:0px; margin:0px;' width='13%' >"+primaryProduct.TotalPrice+"</td>";
+
+				html += "</tr>";
+				
+				// if( primaryProduct.MasterPackageIdentifier ) {
+				// 	html += "<tr style= 'height: 10px;'>";
+				// 	html += "<td bgcolor='#7ec0ee' style='vertical-align:middle;text-align: left;padding:0px; margin:0px;' colspan='3' >Master Package Identifier&nbsp;&nbsp;&nbsp;&nbsp;"+primaryProduct.MasterPackageIdentifier+"</td>";
+				// 	html += "<td colspan='1'></td></tr>";
+				// }
+			}
+			return html;
+		}
+        function hasSignature(){
+            return $('#sig1').signature('isEmpty');
+        }
+        function clearSignature(){
+            $('#sig1').signature('clear');
+        }
+	</script>
+	</head>
+	<body style="font-size: 10px;" class="portraitPage" bgcolor="#FFFFFF" >
+		<div style="margin-top: 20px; width: 99%; padding: 5px;" align="center">
+			<div class="printHeader2">
+				<div id="header2" style="width: 30%; float: left; padding-top: 10px;">
+				</div>
+				<div class="frame" id="logoid">
+					<span class="helper"></span>
+				</div>
+				<div id="header3" style="width: 27%; float: right; padding-top: 10px;">
+				</div>
+				<div style="clear: both;"></div>
+				<table width="98%" border="0" cellpadding="" bgcolor="#595959" style="margin-top: 0px;width:98%">
+					<tr>
+						<td width="5%" bgcolor="#595959" style="text-align: left;color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;font-size: 15px;"><b>QTY</b></td>
+						<td width="15%" bgcolor="#595959" style="text-align: left; color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;font-size: 15px;"><b>MANUFACTURER</b><br><b>MODEL</b></td>
+						<td width="55%" bgcolor="#595959" style="text-align: left; color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;font-size: 15px;"><b>NAME/INFO</b></td>
+						<td width="12%" bgcolor="#595959" style="text-align: right; color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;font-size: 15px;"><b>UNIT PRICE</b></td>
+						<td width="13%" bgcolor="#595959" style="text-align: right; color:#FFFFFF;padding-top: 5px; padding-bottom: 5px;font-size: 15px;"><b>PRICE</b></td>
+
+					</tr>
+				</table>
+				<div style="margin: 0px; width: 100%;" class="chart">
+						<table class="productTable" id="bodyTable"  style="width: 98%;" cellpadding = "0px">
+						</table>
+						<!-- <br /> -->
+						<table align="center" class="table2"  id="totalTable" style="width: 98%;">
+						</table>
+				</div>
+				<div style="clear: both;"></div>
+				
+			</div>
+			<div>
+				<table style="width: 100%;" id="signatureTable">
+				</table>
+			</div>
+			<!-- <div class="hdr4 pagebreak" id="pricingDiv" style="width: 100%; text-align: center; margin-top: 15px; padding-top: 10px;" align="center">
+			</div> -->
+
+			<!-- <div style="font-size: 14px; padding-top: 10px;" align="center" id="othPackageTbl">
+			</div> -->
+			<!-- <div class="body1" id="contractDiv" align="left" style="text-align: left; font-size: 12px;">
+			</div> -->
+			<!-- <div class="">
+				<div id="paymentScheduleHeader" class="body1hd" style="background-color: #C4BFBF; color: #00000;"><h1 align="center" style="text-align: center;">PAYMENT SCHEDULE</h1></div>
+				<div class="hdr4" style="font-size: 14px; padding: 5px; padding-left: 10px;" align="left" id="paymentScheduleBody">
+				</div>
+			</div> -->
+			
+			<!-- <div class="" style='page-break-inside: avoid !important;'>
+                <table style='border: 1px; width: 100%;border: 1px solid black; border-collapse: collapse;' id="commentsBody">
+				</table>
+			</div> -->
+		</div>
+	</body>
+</html>

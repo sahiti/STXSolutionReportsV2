@@ -1,0 +1,13 @@
+{ "Reports":
+[
+ 	{
+  		"ReportName" : "PRODUCT LIST 2",
+ 		"ReportImage": "Report-folder-blank.png",
+     	"ReportTemplatePackage": "S-Template3",
+      	"ReportDescription":"Product List 2",
+        "visiblilityRule":"TOTAL_PRICE_CHECK",
+        "ReportType": "STAFF",
+        "ReportTypeImage": "Reports folder.png",
+        "TotalCalc": "Equipment Only"
+	}
+]}

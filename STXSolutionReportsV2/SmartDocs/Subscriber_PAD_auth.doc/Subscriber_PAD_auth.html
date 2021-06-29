@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Subscriber PAD Authorization</title>
+	<link href="#ApplicationDataPath#/common.css" rel="stylesheet"/>
+	<link href="#ApplicationDataPath#/subscriber_pad.css" rel="stylesheet"/>
+	<script src="#ApplicationDataPath#/jquery.min.js"></script>
+	<link rel="stylesheet" href="#ApplicationDataPath#/jquery-ui.css"/>
+	<script src="#ApplicationDataPath#/jquery-ui.js"></script>
+	<link type="text/css" href="#ApplicationDataPath#/jquery.signature.css" rel="stylesheet">
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.signature.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/excanvas.js"></script>
+	
+	<style>
+		.inner{
+				min-width : 290px;
+				min-height:120px;
+				height: 120px;
+				width:280px;
+				position:absolute;
+				z-index: -2;
+				display:inline-block;
+				text-align:center;
+				vertical-align:middle;
+			}
+		.docusignTag{
+					/*background-color: green;*/
+					display:block;
+					position:relative;
+					color:#e5e7e9;
+					vertical-align:bottom;
+					width:290px;
+					height:120px;
+					z-index: -1;
+					text-align:center;
+					vertical-align:middle;
+					top:50%;
+					transform: translateY(50%);
+				}
+		#signature_div{
+					/*width:50%;*/
+					vertical-align:top;
+				}
+		.outer{
+			min-width:280px;
+			height:121px;
+			width:280px;
+			position:absolute;
+			border-bottom:solid black;
+			border-width: 1px;
+		}
+		#signature_field{
+			min-width:280px;
+			position:absolute;
+			width:280px;
+			height:120px;
+            background-color :#FFFF00;
+			/*border-bottom:solid black;
+			border-width: 1px;*/
+			z-index: 3;
+		}
+
+		div.a{
+			width:100%;
+        }
+    .requiredFields{
+        background-color:#ffa500;
+    }
+    .optionalFields{
+        background-color:#eaeaff;
+    }
+    .requiredFields_div{
+        background-color:#ffa500;
+    }
+    @media print{
+        .requiredFields{
+            background-color:#eaeaff;
+        }
+        .requiredFields_div{
+            background-color:#ffffff;
+        }
+        #signature_field{
+            background-color:#ffffff;
+        }
+        span.docusignTag{
+            color:#ffffff;
+        }
+        
+    }
+	
+	</style>
+	<script>
+	var reportJson = #REPORT_JSON#;
+    
+    function hasSignature(){
+        return $('#signature_field').signature('isEmpty');
+    }
+    function clearSignature(){
+        $('#signature_field').signature('clear');
+    }
+	function toMonth(month)
+	{
+		if(month < 10)
+		{
+			return "0"+month;
+		}
+		else
+			return month;
+	}
+    
+function checkThis(rawData)
+{
+	document.getElementById(rawData.id).removeAttribute("checked");	
+	if($(rawData).is(":checked"))
+	{
+		$(rawData).prop("checked",true);
+		if(rawData.checked == true){
+		 $(document.getElementById(rawData.id)).attr("checked", "checked");
+		 }
+	}
+}
+function checkRadio(rawData)
+{
+
+	if($(rawData).is(":checked"))
+	{
+		//$(".email_mode").prop("checked",false);
+		$(rawData).prop("checked",true);
+		if(rawData.checked == true)
+		 $(document.getElementById(rawData.id)).attr("checked", "checked");
+	}
+	
+}
+	function setProv()
+	{
+		var abbr = ["AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"];
+		var names = ["Alberta","British Columbia","Manitoba","New Brunswick","Newfoundland and Labrador","Nova Scotia","Northwest Territories","Nunavut","Ontario","Prince Edward Island","Quebec","Saskatchewan","Yukon"];
+		
+		var state = reportJson.Report.ClientAddress1State;
+		if(state.length == 2)
+		{
+			$("#prov_field").val(state.toUpperCase());
+		}
+		else if(state.length > 2)
+		{
+			for(var i = 0; i < names.length; i++)
+			{
+
+				if(state.toLowerCase() == names[i].toLowerCase())
+				{
+					$("#prov_field").val(abbr[i]);
+				}
+			}
+		}
+	}
+	function changeElement(param1, param2){
+	$(param1).on("input", function() {
+		$(param2).val($(param1).val()); 
+	});
+}
+	$(document).ready(function(){
+	var date = new Date();
+	setProv();
+	$("#next_billing_date_field").datepicker();
+	$("#next_billing_date_field").on("change",function(){
+		var selected = $(this).val();
+		$('#next_billing_date_field_RO').val(selected);
+	});
+	$("#name_field").val(reportJson.Report.ClientName);
+	$("#email_field").val(reportJson.Report.ClientEmail);
+	$("#city_field").val(reportJson.Report.ClientAddress1City);
+	$("#address_field").val(reportJson.Report.ClientAddress1Street);
+	$("#phone_field").val(reportJson.Report.ClientHomePhone);
+	$("#cell_phone_field").val(reportJson.Report.ClientMobilePhone);
+	$("#postal_code_field").val(reportJson.Report.ClientAddress1Zip);
+	$("#todays_date_field").val(reportJson.Report.Date);
+	$("#prov_field").val(reportJson.Report.ClientAddress1State);
+	$("#signature_field").signature();
+	$('#signature_field').signature({syncField: '#signatureJSON'});
+	var img = document.getElementById("logo_image");
+	img.src = reportJson.Report.Logo;
+    var docusignTag = document.getElementById("docusignTag");
+    
+    if(reportJson.Report.DeviceOS=="iOS"){
+        docusignTag.style.cssText = 'transform: translateY(50%) !important';
+    }else{
+        docusignTag.style.cssText = 'transform: translateY(40px) !important';
+    }
+	changeElement('#credit_card_expiry_year_field', '#credit_card_expiry_year_field_RO');
+	changeElement('#credit_card_expiry_month_field', '#credit_card_expiry_month_field_RO');
+	changeElement('#todays_date_field', '#todays_date_field_RO');
+	changeElement('#prov_field', '#prov_field_RO');
+	changeElement('#accounting_number_field', '#accounting_number_field_RO');
+	changeElement('#station_code_field', '#station_code_field_RO');
+	changeElement('#card_name_field', '#card_name_field_RO');
+	changeElement('#credit_card_number_field', '#credit_card_number_field_RO');
+	changeElement('#address_field', '#address_field_RO');
+	changeElement('#city_field', '#city_field_RO');
+	changeElement('#postal_code_field', '#postal_code_field_RO');
+	changeElement('#phone_field', '#phone_field_RO');
+	changeElement('#cell_phone_field', '#cell_phone_field_RO');
+	changeElement('#email_field', '#email_field_RO');
+	changeElement('#billing_amount_field', '#billing_amount_field_RO');
+	changeElement('#total_charges_field', '#total_charges_field_RO');
+	changeElement('#passcode_field', '#passcode_field_RO');
+	changeElement('#name_field', '#name_field_RO');
+
+	})
+	
+	function loadCompanyDetails(){ 	
+		var street = reportJson.Report.CompanyAddressStreet;
+		var city = "";
+			city = city + "" + reportJson.Report.CompanyAddressCity + ", " +reportJson.Report.CompanyAddressState +"";
+		var phone_field = "";
+		if(reportJson.Report.CompanyWorkPhone.length>0){
+			phone_field = phone_field + "Phone: " + reportJson.Report.CompanyWorkPhone + " ";
+		}
+		if(reportJson.Report.CompanyMobilePhone.length>0){
+			phone_field = phone_field + "Mob: "+reportJson.Report.CompanyMobilePhone +" ";
+		}
+		var email_field = reportJson.Report.CompanyEmail;
+		document.getElementById("CompanyName").innerHTML = reportJson.Report.CompanyName;
+		document.getElementById("CompanyAdressStreet").innerHTML = street;
+		document.getElementById("CompanyAddressCity").innerHTML = city;
+		document.getElementById("CompanyPhoneField").innerHTML = phone_field;
+		document.getElementById("CompanyEmailId").innerHTML = email_field;
+		document.getElementById("companyName2").innerHTML = reportJson.Report.CompanyName;	
+		document.getElementById("companyName3").innerHTML = reportJson.Report.CompanyName;	
+		document.getElementById("companyName4").innerHTML = reportJson.Report.CompanyName;	
+		document.getElementById("companyName5").innerHTML = reportJson.Report.CompanyName;
+        var docusignTag = document.getElementById("docusignTag");
+        
+        if(reportJson.Report.DeviceOS=="iOS"){
+            docusignTag.style.cssText = 'transform: translateY(50%) !important';
+        }else{
+            docusignTag.style.cssText = 'transform: translateY(40px) !important';
+        }
+		<!-- document.getElementById("companyName6").innerHTML = reportJson.Report.CompanyName;	 -->
+	}
+	window.onload = loadCompanyDetails;
+	</script>
+</head>
+<body>
+	<br>
+<div class="navbar_div">
+	<div class="logo_space">
+		<img src="Subscriber_PAD_auth_logo.png" class="logo_image" id="logo_image" alt="Image Not Found" />
+	</div>
+	<div class="company_details_text">
+		<span class="text-center">
+			<h3 name="CompanyName" id="CompanyName" ></h3>
+			<span id="CompanyAdressStreet" ></span>
+			<span id="CompanyAddressCity" ></span>
+			<span id="CompanyPhoneField" ></span>
+			<span id="CompanyEmailId" ></span>
+		</span>
+	</div>
+</div>
+<div class="main_body_div ">
+	<h3 class="text-center pageTitle">Pre-Authorized Debits (PADs) Authorization and Agreement</h3>
+	<div class="data_main_div">
+		<div class="">
+			<span>
+				<label>RE: Accounting Number : </label>
+				<input class="optionalFields" type="text" name="accounting_number_field" id="accounting_number_field" />
+				<input id="accounting_number_field_RO" type="hidden"/>
+			</span>
+			<span class="">
+				<label>Station Code : </label>
+				<input class="optionalFields" type="text" name="station_code_field" id="station_code_field" />
+				<input id="station_code_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label>Name(s) : </label>
+				<input class="optionalFields" type="text" name="name_field" id="name_field" />
+				<input id="name_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label style="vertical-align:top">Address : </label>
+				<textarea class="optionalFields" name="address_field" id="address_field" ></textarea>
+				<input id="address_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City :</label>
+				<input class="optionalFields" type="text" name="city_field" id="city_field" />
+				<input id="city_field_RO" type="hidden"/>
+			</span>
+			<span>
+				<label>State/Region:</label>
+				<!--<select id="prov_field" >
+					<option value=""></option>
+					<option value="AB">AB</option>
+					<option value="BC">BC</option>
+					<option value="MB">MB</option>
+					<option value="NB">NB</option>
+					<option value="NL">NL</option>
+					<option value="NS">NS</option>
+					<option value="NT">NT</option>
+					<option value="NU">NU</option>
+					<option value="ON">ON</option>
+					<option value="PE">PE</option>
+					<option value="QC">QC</option>
+					<option value="SK">SK</option>
+					<option value="YT">YT</option>
+				</select>-->
+				<input class="optionalFields" type="text" name="prov_field" id="prov_field" />
+				<input id="prov_field_RO" type="hidden"/>
+			</span>
+			<span style="margin-left: -8px">
+				<label>Postal Code:</label>
+				<input class="optionalFields" type="text" name="postal_code_field" id="postal_code_field" />
+				<input id="postal_code_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label>&nbsp;&nbsp;&nbsp;Phone :</label>
+				<input class="optionalFields" type="text" name="phone_field" id="phone_field" />
+				<input id="phone_field_RO" type="hidden"/>
+			</span>	
+			<span>
+				<label>Cell Phone:</label>
+				<input class="optionalFields" type="text" name="cell_phone_field" id="cell_phone_field" />
+				<input id="cell_phone_field_RO" type="hidden"/>
+			</span>	
+		</div>
+		<div>
+			<span>
+				<label>&nbsp;&nbsp;&nbsp;&nbsp;Email :</label>
+				<input class="optionalFields" type="text" name="email_field" id="email_field" />
+				<input id="email_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div class="requiredFields_div" id="email_type_checkboxes" >
+			<span>
+				<label>
+					<input type="checkbox" onclick="checkThis(this)" class="email_mode" name="email_invoice_before_payment" id="email_invoice_before_payment" />
+						Email Invoice before Payment
+				</label>
+			</span>
+			<span>
+				<label>
+					<input type="checkbox" onclick="checkThis(this)" class="email_mode" name="email_statement_after_payment" id="email_statement_after_payment" />
+						Email Statment after Payment
+				</label>
+			</span>
+			<span>
+				<label>
+					<input type="checkbox" onclick="checkThis(this)" class="email_mode" name="no_emailed" id="no_emailed" />
+					No Emailed Inv/Stm
+				</label>
+			</span>
+		</div>
+		<div>
+			<div id="billing_date_and_amount_div">
+				<div>
+					<label>Next Billing Date : </label>
+					<input  class="requiredFields" type="text" name="next_billing_date_field"
+						id="next_billing_date_field" class="text-center" />
+					<input id="next_billing_date_field_RO" type="hidden"/>
+				</div>
+				<div>
+					<label>Billing Amount : &nbsp;$
+						<input class="requiredFields" type="text" name="billing_amount_field" id="billing_amount_field"/>
+						<input id="billing_amount_field_RO" type="hidden"/>
+						per payment
+					</label>
+				</div>	
+				<div class="text-center" style="width:85%;font-size:15px;font-weight:bold;">(plus applicable taxes)</div>
+			</div>
+			<div id="billing_frequency_div">
+				<h4>Billing Frequency</h4>
+				<div  class="requiredFields_div" >
+					<label><input type="radio" name="billing_frequency_monthly" value="MONTHLY"/> Monthly</label>
+					<label><input type="radio" name="billing_frequency_3_months" value="3_MONTHS"/> 3 Months</label>
+					<label><input type="radio" name="billing_frequency_6_months" value="6_MONTHS"/> 6 Months</label>
+					<label><input type="radio" name="billing_frequency_yearly" value="YEARLY"/> Yearly</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div>
+		<p class="text-justify">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I/we have attached a sample cheque marked "VOID" (a picture/scanned image is
+			preferred) or a Bank PAD form containing the account information and I/we request and authorize
+			<i id="companyName2">CML Security / Consolidated Monitoring Ltd.</i> to withdraw funds from this account to pay for Alarm
+			Monitoring Fees. My financial institution is authorized to deal directly with such debits as if signed
+			by me/us and for a joint account, I/we understand that all signatories must sign this Agreement
+			and authorization if more than one signature is required on the account.
+		</p>
+		
+	</div>
+	<br>
+	<div>
+		<p class="text-justify">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This authorization is to remain in effect until <i id="companyName3">CML Security / Consolidated Monitoring Ltd.</i>
+			has received written notice from me/us of its change or termination. This written notification must
+			be received at least thirty (30) days before the next scheduled debit. I/we may obtain a PAD
+			cancellation form from <i id="companyName4">CML Security / Consolidated Monitoring Ltd.</i>. I/we have certain recourse rights if any debit does not
+			comply with this agreement. For example, I/we have the right to receive reimbursement for any
+			debit that is not authorized or is not consistent with this PAD Agreement. To obtain more
+			information of my recourse rights, I/we may contact our financial institution.
+		</p>
+	</div>
+	<br>
+	<div>
+			<p style="margin-bottom:2px;">I further authorize <i id="companyName5">CML Security / Consolidated Monitoring Ltd.</i> to withdraw funds on a one-time basis.</p>
+		<div>
+			<label>Total Charges: $
+				<input  class="requiredFields" type="text" name="total_charges_field" id="total_charges_field"/>
+				<input id="total_charges_field_RO" type="hidden"/> (one time, plus applicable taxes)</label>
+		</div>
+		<div id="todays_date_and_signature_div">
+                <table style="width: 100%;">
+                    <tr width="100%" height="140px">
+				<td id="todays_date_div">
+					<p>Today's Date</p>
+					<input class="optionalFields" type="text" name="todays_date_field" id="todays_date_field"/>
+					<input id="todays_date_field_RO" type="hidden"/>
+				</td>
+				<td id="passcode_div">
+					<p>Passcode</p>
+					<input  class="requiredFields" type="text" name="passcode_field" id="passcode_field" /> or
+					<input id="passcode_field_RO" type="hidden"/>
+				</td>
+				
+				<td id="signature_div" align = "center">
+                    <div class="outer" align="center" >
+                        <div id="signature_field"></div>
+                        <div id="inner" style="">
+                            <span class="docusignTag">Sign Here</span>
+                        </div>
+						<input id="signatureJSON" type="hidden"></input>
+                    </div><br>
+					<div class="a" align="center">Signature</div>
+				</td>
+                </tr>
+                </table>
+			</div><br>
+		<div>
+			<!-- <p class="text-justify"> -->
+				<!-- <span name="CompanyName6" id="CompanyName6" >CML Security / Consolidated Monitoring Ltd.</span> and our subsidiaries are committed to safeguarding the personal information -->
+				<!-- entrusted to us by our customers and our dealers. We manage your personal information in -->
+				<!-- accordance with Alberta's Personal Information Protection Act (2004) and other applicable laws. -->
+				<!-- All security information is gathered and stored per the outlines of the Privacy Act - PIPEDA -->
+				<!-- (2004). By signing this contract I acknowledge and give consent of all stored information. -->
+			<!-- </p> -->
+			<br>
+			<br>
+		<!--	<p>
+				NOTE: This form can be filled and signed using Abobe Reader or use your Passcode. Please
+				return with the attached scan or picture of the check to ar@cmlsecurity.com
+			</p> 
+		</div>
+	</div>
+	<br>
+	<br>
+	<div class="text-right">
+		<pre>
+			SPADAF
+			Sept/16
+		</pre>
+	</div>-->
+</div>
+</body>
+</html>

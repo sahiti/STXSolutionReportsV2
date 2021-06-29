@@ -1,0 +1,246 @@
+	body {
+		width : 100%;
+		margin : 0px;
+		padding : 0px;
+		font-size : 13px;
+		
+		width : 50%;
+		margin : auto;
+	}
+	input[type=text]{
+		font-size : 14px;
+	}
+	.font_12{
+		font-size : 12px;
+	}
+	.small_font{
+		font-size : 10px;
+	}
+	/* .outer{ */
+    /* min-width:50px; */
+    /* height:40px; */
+    /* width:50px; */
+    /* position:absolute; */
+    /* border-bottom:solid black; */
+    /* border-width: 1px; */
+	/* } */
+	.inner{
+    min-width : 30px;
+    min-height:20px;
+    height: 40px;
+    width:30px;
+    position:absolute;
+    z-index: -2;
+    display:inline-block;
+    text-align:center;
+    vertical-align:middle;
+	}
+	.docusignTag{
+	/*background-color: green;*/
+    display:block;
+    position:relative;
+    color:white;
+    vertical-align:bottom;
+    width:30px;
+    height:10px;
+    z-index: -1;
+    text-align:center;
+    vertical-align:middle;
+    /* top:50%; */
+    transform: translateY(-30px);
+	/* transform: translateX(20px); */
+	}
+	#page_6 .header{
+		height : 60px;
+		text-align : left;
+	}
+	#page_6 .header img{
+		height : 60px;
+		width : auto;
+	}
+	#page_6 #row_1{
+		margin-top : 20px;
+	}
+	#page_6 #row_1 .col{
+		vertical-align : top;
+	}
+	#page_6 #row_1 #col_1{
+		width : 22%;
+	}
+	#page_6 #row_1 #col_2{
+		width : 45%;
+	}
+	#page_6 #row_1 #col_3{
+		width : 27%;
+	}
+	#page_6 #row_1 #col_1 input{
+		width : 60%;
+	}
+	#page_6 #row_1 #col_3 input{
+		width : 85%;
+	}
+	
+	#page_6 #row_2 #col_1{
+		width : 40%;
+	}
+	#page_6 #row_2 #col_1 input{
+		width : 70%;
+	}
+	#page_6 #row_2 #col_2{
+		width :58%;
+	}
+	#page_6 #row_2 #col_2 input{
+		width :73%;
+	}
+	#page_6 #row_3 #col_1{
+		width : 23%;
+	}
+	#page_6 #row_3 #col_1 input{
+		width : 78%;
+	}
+	#page_6 #row_3 #col_2{
+		width : 20%;
+	}
+	#page_6 #row_3 #col_2 input{
+		width : 60%;
+	}
+	#page_6 #row_3 #col_3{
+		width : 20%;
+	}
+	#page_6 #row_3 #col_3 input{
+		width : 70%;
+	}
+	#page_6 #row_3 #col_3{
+		width : 25%;
+	}
+	#page_6 #row_3 #col_3 input{
+		width : 79%;
+	}
+	#page_6 #row_4 .col {
+		width : 32%;
+	}
+	#page_6 #row_4 .col input{
+		width : 62%;
+	}
+	#page_6 #row_5 .col{
+		width : 32%;
+		font-size : 15px;
+	}
+	#page_6 #row_6 .col{
+		width : 15%;
+		font-size : 15px;
+	}
+	#page_6 #row_6 #col_3{
+		width : 60%;
+	}
+	#page_6 #row_7 .col{
+		width : 49%;
+	}
+	#page_6 #row_7 .col input{
+		width : 62%;
+	}
+	#page_6 #row_7 #aba_routing_number_2{
+		width : 55%;
+	}
+	#page_6 #row_8 #col_1{
+		width : 40%;
+	}
+	#page_6 #row_8 #col_1 input{
+		width : 50%;
+	}
+	#page_6 #row_8 #col_2{
+		width : 20%;
+	}
+	#page_6 #row_8 #col_2 input{
+		width : 50%;
+	}
+	#page_6 #row_8 #col_3{
+		width : 16%;
+	}
+	#page_6 #row_8 #col_3 input{
+		width : 50%;
+	}
+	#page_6 #row_8 #col_4{
+		width : 18%;
+	}
+	#page_6 #row_8 #col_4 input{
+		width : 54%;
+	}
+	#page_6 #row_9{
+		padding : 10px;
+		margin-top : 5px;
+		border : 1px solid #000;
+	}
+	#page_6 #row_9 #col_1{
+		width : 22%;
+	}
+	#page_6 #row_9 #col_1 input{
+		width : 60%;
+	}
+	#page_6 #row_9 #col_2{
+		width : 25%;
+	}
+	#page_6 #row_9 #col_2 input{
+		width : 50%;
+	}
+	#page_6 #row_9 #col_3{
+		width : 25%;
+	}
+	#page_6 #row_9 #col_3 input{
+		width : 40%;
+	}
+	#page_6 #row_9 #col_4{
+		width : 25%;
+	}
+	#page_6 #row_9 #col_4 input{
+		width : 38%;
+	}
+	#page_6 #row_10 #payments, #page_6 #row_10 #of{
+		width : 80px;
+	}
+	#page_6 #row_11 .row .col{
+		width : 49%;
+	}
+	#page_6 #row_11 .row .col input{
+		width : 29%;
+	}
+	#page_6 #row_14 #col_1{
+		width : 40%;
+	}
+	#page_6 #customer_signature_pad{
+		height : 60px;
+		width : 80%;
+		margin : auto;
+	}
+	#page_6 #row_14 #col_2{
+		width : 20%;
+	}
+	#page_6 #row_14 #col_2 input{
+		width : 80%;
+	}
+	#page_6 #row_14 #col_3{
+		width : 38%;
+	}
+	#page_6 #row_14 #col_3 input{
+		width : 80%;
+	}
+	#page_6 #row_15{
+		height : 85px;
+	}
+	#page_6 #row_15 #line_1 input{
+		float : right;
+		width : 80%;
+	}
+	#page_6 #row_15 #line_2 input, #page_6 #row_15 #line_3 input{
+		width : 99%;
+		float : right;
+	}
+@media print{ 
+	body {
+		width : 100%;
+		margin : 0px;
+		padding : 0px;
+		font-size : 13px;
+	}
+	.page_break{page-break-after: always;}
+}

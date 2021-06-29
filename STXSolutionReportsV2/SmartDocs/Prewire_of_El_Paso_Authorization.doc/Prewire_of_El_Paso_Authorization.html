@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Form Smart Home And Home Theater Information</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--link rel="stylesheet" type="text/css" href="common.css" /-->
+  <link rel="stylesheet" type="text/css" href="#ApplicationDataPath#/common.css" />
+  <link rel="stylesheet" type="text/css" href="#ApplicationDataPath#/print.css" />
+	<script src="#ApplicationDataPath#/jquery.min.js"></script>
+	<link rel="stylesheet" href="#ApplicationDataPath#/jquery-ui.css"/>
+	<script src="#ApplicationDataPath#/jquery-ui.js"></script>
+	<link type="text/css" href="#ApplicationDataPath#/jquery.signature.css" rel="stylesheet">
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.signature.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/excanvas.js"></script>
+	<!--script type="text/javascript" src="data.js"></script-->
+	<script>
+		function changeAllElements()
+		{
+			$("input[type=text]").each(function(){
+				var id = $(this).prop('id');
+				var id_RO = id + "_RO";
+				//console.log($(this).val());
+				$("#" + id_RO).val($(this).val());
+			})
+			$("input[type=text]").each(function(){
+				$(this).on('input', function(){
+					var id = $(this).prop('id');
+					var id_RO = id + "_RO";
+					//console.log($(this).val());
+					$("#" + id_RO).val($(this).val());
+				});
+			})
+		}
+		$(document).ready(function(){
+			changeAllElements();
+		}
+	
+	</script>
+	
+</head>
+<body>
+	<div id = "page_5">
+		<div class = "row">
+			Valued Customer,
+		</div>
+		<div class = "row">
+			From all of us at Prewire of El Paso, we welcome you to the Smart Home 
+			and Home Theater Family.  
+		</div>
+		<div class = "row">
+			We are living in a new world of electronics, security, safety and convenience
+			and quite truthfully, fun! Thank you so much for your purchase.  We are certain 
+			once our system(s) are installed your will use it everyday and love it!
+		</div>
+		<div class = "row">
+			Please review our policy and recommendations  regarding the scheduling and 
+			installation of your new products.
+		</div>
+		<div class = "box" id = "installation_box">
+			Installation of more than one systems will generally take two (2) days to complete.  
+			<br>
+			<input type="text" name="installation_initial" id="installation_initial" />
+			<input id="installation_initial_RO" type="hidden"/>
+			initial
+			<br>
+			<br>
+			<br>
+		</div>
+		<div class = "box" id = "installation_box">
+			Cameras we can mount and install your DVR/NVR but you will not have full service 
+			until you have internet at your home.  
+			<input type = "text" name = "cameras_initial" id = "cameras_initial"  />
+			<input id = "cameras_initial_RO" type="hidden"/>
+			initial
+			<br>
+			<br>
+		</div>
+		<div class = "box" id = "installation_box">
+			Scheduling  Equipment will be ordered once the product(s) has been paid in full.
+			Some products come in quicker than others.  Currently the Klipsch and Yamaha are 
+			taking 6-8 days.  We may experience some delays due to the COVID-19 virus affecting 
+			production of components from time to time.  As soon as all products are in stock,
+			we will notify you for an appointment.  If time lends itself; we may install 
+			speakers pending receiver and when receiver arrives the installation time will 
+			be much less.  To check on or schedule appointment call or email Laura Cruz 
+			laura@prewireofelpaso.com   915-598-4937.
+			<input type = "text" name = "scheduling_initial" id = "scheduling_initial"  />
+			<input id = "scheduling_initial_RO" type="hidden"/>
+			initial
+			<br><br>
+		</div>
+		<div class = "box" id = "security_system_box">
+			Security System
+			<br>
+			<br>
+			<input type = "text" name = "security_system_initial" id = "security_system_initial" />
+			<input id = "security_system_initial_RO" type="hidden"/>
+			initial
+		</div>
+		<div class = "box" id = "door_locks_box">
+			Door Locks
+			<br>
+			<br>
+			<input type = "text" name = "door_locks_initial" id = "door_locks_initial" />
+			<input id = "door_locks_initial_RO" type="hidden"/>
+			initial
+		</div>
+		<div class = "box" id = "video_doorbell_box">
+			Video Doorbell
+			<br>
+			<br>
+			<input type = "text" name = "video_doorbell_initial" id = "video_doorbell_initial" />
+			<input id = "video_doorbell_initial_RO" type="hidden"/>
+			initial
+		</div>
+		<div class = "box" id = "thermostat_box">
+			Thermostat
+			<br>
+			<br>
+			<input type = "text" name = "thermostat_initial" id = "thermostat_initial" />
+			<input id = "thermostat_initial_RO" type="hidden"/>
+			initial
+		</div>
+		<div class = "box" id = "voice_control_box">
+			Voice Control (Alexa, Google, etc)
+			<br>
+			<br>
+			<input type = "text" name = "voice_control_initial" id = "voice_control_initial" />
+			<input id = "voice_control_initial_RO" type="hidden"/>
+			initial
+		</div>
+		<div class = "box" id = "wireless_audio_box">
+			Wireless Audio (Sonos, Heos, etc)
+			<br>
+			<br>
+			<input type = "text" name = "wireless_audio_initial" id = "wireless_audio_initial" />
+			<input id = "wireless_audio_initial_RO" type="hidden"/>
+			initial
+		</div>
+		<div class = "box" id = "alarm_systems_box">
+			Alarm Systems  When setting up your alarm system it is necessary to have a
+			PASSWORD and emergency numbers for our dispatch center to call if your 
+			system was to 
+			<input type = "text" name = "alarm_systems_initial" id = "alarm_systems_initial" />
+			<input id = "alarm_systems_initial_RO" type="hidden"/>
+			initial
+		</div>
+		
+	</div>
+</body>
+</html>

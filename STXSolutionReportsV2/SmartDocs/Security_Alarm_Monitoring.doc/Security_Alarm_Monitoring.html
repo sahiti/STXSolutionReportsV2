@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SECURITY ALARM MONITORING AGREEMENT</title>
+	<link href="#ApplicationDataPath#/common.css" rel="stylesheet"/>
+	<link href="#ApplicationDataPath#/security_alarm_monitoring.css" rel="stylesheet"/>
+	<script src="#ApplicationDataPath#/jquery.min.js"></script>
+	<link rel="stylesheet" href="#ApplicationDataPath#/jquery-ui.css"/>
+	<script src="#ApplicationDataPath#/jquery-ui.js"></script>
+	<link type="text/css" href="#ApplicationDataPath#/jquery.signature.css" rel="stylesheet">
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.signature.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/excanvas.js"></script>
+
+	<style>
+		#subscriber_signature_field{
+					height:120px;
+					width:400px;
+					border-bottom:solid black;
+					border-width:1px;
+					z-index:2;
+					position : absolute;
+					left:0px;
+                    background-color:#FFFF00;
+		}
+		#sub_sign_text{
+			width : 400px;
+			text-align : center;
+		}
+			#outer{
+				position:relative;
+				display:inline-block;
+				height:120px;
+				width:400px;
+				border-bottom:solid black;
+				border-width:1px;
+			}
+			.center{
+				height:120px;
+				width:400px;
+				border-bottom:solid black;
+				border-width:1px;
+				position:absolute;
+                text-align :center;
+			}
+			.center p {
+				width:400px;
+                height:120px;
+			  line-height: 1.5;
+			  display: inline-block;
+			  vertical-align: middle;
+              text-align:center;
+			  z-index:-1;
+			  color:#e5e7e9;
+              transform: translateY(40px);
+			}
+			div.a{
+				width :400px;
+				vertical-align: bottom;
+			}
+    .requiredFields{
+        background-color:#ffa500;
+    }
+    .optionalFields{
+        background-color:#eaeaff;
+    }
+    .requiredFields_div{
+        background-color:#ffa500;
+    }
+    @media print{
+        .requiredFields{
+            background-color:#eaeaff;
+        }
+        .requiredFields_div{
+            background-color:#ffffff;
+        }
+        #subscriber_signature_field{
+            background-color:#ffffff;
+        }
+        .center p{
+            color:#ffffff;
+        }
+        
+    }
+	
+	</style>
+<script>
+	var reportJson = #REPORT_JSON#;
+    
+	function toMonth(month)
+	{
+		if(month < 10)
+		{
+			return "0"+month;
+		}
+		else
+			return month;
+	}
+    function hasSignature(){
+        return $('#subscriber_signature_field').signature('isEmpty');
+    }
+    function clearSignature(){
+        $('#subscriber_signature_field').signature('clear');
+    }
+	function setProv()
+	{
+		var abbr = ["AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"];
+		var names = ["Alberta","British Columbia","Manitoba","New Brunswick","Newfoundland and Labrador","Nova Scotia","Northwest Territories","Nunavut","Ontario","Prince Edward Island","Quebec","Saskatchewan","Yukon"];
+		
+		var state = reportJson.Report.ClientAddress1State;
+		if(state.length == 2)
+		{
+			$("#prov_field").val(state.toUpperCase());
+		}
+		else if(state.length > 2)
+		{
+			for(var i = 0; i < names.length; i++)
+			{
+
+				if(state.toLowerCase() == names[i].toLowerCase())
+				{
+					$("#prov_field").val(abbr[i]);
+				}
+			}
+		}
+	}
+	function setProv2()
+	{
+		var abbr = ["AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"];
+		var names = ["Alberta","British Columbia","Manitoba","New Brunswick","Newfoundland and Labrador","Nova Scotia","Northwest Territories","Nunavut","Ontario","Prince Edward Island","Quebec","Saskatchewan","Yukon"];
+		
+		var state = reportJson.Report.ClientAddress2State;
+		if(state.length == 2)
+		{
+			$("#prov_2_field").val(state.toUpperCase());
+		}
+		else if(state.length > 2)
+		{
+			for(var i = 0; i < names.length; i++)
+			{
+
+				if(state.toLowerCase() == names[i].toLowerCase())
+				{
+					$("#prov_2_field").val(abbr[i]);
+				}
+			}
+		}
+	}
+	function changeElement(param1, param2){
+	$(param1).on("input", function() {
+		$(param2).val($(param1).val()); 
+	});
+}
+function checkThis(rawData)
+{
+	document.getElementById(rawData.id).removeAttribute("checked");	
+	if($(rawData).is(":checked"))
+	{
+		$(rawData).prop("checked",true);
+		if(rawData.checked == true){
+		 $(document.getElementById(rawData.id)).attr("checked", "checked");
+		 }
+	}
+}
+
+	$(document).ready(function(){
+		//setProv();
+		//setProv2();
+		var date = new Date();
+		$("#subscriber_signature_field").signature();
+		$('#subscriber_signature_field').signature({syncField: '#signatureJSON'});
+		$("#agreement_date_and_year_field").datepicker();
+		$("#agreement_date_and_year_field").on("change",function(){
+			var selected = $(this).val();
+			$('#agreement_date_and_year_field_RO').val(selected);
+		});
+		$("#agreement_date_and_year_field").val(reportJson.Report.Date);
+		$("#company_name_field").val(reportJson.Report.CompanyName);
+		$("#subscriber_name_field").val(reportJson.Report.ClientName);
+        var address1 = reportJson.Report.ClientAddress1Street;
+        if (address1){
+             $("#premises_field").val(reportJson.Report.ClientAddress1Street);
+         }
+		
+		$("#city_field").val(reportJson.Report.ClientAddress1City);
+		$("#postal_code_field").val(reportJson.Report.ClientAddress1Zip);
+		$("#phone_field").val(reportJson.Report.ClientHomePhone);
+        //$("#pc_field").val(reportJson.Report.ClientAddress1Zip);
+         var address2 = reportJson.Report.ClientAddress2Street;
+        if (address2){
+              $("#address_2_field").val(address2)
+          }
+		$("#city_2_field").val(reportJson.Report.ClientAddress2City);
+		$("#pc_2_field").val(reportJson.Report.ClientAddress2Zip);
+		$("#subscriber").val(reportJson.Report.ClientName);
+		$("#representative_name_field").val(reportJson.Report.SalesPersonName);
+        $("#email_field").val(reportJson.Report.ClientEmail);
+        $("#phone_2_field").val(reportJson.Report.ClientHomePhone);
+        $("#prov_field").val(reportJson.Report.ClientAddress1State);
+        $("#prov_2_field").val(reportJson.Report.ClientAddress2State);
+        var img = document.getElementById("logo_image");
+        img.src = reportJson.Report.Logo;
+        var docusignTag = document.getElementById("centerP");
+        
+        if(reportJson.Report.DeviceOS != undefined && reportJson.Report.DeviceOS=="iOS"){
+            docusignTag.style.cssText = 'transform: translateY(50%) !important';
+        }else{
+            docusignTag.style.cssText = 'transform: translateY(40px) !important';
+        }
+		
+	changeElement('#company_name_field', '#company_name_field_RO');
+	changeElement('#subscriber_name_field', '#subscriber_name_field_RO');
+	changeElement('#prov_field', '#prov_field_RO');
+	changeElement('#accounting_number_field', '#accounting_number_field_RO');
+	changeElement('#premises_field', '#premises_field_RO');
+	changeElement('#card_name_field', '#card_name_field_RO');
+	changeElement('#credit_card_number_field', '#credit_card_number_field_RO');
+	changeElement('#address_2_field', '#address_2_field_RO');
+	changeElement('#city_field', '#city_field_RO');
+	changeElement('#postal_code_field', '#postal_code_field_RO');
+	changeElement('#phone_field', '#phone_field_RO');
+	changeElement('#city_2_field', '#city_2_field_RO');
+	changeElement('#email_field', '#email_field_RO');
+	changeElement('#prov_2_field', '#prov_2_field_RO');
+	changeElement('#billing_name_field', '#billing_name_field_RO');
+	changeElement('#pc_2_field', '#pc_2_field_RO');
+	changeElement('#phone_2_field', '#phone_2_field_RO');
+	changeElement('#other_textfield', '#other_textfield_RO');
+	changeElement('#alternate_communication_textfield', '#alternate_communication_textfield_RO');
+	changeElement('#period_date_1', '#period_date_1_RO');
+	changeElement('#amount_field_2', '#amount_field_2_RO');
+	changeElement('#representative_name_field', '#representative_name_field_RO');
+	changeElement('#fixed_period', '#fixed_period_RO');
+	changeElement('#fixed_2_period', '#fixed_2_period_RO');
+	})
+	function loadCompanyDetails(){ 	
+			var street = reportJson.Report.CompanyAddressStreet;
+			var city = "";
+				city = city + "" + reportJson.Report.CompanyAddressCity + ", " +reportJson.Report.CompanyAddressState +"";
+			var phone_field = "";
+			if(reportJson.Report.CompanyWorkPhone.length>0){
+				phone_field = phone_field + "Phone: " + reportJson.Report.CompanyWorkPhone + " ";
+			}
+			if(reportJson.Report.CompanyMobilePhone.length>0){
+				phone_field = phone_field + "Mob: "+reportJson.Report.CompanyMobilePhone +" ";
+			}
+			var email_field = reportJson.Report.CompanyEmail;
+			document.getElementById("CompanyName").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("CompanyName2").innerHTML = reportJson.Report.CompanyName;
+			document.getElementById("CompanyAdressStreet").innerHTML = street;
+			document.getElementById("CompanyAddressCity").innerHTML = city;
+			document.getElementById("CompanyPhoneField").innerHTML = phone_field;
+			document.getElementById("CompanyEmailId").innerHTML = email_field;
+            var docusignTag = document.getElementById("centerP");
+            
+            if(reportJson.Report.DeviceOS != undefined && reportJson.Report.DeviceOS=="iOS"){
+                docusignTag.style.cssText = 'transform: translateY(50%) !important';
+            }else{
+                docusignTag.style.cssText = 'transform: translateY(40px) !important';
+            }
+				
+	}
+	window.onload = loadCompanyDetails;
+</script>
+</head>
+<body>
+<div class="navbar_div">
+	<div class="logo_space">
+		<img src="security_alarm_monitoring_logo.png" class="logo_image" id="logo_image" alt="Image Not Found" />
+	</div>
+	<div class="company_details_text">
+		<span class="text-center">
+				<h3 name="CompanyName" id="CompanyName" >CML Security Head Office</h3>
+				<span id="CompanyAdressStreet" >#412, 9707-110 St.</span>
+				<span id="CompanyAddressCity" >Edmonton, AB T5K 2L9</span>
+				<span id="CompanyPhoneField" >Phn: (780) 488-3263 Fax: (780) 665-0060</span>
+				<span id="CompanyEmailId" >ar@cmlsecurity.com</span>
+			</span>
+	</div>
+</div>
+<div class="main_body_div" id="security_alarm_agr_page">
+	<h3 class="text-center pageTitle">SECURITY ALARM MONITORING AGREEMENT</h3>
+	<div>
+		<div>
+			<span>
+				<label>This Agreement made on day</label>
+				<input type="text" class="text-center optionalFields" name="agreement_date_and_year_field" id="agreement_date_and_year_field" />
+				<input id="agreement_date_and_year_field_RO" type="hidden"/>
+			</span>
+			<span>
+				<label>Acct:</label>
+				<input type="text" name="accounting_number_field" id="accounting_number_field" class="optionalFields"/>
+				<input id="accounting_number_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label>Between&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+				<input type="text" name="company_name_field" id="company_name_field" class="optionalFields" />
+				<input id="company_name_field_RO" type="hidden"/>
+				&nbsp;&nbsp;<i>(the "Company")</i>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label>And  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+				<input type="text" name="subscriber_name_field" id="subscriber_name_field" class="optionalFields"/>
+				<input id="subscriber_name_field_RO" type="hidden"/>
+				&nbsp;<i>(the "Subscriber")</i>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label>Installed at : &nbsp;&nbsp;</label>
+				<input type="text" name="premises_field" id="premises_field" class="optionalFields"/>
+				<input id="premises_field_RO" type="hidden"/>
+				&nbsp;<i>(the "Premises")</i>
+			</span>
+		</div>
+		<div>
+			<span>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label>City : </label>&nbsp;&nbsp;
+				<input type="text" name="city_field" id="city_field" class="optionalFields"/>
+				<input id="city_field_RO" type="hidden"/>
+			</span>
+			<span>
+				<label>State/Region:</label>
+				<!--<select id="prov_field">
+					<option value=""></option>
+					<option value="AB">AB</option>
+					<option value="BC">BC</option>
+					<option value="MB">MB</option>
+					<option value="NB">NB</option>
+					<option value="NL">NL</option>
+					<option value="NS">NS</option>
+					<option value="NT">NT</option>
+					<option value="NU">NU</option>
+					<option value="ON">ON</option>
+					<option value="PE">PE</option>
+					<option value="QC">QC</option>
+					<option value="SK">SK</option>
+					<option value="YT">YT</option>
+				</select>-->
+				<input type="text" name="prov_field" id="prov_field" class="optionalFields"/>
+				<input id="prov_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+		<span>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label>Postal Code:</label>&nbsp;&nbsp;
+				<input type="text" name="postal_code_field" id="postal_code_field" class="optionalFields"/>
+				<input id="postal_code_field_RO" type="hidden"/>
+			</span>
+			<span>
+				<!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+				<label>Phone : </label>
+				<input type="text" name="phone_field" id="phone_field" class="optionalFields"/>
+				<input id="phone_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label>Billing Name (if different)</label>
+				<input type="text" name="billing_name_field" id="billing_name_field" class="optionalFields"/>
+				<input id="billing_name_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+			<span>&nbsp;&nbsp;
+				<label style="vertical-align:top">Address : </label>&nbsp;&nbsp;
+				<textarea name="address_2_field" id="address_2_field" class="optionalFields"></textarea>
+				<input id="address_2_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+			<span>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label>City : </label>&nbsp;&nbsp;
+				<input type="text" name="city_2_field" id="city_2_field" class="optionalFields"/>
+				<input id="city_2_field_RO" type="hidden"/>
+			</span>
+			<span>
+				<label>State/Region:</label>
+				<!--<select id="prov_2_field">
+					<option value=""></option>
+					<option value="AB">AB</option>
+					<option value="BC">BC</option>
+					<option value="MB">MB</option>
+					<option value="NB">NB</option>
+					<option value="NL">NL</option>
+					<option value="NS">NS</option>
+					<option value="NT">NT</option>
+					<option value="NU">NU</option>
+					<option value="ON">ON</option>
+					<option value="PE">PE</option>
+					<option value="QC">QC</option>
+					<option value="SK">SK</option>
+					<option value="YT">YT</option>
+				</select>-->
+				<input type="text" name="prov_2_field" id="prov_2_field" class="optionalFields"/>
+				<input id="prov_2_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+		<span>
+		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label>Postal Code:</label>&nbsp;&nbsp;
+				<input type="text" name="pc_2_field" id="pc_2_field" class="optionalFields"/>
+				<input id="pc_2_field_RO" type="hidden"/>
+			</span>
+			<span>
+				<!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+				<label>Phone : </label>
+				<input type="text" name="phone_2_field" id="phone_2_field" class="optionalFields"/>
+				<input id="phone_2_field_RO" type="hidden"/>
+			</span>
+		</div>
+		<div>
+			<span>
+				<label>Email Address</label>
+				<input type="text" name="email_field" id="email_field" class="optionalFields"/>
+				<input id="email_field_RO" type="hidden"/>
+		</div>
+	</div>
+	<div>
+		<h5 class="text-center" style="margin-bottom:2px;margin-top:3px">Terms & Conditions</h5>
+		<div class="text-line">
+			<div class="line-number">1)</div>
+			<div class="line-text">
+				The Subscriber has installed or will have installed a security system (the "System").
+			</div>
+		</div>
+		<div class="text-line">
+			<div class="line-number">2)</div>
+			<div class="line-text" >The Subscriber hereby subscribes for and the Company agrees to provide or causes to be monitored as 
+			  hereinafter	provided on the terms and conditions contained herein.
+			</div>
+		</div>
+			<div id="checkboxes_main_div">
+				<p>
+					<b>Monitoring Services </b><i>(the "Services"):</i>
+				</p>
+				<div class="text-justify requiredFields_div" >
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)" class="checkbox" name="fire_field" id="fire_field" value="fire"/>Fire</label>
+					</span>
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)"class="checkbox" name="hold_up_field" id="hold_up_field" value="panic"/>Hold-up/Panic</label>
+					</span>
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)" class="checkbox" name="intrusion_field" id="intrusion_field" value="intrusion"/>Intrusion</label>
+					</span>
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)" class="checkbox" name="medical_field" id="medical_field" value="medical"/> Help/Medical</label>
+					</span>
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)" class="checkbox" name="temperature_field" id="temperature_field"/>Temperature</label>
+					</span>
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)" class="checkbox" name="mechanical_field" id="mechanical_field"/>Mechanical</label>
+					</span>
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)" class="checkbox" name="late_to_close_field" id="late_to_close_field" value="lateToClose"/>Late&nbsp;to&nbsp;Close</label>
+					</span>
+				</div>
+				<div class="requiredFields_div" >
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)" class="checkbox" name="open_close_report_field" id="open_close_report_field" value="openCloseReport"/>Open/Close&nbsp;Reports</label>
+					</span>
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)" class="checkbox" name="guard_dispatch_field" id="guard_dispatch_field" value="guardDispatch"/>Guard Dispatch</label>
+					</span>
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)" class="checkbox" name="video_field" id="video_field" value="video"/>Video</label>
+					</span>
+					&nbsp;&nbsp;&nbsp;
+					<span>
+						<label><input type="checkbox" onclick="checkThis(this)" class="checkbox" name="other_field" id="other_field" value="other"/>Other</label>
+					</span>
+					
+					<span>
+						<input type="text" name="other_textfield" id="other_textfield" class="requiredFields"/>
+						<input id="other_textfield_RO" type="hidden"/>
+					</span>
+				</div>
+				<div class="requiredFields_div"  >
+					<span>
+						<label><input type="checkbox" name="alternate_communication_field" id="alternate_communication_field"/> Alternate Communication</label>
+					</span>
+					&nbsp;&nbsp;&nbsp;
+					<span>
+						<input type="text" name="alternate_communication_textfield" id="alternate_communication_textfield" class="requiredFields"/>
+						<input id="alternate_communication_textfield_RO" type="hidden"/>
+					</span>
+				</div>
+				<span>
+					<div class="line-text" style="padding:2px 8px 2px 2px;">The Subscriber acknowledges that it is desirable to avoid the high cost of the response of emergency services to
+						"false alarms". The Subscriber authorizes the Company to verify or attempt to verify alarm signals received by it
+						from the Premises before dispatching emergency Services. The Subscriber agrees that the Company shall not be
+						liable for any loss, damage or personal injury sustained as a result of any such verification or attempted
+						verification.
+					</div>
+				</span>
+			</div>
+		<div class="text-line">
+			<div class="line-number">3)</div>
+			<div class="line-text">
+				<b>The Term of this Agreement</b> shall commence on the date the Services are operational and shall continue for a
+				period of<br>
+				<input type="text" class="requiredFields" name="period_date_1" id="period_date_1"  />
+				<input id="period_date_1_RO" type="hidden"/>
+				<select id="fixed_period"  class="requiredFields">
+					<option value="months">months</option>
+					<option value="years">years</option>
+				</select>
+				<input id="fixed_period_RO" type="hidden"/>
+				("Fixed Period") and thereafter from month to month ("Renewal Period") unless
+				terminated by either party as hereinafter provided.
+			</div>
+		</div>
+		<div class="text-line">
+			<div class="line-number">4)</div>
+			<div class="line-text">
+				<b>The Subscriber agrees to pay to the Company for the Services</b> a fee payable in the amount of: 
+				<p></p>$
+				<input type="text" name="amount_field_2" id="amount_field_2" class="requiredFields" />
+				<input id="amount_field_2_RO" type="hidden"/>
+				per
+				<select class="requiredFields" id="fixed_2_period"  >
+					<option value="months">months</option>
+					<option value="quarter">quarter</option>
+					<option value="6-months">6-months</option>
+					<option value="year">year</option>
+				</select>
+				<input id="fixed_2_period_RO" type="hidden"/>
+ 				 plus applicable taxes from the date the Services are operational in accordance with
+				the terms set out by the Company's invoices and subject to the provision of paragraph 5
+			</div>
+		</div>
+		<div class="text-line">
+			<div class="line-number">5)</div>
+			<div class="line-text">
+				<b>Termination</b>
+				<div class="text-line">
+					<div class="line-number">a)</div>
+					<div class="line-text">
+						The Subscriber acknowledges that the Company is able to provide the security alarm system at a low cost to the
+						Subscriber by the Subscriber entering into this Agreement for the Fixed Period. The Subscriber may only terminate
+						the Agreement during the Fixed Period by paying to the Company the balance of the fee payable for the Fixed
+						Period (plus applicable taxes).
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">b)</div>
+					<div class="line-text">
+						The Subscriber may terminate this Agreement after the expiry of the Fixed Period upon sixty (60) days advance
+						written notice to the Company.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">c)</div>
+					<div class="line-text">
+						The Company may terminate this Agreement upon written notice to the Subscriber.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="text-line">
+			<div class="line-number">6)</div>
+			<div class="line-text">
+				<b>The Subscriber expressly agrees that there is no warranty</b> given by the Company as to the fitness of the
+				System or monitoring Services for any particular purpose and further that he has not advised or made known to the
+				Company any particular loss or damage he may suffer or incur as a result of the failure of the Company to perform any
+				of its obligations hereunder.
+			</div>
+		</div>
+		<div class="text-line">
+			<div class="line-number">7)</div>
+			<div class="line-text">
+				<b>The Company and the Subscriber covenants</b> that:<br>
+				<div class="text-line">
+					<div class="line-number">a)</div>
+					<div class="line-text">
+						The Company's sole and exclusive obligations hereunder are to monitor signals received by means of the System
+						and upon receipt of any such signals to make every reasonable effort to transmit by telephone, notification of the
+						alarm promptly to police, fire or other authority or such persons whose names and telephone numbers are set
+						forth in the Emergency Information Schedule provided in writing by the Subscriber (as names may be changed
+						upon written notification by the Subscriber and duly acknowledged by the Company from time to time), unless
+						there is a reasonable cause for the Company to assume that emergency conditions do not exist at the Premises.
+						<div class="text-line">
+							<div class="line-number">i)</div>
+							<div class="line-text">
+								Notwithstanding Clause 7a, if the Company is in receipt of an intrusion alarm signal and the Subscriber has
+								requested that the Company provide him with the Guard Dispatch Service, the Company shall dispatch a
+								security guard to the Premises and not notify Police.
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">b)</div>
+					<div class="line-text">
+						The Company is not an insurer of the Subscriber. The Subscriber bears ALL RISK for loss, damage or injury that
+						occurs on, or is related to, the Premises. The Company, its directors, officers, agents and employees shall not be
+						liable for any loss, damage or injury that occurs on, or is related to, the Premises WHATEVER THE CAUSE, EVEN IF
+						such loss, damage or injury is the result of negligence or other default on the part of the Company, its directors,
+						officers or employees. The Company shall only be liable to the Subscriber for the return of the reasonable value of
+						Services not performed, limited to not more than the value of one years' annual service fee.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">c)</div>
+					<div class="line-text">
+						The Subscriber will contact the central alarm monitoring station for the purposes of checking or testing the
+						operation of the System on a quarterly basis.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">d)</div>
+					<div class="line-text">
+						In the event that the System or its wiring is damaged for any reason whatsoever, the cost of repairing or replacing
+						the same shall be borne by the Subscriber and the Company shall not be responsible for any failure in Services
+						before such repair or replacement is satisfactorily completed.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">e)</div>
+					<div class="line-text">
+						The Subscriber shall at all times carefully and properly set the System each and every night or at such other time
+						or times as the Subscriber shall secure and close the Premises. The Subscriber, upon accidentally causing an
+						alarm signal to be transmitted or activating the alarm, must immediately notify the Company's central alarm
+						monitoring station and shall report to the Company any claims of inadequacy and/or failure of the System.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">f)</div>
+					<div class="line-text">
+						The Subscriber shall do all things as may be reasonably necessary to ensure the adequate and/or functioning of
+						the System on the Premises and the communication link to the Company's central alarm monitoring station. The
+						Subscriber is responsible for the maintenance and for the insurance of the System and the communication link. If,
+						in the Company's sole and absolute opinion, the System in the Premises in not being maintained in an adequate
+						condition of repair and function, the Company may suspend or terminate this Agreement upon written notice to
+						the Subscriber.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">g)</div>
+					<div class="line-text">
+						The Subscriber shall be responsible for any and all communication charges resulting from the connection and use
+						of the System. The Subscriber shall be responsible for all false alarm assessments, taxes or fees or other charges
+						that has or may be imposed or authorized by any government body relating to the Services provided under this
+						Agreement.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">h)</div>
+					<div class="line-text">
+						The Subscriber agrees to notify its insurer(s) upon any termination of this Agreement.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">i)</div>
+					<div class="line-text">
+						The Subscriber acknowledges that upon termination of this Agreement, the Company shall have the right to enter
+						the Premises upon reasonable notice to the Subscriber to reprogram the Subscriber's automatic dialling device so
+						as to prevent the Company's central alarm monitoring station from receiving any further alarm signals and if
+						applicable to allow the telephone Company representatives to remove the Subscriber Terminal Unit or like device.
+						Failure to do so will result in ongoing charges which are the responsibility of the Subscriber. This clause shall
+						survive the termination, for any reason whatsoever, of this Agreement.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="text-line">
+			<div class="line-number">8)</div>
+			<div class="line-text">
+				<b>General terms and conditions</b> of this Agreement provide:
+				<div class="text-line">
+					<div class="line-number">a)</div>
+					<div class="line-text">
+						An acknowledgement that this Agreement contains the entire understanding between the parties and that the
+						Company and/or any of its agents, franchisee, employees, servants, directors or officers have not made any
+						guarantees or warranties, express or implied, that its central alarm monitoring service or the System will prevent
+						or reduce any loss or damages to the Premises or contents situated therein including without limitation any loss of
+						life or injury to person.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">b)</div>
+					<div class="line-text">
+						If there is any conflict between this Agreement and the Subscribers purchase order or any other document, this
+						Agreement will govern.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">c)</div>
+					<div class="line-text">
+						This Agreement may not be assigned by the Subscriber, except upon the Company's prior written consent. The
+						Company may assign the Agreement as desired.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">d)</div>
+					<div class="line-text">
+						Any notice required to be given hereunder by either party shall be in writing sent by ordinary mail addressed to
+						such party at the address indicated in this Agreement or such other address as either party shall have so notified
+						the other party.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">e)</div>
+					<div class="line-text">
+						That this Agreement shall be governed by the laws of the jurisdiction of the Province of Alberta and all parties
+						submit and attorn to the jurisdiction of the courts of that province for all purposes of enforcement and
+						interpretation of this Agreement.
+					</div>
+				</div>
+				<div class="text-line">
+					<div class="line-number">f)</div>
+					<div class="line-text">
+						Personal pronouns shall be deemed to include the singular, plural, masculine, feminine and neuter as the context
+						requires in each case, and when applied in the plural, shall apply to such parties jointly.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="privacy_act_policy_div">
+		<!--
+		<h5 style="margin-top:4px;margin-bottom:2px;text-decoration:underline;" class="text-center">Privacy Act Policy</h5>
+		<p class="text-justify">
+				<i id="companyName2"></i> and our subsidiaries are committed to safeguarding the personal information entrusted to us by our
+			customers and our dealers. We manage your personal information in accordance with Alberta's Personal Information
+			Protection Act (2004) and other applicable laws. All security information is gathered and stored per the outlines of the
+			Privacy Act - PIPEDA (2004). By signing this contract I acknowledge and give consent of all stored information.
+		</p>
+		-->
+		<p class="text-center" style="margin:3px 0px;"><b>
+			The Subscriber acknowledges having read and understood this Agreement, and agrees to be bound by all its
+			terms and conditions.</b>
+		</p>
+		<div>
+			<label>Subscriber Name:</label>
+			<input type="text" name="subscriber" id="subscriber" class="optionalFields"/>
+			<input id="subscriber_RO" type="hidden"/>
+		</div><br>
+    <div class="container" >
+      <div id="signature_main_div" align="right">
+        <div id="outer">
+					<div id="subscriber_signature_field"></div>
+					<div class="center">
+						<p id="centerP">Sign Here</p>
+					</div>
+					<input id="signatureJSON" type="hidden"></input>
+				</div>
+				<div id = "sub_sign_text">
+					<span class="a" align="center">Subscriber Signature</span>
+				</div>
+			</div>
+			<br>
+			<div>
+				<label>Company Representative:</label>
+				<input type="text" name="representative_name_field" id="representative_name_field" class="optionalFields"/>
+				<input id="representative_name_field_RO" type="hidden"/>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,351 @@
+
+	body {
+		width : 100%;
+		margin : 0px;
+		padding : 0px;
+		font-size : 13px;
+		
+		width : 50%;
+		margin : auto;
+	}
+	input[type=text]{
+		font-size : 14px;
+	}
+	.font_12{
+		font-size : 12px;
+	}
+	.small_font{
+		font-size : 10px;
+	}
+	
+	.outer{
+		border-bottom : 1px solid #000;
+	}
+	#initials_1_div, #initials_2_div{
+		width : 70px;
+		vertical-align : bottom;
+	}
+	#initials_1,#initials_2{
+		width : 70px;
+		height : 30px;
+		
+	}
+	#account_signature, #buyer_signature_1,#buyer_signature_2{
+		height : 80px;
+		width : 100%;
+	}
+	#logo_container{
+		top : 0px;
+	} 
+	#logo_image{
+		max-width : 150px;
+	}
+	#company_address_container div{
+		padding-bottom : 2px;
+		color : #555;
+		font-weight : bold;
+	}
+	.company_name{
+		font-size : 13px;
+		color : #333 !important;
+	}
+	.company_address, .company_phone{
+		font-size : 12px;
+	}
+	
+	#subscriber_details_top{
+		padding : 15px 5px;
+		border : 1px solid #222;
+	}
+	#subscriber_details_top #contract_date_container{
+		width : 55%;
+	}
+	#subscriber_details_top #contract_date{
+		width : 25%;
+	}
+	#subscriber_details_top #acc_number_container{
+		width : 44%;
+	}
+	#subscriber_details_top #acc_number{
+		width : 60%;
+	}
+	#subscriber_details_top #subscriber_name_container{
+		width : 100%;
+	}
+	#subscriber_details_top #subscriber_name_field{
+		width : 80%;
+	}
+	#subscriber_details_top #address_container{
+		width : 35%;
+	}
+	#subscriber_details_top #pre_address_field{
+		width : 70%;
+	}
+	#subscriber_details_top #city_container{
+		width : 25%;
+	}
+	#subscriber_details_top #city_field{
+		width : 70%;
+	}
+	#subscriber_details_top #state_container{
+		width : 20%;
+	}
+	#subscriber_details_top #prov_field{
+		width : 60%;
+	}
+	#subscriber_details_top #zip_container{
+		width : 18%;
+	}
+	#subscriber_details_top #postal_code_field{
+		width : 65%;
+	}
+	#subscriber_details_top #country_code{
+		width : 48px;
+		text-align : center;
+	}
+	#subscriber_details_top #telephone_container{
+		width : 44%;
+	}
+	#subscriber_details_top #telephone{
+		width : 50%;
+	}
+	#subscriber_details_top #email_container{
+		width : 55%;
+	}
+	#subscriber_details_top #email{
+		width : 73%;
+	}
+	.table2 td{
+		vertical-align : top;
+	}
+	.table2 input[type=text]{
+		width : 95%;
+	}
+	
+	#approximate_date, #estimated_date{
+		width : 107px;
+	}
+	
+	#page_2 #emergency_info .col:nth-child(1){
+		width : 55%;
+	}
+	#page_2 #emergency_contact_list_div .row .col:first-child{
+		margin-right : 15%;
+	}
+	#page_2 #emergency_contact_list_div .name{
+		width : 250px;
+		
+	}
+	#page_2 #emergency_contact_list_div .phone_number{
+		width : 250px;
+	}
+	#page_2 #permit_number{
+		width : 37.3%;
+	}
+	#page_2 #police_dept_name{
+		width : 47.5%;
+	}
+	#page_2 #fire_dept_name{
+		width : 51%;
+	}
+	#page_2 #medical_name{
+		width : 62%;
+	}
+	#page_2 #abort_code_container{
+		margin-right : 2.5%;
+		padding : 10px;
+	}
+	#page_2 #abort_code{
+		width : 40%;
+		border : 1px solid #000;
+	}
+	
+	#page_3 #billing_cycle_div .col{
+		width : 17%;
+	}
+	#page_3 #billing_methods .col1{
+		width : 48%;
+	}
+	#page_3 #billing_methods .col2{
+		width : 47%;
+		margin-left : 2%;
+		vertical-align : top;
+	}
+	#page_3 #card_number_div{
+		width : 68%;
+	}
+	#page_3 #expiration_date_div {
+		width : 30%;
+	}
+	#page_3 #card_number,#page_3 #expiration_date, #page_3 #security_code, #page_3 #zip_code{
+		width : 98%;
+	}
+	#page_3 #security_code_div{
+		width : 50%;
+	}
+	#page_3 #zip_code_div{
+		width : 48%;
+	}
+	#page_3 #cardholder_name, #page_3 #name_in_account{
+		width : 98%;
+	}
+	#page_3 #bank_name{
+		width : 98%;
+	}
+	#page_3 #routing_number_div, #page_3 #bank_account_number_div{
+		width : 49%;
+	}
+	#page_3 #aba_routing_number, #page_3 #bank_account_number{
+		width : 99%;
+	}
+	#page_3 #last_row #account_signature_div{
+		width : 45%;
+	}
+	#page_3 #last_row #account_signature_div #div_1, #page_3 #last_row #account_signature_div .outer{
+		width : 250px;
+	}
+	
+	#page_3 #last_row #social_security_number_div{
+		width : 26%;
+		margin-right : 4%;
+	}
+	#page_3 #last_row #social_security_number{
+		width : 88%;
+	}
+	#page_3 #last_row #dob_div{
+		width : 16%;
+	}
+	#page_3 #last_row #dob{
+		width : 100%;
+	}
+	
+	
+	#page_4 #account_number_div{
+		font-size : 15px;
+	}
+	#page_4 #transaction_date_div{
+		width : 35%;
+		font-size : 15px;
+		padding : 10px 20px;
+		margin-top : 15px;
+	}
+	#page_4 #date_of_transaction{
+		width : 100%;
+		margin-top: 5px;
+		
+	}
+	#page_4 #signature_div{
+		margin-top : 15px;
+		padding : 10px 20px;
+		width : 45%;
+		font-size : 14px;
+		margin-right : 4%;
+	}
+	#page_4 #signature_div #div_1, #page_4 #signature_div .outer{
+		width : 280px;
+	}
+	#page_4 #company_data_div{
+		font-size : 16px;
+	}
+	#page_4 #buyer_signature_div{
+		width : 55%;
+		margin-right : 3%;
+	}
+	#page_4 #buyer_signature_div #div_1, #page_4 #buyer_signature_div .outer{
+		width : 350px;
+	}
+	#page_4 #buyer_signature_pad{
+		margin : auto;
+		margin-bottom : 10px;
+	}
+	#page_4 #col1{
+		width : 60%;
+		vertical-align : top;
+	}
+	#inner{
+		height : 0px;
+	}
+	.inner{
+    min-width : 30px;
+    min-height:20px;
+    height: 40px;
+    width:30px;
+    position:absolute;
+    z-index: -2;
+    display:inline-block;
+    text-align:center;
+    vertical-align:middle;
+	}
+	.initialInner{
+    min-width : 10px;
+    min-height:20px;
+    height: 40px;
+    width:10px;
+    position:absolute;
+    z-index: -2;
+    display:inline-block;
+    text-align:center;
+    vertical-align:middle;
+	}
+	
+	.docusignTag{
+	/*background-color: green;*/
+    display:block;
+    position:relative;
+    color:white;
+    vertical-align:bottom;
+    width:170px;
+    height:10px;
+    z-index: -1;
+    text-align:right;
+    vertical-align:middle;
+    /* top:50%; */
+    transform: translateY(-40px);
+	/* transform: translateX(20px); */
+	}
+	
+	.intialDocusignTag{
+	/*background-color: green;*/
+    display:block;
+    position:relative;
+    color:white;
+    vertical-align:bottom;
+    width:58px;
+    height:10px;
+    z-index: -1;
+    text-align:right;
+    vertical-align:middle;
+    /* top:50%; */
+    transform: translateY(-20px);
+	/* transform: translateX(20px); */
+	}
+	#page_4 #col1 .row:nth-child(1) input{
+		width : 60%;
+	}
+	#page_4 #col1 .row:nth-child(2) input{
+		width : 57%;
+	}
+	#page_4 #col1 .row:nth-child(3) input{
+		width : 51%;
+	}
+	
+	#page_4 #col2{
+		width : 35%;
+	}
+	#page_5 .box{
+		padding : 20px;
+		border : 1px solid #000;
+		margin : 15px 0px;
+		text-align : justify;
+		font-size : 14px;
+	}
+	
+@media print{ 
+	body {
+		width : 100%;
+		margin : 0px;
+		padding : 0px;
+		font-size : 13px;
+	}
+	.page_break{page-break-after: always;}
+}

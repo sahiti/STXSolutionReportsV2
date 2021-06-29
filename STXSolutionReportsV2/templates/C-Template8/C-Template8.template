@@ -1,0 +1,12 @@
+{ "Reports":
+[
+ 	{
+  		"ReportName" : "CLIENT REPORT 8",
+ 		"ReportImage": "Report-folder-blank.png",
+     	"ReportTemplatePackage": "C-Template8",
+      	"ReportDescription":"By Location, by System - Displays QTY,Model Number or Master Package Identifier, Package Name, description",
+        "visiblilityRule":"TOTAL_PRICE_CHECK",
+        "ReportType": "CLIENT",
+        "ReportTypeImage": "Reports folder.png"
+	}
+]}

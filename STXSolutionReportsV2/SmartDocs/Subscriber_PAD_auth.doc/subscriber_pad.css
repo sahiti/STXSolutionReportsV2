@@ -1,0 +1,152 @@
+
+.main_body_div{
+	margin:0% 25% 5%;
+	position:relative;
+}
+.main_body_div label,.main_body_div p{
+	font-size:13px;
+	margin-top:0px;
+	margin-bottom:0px;
+}
+.main_body_div div{
+	position:relative;
+}
+#name_field,#email_field{
+	width:82%;
+}
+#address_field{
+	width:82.5%;
+	background: #eaeaff;
+	resize:none;
+	height:auto;
+	
+}
+#accounting_number_field{
+	width:27%;
+	margin-right:10px;
+}
+#station_code_field{
+	width:25.5%;
+}
+#city_field{
+	width:18%;
+	margin-right:7px;
+}
+#prov_field{
+	margin-right:10px;
+	width:15%;
+}
+#postal_code_field{
+	width:10%;
+}
+#phone_field{
+	width:34.6%;
+	margin-right:5px;
+}
+#cell_phone_field{
+	width:34%;
+}
+#email_type_checkboxes{
+	padding:10px 0px;
+}
+#email_type_checkboxes label{
+	margin-left:15px;
+	cursor:pointer;
+	font-weight:bold;
+}
+#email_type_checkboxes input[type=checkbox]{
+	zoom:1.25;
+}
+#billing_date_and_amount_div{
+	width:60%;
+	display:inline-block;
+	vertical-align: top;
+	margin-top:10px;
+}
+#next_billing_date_field{
+	width:50%;
+}
+#billing_amount_field{
+	width:30%
+}
+#billing_frequency_div{
+	width:auto;
+	display:inline-block;
+}
+#billing_frequency_div div{
+	padding : 5px;
+}
+#billing_frequency_div>h4{
+	margin-bottom:2px;
+	margin-top:5px;
+}
+#billing_frequency_div label{
+	display:block;
+	margin-left:1.5%;
+	cursor:pointer;
+}
+#total_charges_field{
+	width:25%;
+	margin-right:5px;
+}
+
+#todays_date_and_signature_div div{
+	display:inline-block;
+	text-align:center;
+}
+#todays_date_and_signature_div p{
+	margin-bottom:3px;
+}
+#todays_date_div{
+	width:20%;
+    vertical-align:middle;
+}
+#todays_date_field{
+	width:80%;
+}
+#passcode_div{
+	width:20%
+    vertical-align:middle;
+}
+#passcode_field{
+	width:80%;
+}
+@media (max-width:1100px){
+	.main_body_div{
+		margin:0% 3%;
+	}
+	#station_code_field{
+		width:21%;
+	}
+	#postal_code_field{
+		width:22.5%;
+	}
+	#cell_phone_field{
+		width:32.5%;
+	}
+}
+@media print{
+	.main_body_div{
+		margin:0% 2%;
+		position:relative;
+	}
+	.logo_space{
+		width:22%;
+		margin-right:3%;
+	}
+	.company_details_text{
+		width:54%;
+	}
+	.main_body_div .kbw-signature{
+			border:0px solid;
+	}
+	#station_code_field{
+		width:27%;
+	}
+	#city_field{
+		width:26.3%;
+	}
+	#phone_field{
+		margin-right:10px;
+	}
+}

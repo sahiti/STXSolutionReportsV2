@@ -1,0 +1,12 @@
+{ "Reports":
+[
+ 	{
+  		"ReportName" : "CLIENT REPORT 5",
+ 		"ReportImage": "Report-folder-blank.png",
+     	"ReportTemplatePackage": "C-Template5",
+      	"ReportDescription":"Simple Receipt - Displays Package QTY, description, unit pricing, Total Price",
+        "visiblilityRule":"TOTAL_PRICE_CHECK",
+        "ReportType": "CLIENT",
+        "ReportTypeImage": "Reports folder.png"
+	}
+]}

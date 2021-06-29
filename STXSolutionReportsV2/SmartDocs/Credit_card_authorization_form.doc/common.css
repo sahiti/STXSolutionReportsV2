@@ -1,0 +1,95 @@
+.text-center{
+	text-align:center;
+}
+.text-right{
+	text-align:right;
+}
+.text-left{
+	text-align:left;
+}
+.float-left{
+	float:left;
+}
+.float-right{
+	float:right;
+}
+.or-text{
+	font-size:13px;
+	margin:3px;
+}
+.pageTitle{
+	margin-bottom:5px;
+	margin-top:5px;
+}
+.comment{
+	font-size:11px;
+}
+.text-justify{
+	text-align: justify;
+}
+
+body{
+	box-sizing: border-box;
+	margin:0px;
+	padding:0px;
+	font-family:sans-serif;
+}
+.navbar_div{
+	position:relative;
+	
+}
+.logo_space{
+	position:relative;
+	display:inline-block;
+	width:32%;
+	text-align:right;
+	margin-left:-5px;
+}
+.logo_image{
+	height:80px;
+	width:auto;
+}
+.company_details_text{
+	display:inline-block;
+	width:35%;
+	margin-left:-5px;
+}
+.company_details_text h3{
+	margin-bottom:2px;
+	margin-top:5px;
+	font-size:17px;
+}
+.company_details_text span{
+	display:block;
+	font-size:16px;
+}
+.main_body_div{
+	margin:0% 15%;
+	position:relative;
+}
+.main_body_div input[type=text],select{
+		margin:3px 0px;
+		font-size:14px;
+		padding:3px;
+		position:relative;
+/*		background:#eaeaff;*/
+		border:none;
+		border:1px solid #555;
+}
+.main_body_div textarea{
+/*	background:#eaeaff;*/
+	font-size:15px;
+}
+.main_body_div label,.main_body_div p{
+	margin:3px 0px;
+}
+input[type=text]:focus{
+	background:#fff;
+	
+}
+input[type=checkbox]{
+	cursor:pointer;
+	zoom:1.25;
+	vertical-align:bottom;
+}
+

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Form Smart Home And Home Theater Information</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--link rel="stylesheet" type="text/css" href="common.css" /-->
+  <link rel="stylesheet" type="text/css" href="#ApplicationDataPath#/common.css" />
+  <link rel="stylesheet" type="text/css" href="#ApplicationDataPath#/print.css" />
+	<script src="#ApplicationDataPath#/jquery.min.js"></script>
+	<link rel="stylesheet" href="#ApplicationDataPath#/jquery-ui.css"/>
+	<script src="#ApplicationDataPath#/jquery-ui.js"></script>
+	<link type="text/css" href="#ApplicationDataPath#/jquery.signature.css" rel="stylesheet">
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.signature.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="#ApplicationDataPath#/excanvas.js"></script>
+	<!--script type="text/javascript" src="data.js"></script-->
+    <style>
+        
+        .optionalFields{
+            background-color:yellow;
+        }
+        
+
+    @media print{
+        
+        .optionalFields{
+            background-color:#ffffff ;
+        }
+        
+        }
+    </style>
+</head>
+<body>
+	<script>
+		var reportJson = #REPORT_JSON#;
+		$(document).ready(function(){
+			$(".logo_image").attr("src", reportJson.Report.Logo);
+			$("#customer_signature_pad").signature();
+			$('#customer_signature_pad').signature({syncField: '#signatureJSON'});
+			changeAllElements();
+		})
+		
+		function changeAllElements()
+		{
+			$("input[type=text]").each(function(){
+				var id = $(this).prop('id');
+				var id_RO = id + "_RO";
+				//console.log($(this).val());
+				$("#" + id_RO).val($(this).val());
+			})
+			$("input[type=text]").each(function(){
+				$(this).on('input', function(){
+					var id = $(this).prop('id');
+					var id_RO = id + "_RO";
+					//console.log($(this).val());
+					$("#" + id_RO).val($(this).val());
+				});
+			})
+		}
+	</script>
+	<div id = "page_6">
+		<div class = "header">
+			<img src="" 
+					class="logo_image" id="logo_image" alt="Image Not Found" />
+		</div>
+		<h4 class = "no_margin p10 text_center" style = "border : 1px solid #000">
+			6 Month Installment Agreement
+		</h4>
+		<div class = "row" id = "row_1">
+			<div class = "col" id = "col_1">
+				Date : 
+				<input type = "text" name = "agreement_date" id = "agreement_date" />
+				<input id = "agreement_date_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_2">
+				Auto Payment Set up	: 
+				<div class = "col">
+					<input type = "text" name = "auto_payment_setup" id = "auto_payment_setup" />
+					<input id = "auto_payment_setup_RO" type = "hidden" />
+					<br>
+					<div class = "text_center">
+						Approval
+					</div>
+				</div>
+			</div>
+			<div class = "col" id = "col_3">
+				#	: <input type = "text" name = "account_number" id = "account_number" />
+						<input id = "account_number_RO" type = "hidden" />
+					<br>
+					<div class = "text_center">
+						Account Number
+					</div>
+			</div>
+		</div>
+		<div class = "row" id = "row_2">
+			<div class = "col" id = "col_1">
+				Name : 
+				<input type = "text" name = "name_in_agreement" id = "name_in_agreement" />
+				<input id = "name_in_agreement_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_2">
+				Job Address : 
+				<input type = "text" name = "job_address" id = "job_address" />
+				<input id = "job_address_RO" type = "hidden" />
+			</div>
+			
+		</div>
+		<div class = "row" id = "row_3">
+			<div class = "col" id = "col_1">
+				DL 
+				<input type = "text" name = "dl" id = "dl" />
+				<input id = "dl_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_2">
+				State
+				<input type = "text" name = "state" id = "state" />
+				<input id = "state_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_3">
+				DOB
+				<input type = "text" name = "dob" id = "dob" />
+				<input id = "dob_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_3">
+				SSN
+				<input type = "text" name = "ssn" id = "ssn" />
+				<input id = "ssn_RO" type = "hidden" />
+			</div>
+		</div>
+		<div id = "row_4" class = "row">
+			<div class = "col" id = "col_1">
+				Invoice #
+				<input type = "text" name = "invoice_number" id = "invoice_number" />
+				<input id = "invoice_number_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_2">
+				Work Phone
+				<input type = "text" name = "work_phone" id = "work_phone" />
+				<input id = "work_phone_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_1">
+				Cell Phone
+				<input type = "text" name = "cell_phone" id = "cell_phone" />
+				<input id = "cell_phone_RO" type = "hidden" />
+			</div>	
+		</div>
+		<div class = "row text_center" id = "row_5">
+			<div class = "col">
+				No Credit Check	
+			</div>
+			<div class = "col">
+				No Interest
+			</div>
+			<div class = "col">
+				No Financing Charge
+			</div>
+		</div>
+		<h3 class = "no_margin p10 text_center" style = "border:1px solid #000">
+			Payment Method
+		</h3>
+		<div class = "pt15 pb10 text_center" id = "row_6">
+			<div class = "col">
+				Checking
+			</div>
+			<div class = "col">
+				Saving
+			</div>
+			<div class = "col" id = "col_3">
+				Credit Card : 
+				&nbsp;&nbsp;
+				Visa 
+				&nbsp;&nbsp;
+				MC
+				&nbsp;&nbsp;
+				Discover
+				&nbsp;&nbsp;
+				AMEX
+			</div>
+		</div>
+		<div class = "row" id = "row_7">
+			<div class = "col">
+				ABA Routing Number : 
+				<input type = "text" name = "aba_routing_number_2" id = "aba_routing_number_2" /> 
+				<input id = "aba_routing_number_2_RO" type = "hidden" />
+			</div>
+			<div class = "col">
+				Bank Account
+				<input type = "text" name = "bank_account_number_2" id = "bank_account_number_2" /> 
+				<input id = "bank_account_number_2_RO" type = "hidden" />
+			</div>
+		</div>
+		<div class = "row" id = "row_8">
+			<div class = "col" id = "col_1">
+				Credit Card Number : 
+				<input type = "text" name = "credit_card_number_2" id = "credit_card_number_2" />
+				<input id = "credit_card_number_2_RO" type = "hidden" />				
+			</div>
+			<div class = "col" id = "col_2">
+				Exp. Date
+				<input type = "text" name = "exp_date" id = "exp_date" />
+				<input id = "exp_date_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_3">
+				Code
+				<input type = "text" name = "code_2" id = "code_2" />
+				<input id = "code_2_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_4">
+				Zip
+				<input type = "text" name = "zip_2" id = "zip_2" />
+				<input id = "zip_2_RO" type = "hidden" />
+			</div>
+		</div>
+		<div class = "row" id = "row_9">
+			<div class = "col" id = "col_1">
+				Total $ 
+				<input type = "text" name = "total_amount" id = "total_amount" />
+				<input id = "total_amount_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_2">
+				Processing
+				<br>
+				$99.00 Fee $
+				<input type = "text" name = "processing_amount" id = "processing_amount" />
+				<input id = "processing_amount_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_3">
+				1/2 Down Pmt: $
+				<input type = "text" name = "down_payment" id = "down_payment" />
+				<input id = "down_payment_RO" type = "hidden" />
+			</div>
+			<div class = "col" id = "col_4">
+				Balance: $
+				<input type = "text" name = "balance" id = "balance" />
+				<input id = "balance_RO" type = "hidden" />
+			</div>
+		</div>
+		<div class = "pt10 pb5 text_center" id = "row_10">
+			Total Amount Due: $
+			<input type = "text" name = "amount_due" id = "amount_due" />
+			<input id = "amount_due_RO" type = "hidden" />
+			&nbsp;
+			# of payments 
+			<input type = "text" name = "payments" id = "payments" />
+			<input id = "payments_RO" type = "hidden" />
+			of $ 
+			<input type = "text" name = "of" id = "of" />
+			<input id = "of_RO" type = "hidden" />
+			per month.
+		</div>
+		<div class = "row" id = "row_11">
+			<div class = "row">
+				<div class = "col">
+					Date : 
+					<input type = "text" name = "date_1" id = "date_1" />
+					<input id = "date_1_RO" type = "hidden" />
+					&nbsp;&nbsp;
+					Amount : $ 
+					<input type = "text" name = "amount_1" id = "amount_1" />
+					<input id = "amount_1_RO" type = "hidden" />
+				</div>
+				<div class = "col">
+					Date : 
+					<input type = "text" name = "date_2" id = "date_2" />
+					<input id = "date_2_RO" type = "hidden" />
+					&nbsp;&nbsp;
+					Amount : $ 
+					<input type = "text" name = "amount_2" id = "amount_2" />
+					<input id = "amount_2_RO" type = "hidden" />
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col">
+					Date : 
+					<input type = "text" name = "date_3" id = "date_3" />
+					<input id = "date_3_RO" type = "hidden" />
+					&nbsp;&nbsp;
+					Amount : $ 
+					<input type = "text" name = "amount_3" id = "amount_3" />
+					<input id = "amount_3_RO" type = "hidden" />
+				</div>
+				<div class = "col">
+					Date : 
+					<input type = "text" name = "date_4" id = "date_4" />
+					<input id = "date_4_RO" type = "hidden" />
+					&nbsp;&nbsp;
+					Amount : $ 
+					<input type = "text" name = "amount_4" id = "amount_4" />
+					<input id = "amount_4_RO" type = "hidden" />
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col">
+					Date : 
+					<input type = "text" name = "date_5" id = "date_5" />
+					<input id = "date_5_RO" type = "hidden" />
+					&nbsp;&nbsp;
+					Amount : $ 
+					<input type = "text" name = "amount_5" id = "amount_5" />
+					<input id = "amount_5_RO" type = "hidden" />
+				</div>
+				<div class = "col">
+					Date : 
+					<input type = "text" name = "date_6" id = "date_6" />
+					<input id = "date_6_RO" type = "hidden" />
+					&nbsp;&nbsp;
+					Amount : $ 
+					<input type = "text" name = "amount_6" id = "amount_6" />
+					<input id = "amount_6_RO" type = "hidden" />
+				</div>
+			</div>
+			
+		</div>
+		<div class = "row text_justify small_font" id = "row_12">
+			I hereby authorize 
+			<div class = "company_name_div col"></div>
+			and the financial institution or referenced credit card named above to debit 
+			my bank account or charge my credit card electronically. This account will be 
+			automatically withdrawn on the dates with amounts specified below. In the event
+			that for whatever reason withdraw is not done on date indicate it will be done 
+			after that date: as close to the date as possible
+			<input type = "text" style = "width: 100px" />
+			Initials.
+		</div>
+		<div class = "row text_justify small_font" id = "row_13">
+			In the event that the check or credit card is returned or denied for any reason, 
+			a fee of $30 will be applied. 
+			<div class = "company_name_div col"></div> may redeposit check on 
+			re-run credit card unpaid monthly amount(s) with return fee amount electronically 
+			without notification. If unable to recover the monthly amount due during month owed: 
+			we have your authorization to deduct (2) months the following month. Customer will be
+			held responsible for the full-term amount balance of the agreement. All equipment 
+			installed is the property of 
+			<div class = "company_name_div col"></div> until equipment is paid in full
+			on final date indicated on agreement. In the event of Customer breach of this 
+			agreement, 
+			<div class = "company_name_div col"></div> may at its option remove the equipment in addition 
+			to the liquidated damages and attorney fees provided for herein for the balance of the 
+			agreement.
+		</div>
+		<div class = "row" id = "row_14">
+			<div class = "col text_center" id = "col_1">
+				<div id="customer_signature_pad" class = "signature_pad optionalFields" ></div>
+				<input id="signatureJSON" type="hidden"></input>
+				<br>
+				Customer Signature
+			</div>
+			<div class = "col text_center" id = "col_2">
+				<input type = "text" name = "sign_date" id = "sign_date"/>
+				<input id = "sign_date_RO" type = "hidden" />
+				<br>
+				Date
+			</div>
+			<div class = "col text_center" id = "col_3">
+				<input type = "text" name = "design_center_approval" id = "design_center_approval"/>
+				<input id = "design_center_approval_RO" type = "hidden" />
+				<br>
+				Design Center Approval
+			</div>
+		</div>
+		<div class = "row" id = "row_15">
+			<br>
+			<div class = "row" id = "line_1">
+				Equipment Purchase: 
+				<input type = "text" name = "equipment1" id = "equipment1" />
+				<input id = "equipment1_RO" type = "hidden" />
+			</div>
+			<div class = "row" id = "line_2">
+				<input type = "text" name = "equipment2" id = "equipment2" />
+				<input id = "equipment2_RO" type = "hidden" />
+			</div>
+			<div class = "row" id = "line_3">
+				<input type = "text" name = "equipment3" id = "equipment3" />
+				<input id = "equipment3_RO" type = "hidden" />
+			</div>
+		</div>
+	</div>
+</body>
+</html>
